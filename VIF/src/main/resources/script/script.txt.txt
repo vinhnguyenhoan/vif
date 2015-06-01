@@ -1,0 +1,33 @@
+CREATE OR REPLACE VIEW RPT002 AS
+SELECT
+ vm.id as ms_khu_vuc,
+ vm.ten as ten_khu_vuc,
+ to_number(NVL(substr(ttp.khu_vuc,2,length(ttp.khu_vuc)),0)) as ms_giam_sat,
+ dbh.tinh_thanh_pho as ms_tinh_thanh,
+ ttp.ten_tinh as ten_tinh_thanh,
+ dbh.quan_huyen as ms_quan_huyen,
+ qh.ten as ten_quan_huyen,
+ Count(*) as so_luong_kh,
+ Sum (Case when phan_loai='A' then 1 else 0 end) as so_luong_loai_A,
+ Sum (Case when phan_loai='B' then 1 else 0 end) as so_luong_loai_B,
+ Sum (Case when phan_loai='C' then 1 else 0 end) as so_luong_loai_C,
+ Sum (Case when phan_loai is null then 1 else 0 end) as so_luong_null,
+ Sum (Case when cap_do=2 then 1 else 0 end) as so_luong_cap_2,
+ Sum (Case when cap_do=3 then 1 else 0 end) as so_luong_cap_3
+FROM DIEM_BAN_HANG dbh
+LEFT JOIN TINH_THANH_PHO ttp
+ON (ttp.id=dbh.tinh_thanh_pho)
+LEFT JOIN QUAN_HUYEN qh
+ON (dbh.quan_huyen =qh.id)
+LEFT JOIN VUNG_MIEN vm
+ON (vm.id=substr(ttp.khu_vuc,0,1))
+WHERE dbh.tinh_thanh_pho is not null and dbh.tinh_thanh_pho !=0 and ttp.khu_vuc is not null
+GROUP BY 
+ vm.id ,
+ vm.ten,
+ to_number(NVL(substr(ttp.khu_vuc,2,length(ttp.khu_vuc)),0)),
+ dbh.tinh_thanh_pho,
+ ttp.ten_tinh,
+ dbh.quan_huyen,
+ qh.ten;
+

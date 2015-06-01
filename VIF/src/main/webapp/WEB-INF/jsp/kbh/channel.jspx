@@ -1,0 +1,292 @@
+
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:form="http://www.springframework.org/tags/form">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="cssFolder" value="/resources/css" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	
+	<spring:url var="editAgentURL" value="/agent/edit" />
+	<spring:url var="editPosURL" value="/pos/sales" />
+	<spring:url var="editUserURL" value="/user/detail" />
+	<spring:url var="posDetailURL" value="/pos/sales" />
+	<spring:url var="agentDetailURL" value="/agent/edit" />
+
+	<![CDATA[	
+	<script type="text/javascript" src="${jsFolder}/channel.js?v=4"></script>
+		
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";	
+		var posLevel = ${posLevel};					
+		var saleLevel = ${saleLevel};
+		var loginUser = '${loginUser.id}';	
+    </script>		
+	]]>
+
+	<spring:url var="imagesFolder" value="/images" />
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" />
+		</span>
+		<div class="content-title">
+			<h2>
+				<span>Danh sách ${levelName}</span>
+			</h2> 
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="dailyListForm" path="dailyListForm">
+				<form:hidden path="capDaiLy"/>
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0" class="table-1">
+					<tr>
+						<td colspan="3" align="center"><span class="errorMessage">${error}</span></td>
+					</tr>
+					<tr>
+						<td colspan="3"> 
+							<c:choose>
+								<c:when test="${companyLogin!=null}">
+									<input type="hidden" name="company" id="company" value="${companyLogin}"/>
+								</c:when>
+								<c:otherwise>
+									<div style="width:140px;float:left;">
+										<span style="width:140px;margin-left:35px;">Công ty</span><br/>
+										<form:select style="width:140px;height:21px;text-align:center;margin-left:10px;" 
+										cssClass="select2_combo" path="company" onchange="selectCompany(this);">
+											<form:options items="${companies}" itemValue="id"
+												itemLabel="ten" />
+										</form:select>
+									</div>
+								</c:otherwise>
+							</c:choose>
+							<c:forEach items="${levelParentList}" var="item" varStatus="status">
+								<c:if test="${!(companyLogin!=null and status.index==0)}">
+									<c:set var="style" value="margin-left:10px;"/>
+								</c:if>
+								<div style="width:140px;float:left;${style}">
+									<span style="width:140px;margin-left:35px;"><a href="javascript:" onclick="backLevel(${item.id})">${item.name}</a></span><br/>
+									<select style="width:140px;height:21px;margin-left:10px;" class="select2_combo"
+										id="level_${item.id}" name="parentLevel" onchange="selectLevel(this);">
+										<c:forEach items="${levelParentMap[item.id]}" var="lv">
+											<c:choose>
+												<c:when test="${selectedLevel[status.index] == lv.id}">
+													<option selected="selected" value="${lv.id}">${lv.name}</option>	
+												</c:when>
+												<c:otherwise>
+													<option value="${lv.id}">${lv.name}</option>	
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>									
+									</select>
+								</div>
+							</c:forEach>
+						</td>
+					</tr>
+					<tr>
+						<td valign="middle">
+							<form:select path="tinhThanh" cssStyle="width:140px;height:21px;margin-left: 10px;" 
+								cssClass="select2_combo" onchange="selectCity(this, '#quanHuyen', '#phuongXa');">
+								<form:option value="0">--- Tỉnh/Thành ---</form:option>
+								<form:options items="${provinceList}" itemValue="id" itemLabel="name"/>
+							</form:select>
+							
+							<form:select path="quanHuyen" cssStyle="width:140px;height:21px;margin-left: 10px;" 
+								cssClass="select2_combo" onchange="selectTown(this, '#phuongXa');">
+								<form:option value="0">--- Quận/Huyện ---</form:option>
+								<form:options items="${listQuanHuyen}" itemValue="id" itemLabel="name" />
+							</form:select>
+
+							<form:select path="phuongXa" cssStyle="width:140px; height:21px;margin-left: 10px;" cssClass="select2_combo">
+								<form:option value="0">--- Phường/Xã ---</form:option>
+								<form:options items="${listPhuongXa}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+							
+							<label style="float:right;line-height:20px;">
+								<form:select path="searchType" cssStyle="width:100px; height:21px;margin-left: 10px;" cssClass="select2_combo">
+									<form:options items="${searchTypeList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</label>
+						</td>
+						<td style="width:110px;" valign="middle">
+							<form:input path="maVietTat" cssStyle="width:110px;" onkeypress="if(event.keyCode==13) {document.forms[0].submit();}"/>
+						</td>
+						<td style="text-align: left; width: 250px;" valign="bottom"> 
+							<a href="javascript:void(0)" class="btn-1" onclick="timKiemDL();"
+							style="text-align: left;"><span><span>Tìm Kiếm</span>
+							</span> </a> 
+							<c:if test="${allowEdit}">
+								<a href="javascript:void(0)" class="btn-1" onclick="openSearchForm();"><span><span>Thêm
+									</span> </span> </a>
+							</c:if>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" style="padding-top:8px">
+							<b>${title} > Danh sách ${levelName}
+							<c:if test="${not empty dailyListForm.maVietTat}">
+								<font color="green">(*${dailyListForm.maVietTat}*)</font>
+							</c:if>
+							</b>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="daiLyTopPagination"
+								formSubmit="dailyListForm" submitMethod="POST" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table width="99%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="5%">#</td>
+										<td width="15%">Mã Viết Tắt</td>
+										<c:choose>
+										<c:when test="${level == 1}">
+										<td width="20%">Vùng Miền</td>
+										</c:when>
+										<c:when test="${level == 2}">
+										<td width="20%">Khu Vực</td>
+										</c:when>
+										<c:when test="${level == 3}">
+										<td width="20%">Giám Sát</td>
+										</c:when>
+										<c:otherwise>
+										<td width="20%">Nhân Viên</td>
+										</c:otherwise>
+										</c:choose>																				 										
+										<td width="25%">Quản Lý Trực Tiếp</td>
+										<td width="15%">Số Điện Thoại</td>
+										<td width="10%"> Loại </td>
+										<td width="15%">Thực Hiện</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${not empty memberList}">
+											<c:forEach items="${memberList}" var="item" varStatus="status">
+											<c:choose>
+												<c:when test="${item.type ==1}">
+													<c:choose>
+													<c:when test="${dailyListForm.capDaiLy ==1}">
+													<spring:url var="meberType" value="Miền"/>
+													</c:when>
+													<c:otherwise>
+													<spring:url var="meberType" value="Đại Lý"/>
+													</c:otherwise>
+													</c:choose>
+													<c:set var="viewHref" value="${editAgentURL}/${item.getId()}"/>
+												</c:when>
+											   <c:when test="${item.type ==2}">
+										   			<spring:url var="meberType" value="Điểm bán hàng"/>
+											   		<c:set var="viewHref" value="${editPosURL}/${item.getId()}"/>
+											   </c:when>
+											   <c:otherwise>
+											   		<c:choose>
+													<c:when test="${dailyListForm.capDaiLy ==2}">
+													<spring:url var="meberType" value="Trưởng Nhóm"/>
+													</c:when>
+													<c:when test="${dailyListForm.capDaiLy ==3}">
+													<spring:url var="meberType" value="Giám Sát"/>
+													</c:when>
+													<c:otherwise>
+											   			<spring:url var="meberType" value="Nhân Viên BH"/>
+														<c:if test="${item.role=='ROLE_LEADER'}">
+															<spring:url var="meberType" value="Tổ Trưởng"/>
+														</c:if>
+													</c:otherwise>
+													</c:choose>
+											   		<c:set var="viewHref" value="${editUserURL}/${item.id}"/>
+											   </c:otherwise>													 
+											</c:choose>
+												<tr>
+													<td align="center">${(page-1)*size+status.count}</td>
+													<td align="center">
+														<a href="${viewHref}">${item.code}</a>
+													</td>
+													<td>
+														<a href="${viewHref}">${item.name}</a>
+													</td>
+													<td><a href="${editUserURL}/${item.manager.id}">${item.manager.name}</a></td>
+													<td>
+														<c:choose>
+															<c:when test="${dailyListForm.capDaiLy==1}">
+																${item.manager.phoneNumber}
+															</c:when>
+															<c:otherwise>
+																${item.phoneNumber}
+															</c:otherwise>
+														</c:choose>
+													</td>
+												  	<td style="text-align: center;">${meberType}</td>	
+													<td style="text-align: center;">
+													<c:if test="${viewChild}">
+														<a href="javascript:;" onclick="javascript:XemDL(${item.type}${item.id})" class="redTxt" title="">
+																	Xem Kênh</a> |
+													</c:if>
+													<c:if test="${allowEdit}">
+														<a href="javascript:;" onclick="javascript:deleteDL(${item.id}, ${item.type})" class="redTxt" title="">
+																Xóa
+														</a>
+													</c:if>
+													</td>
+												</tr>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<td colspan="7" align="center">Không tồn tại thành viên 
+													${levelName}</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+						</table></td>
+				</tr>
+					<tr>
+						<td colspan="3"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="dailyBottomPagination"
+								formSubmit="dailyListForm" submitMethod="POST" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<c:if test="${loginAgent != null}">
+								<a href="${agentDetailURL}/${loginAgent.id}"
+										class="btn-1" title="Thông tin Đại lý"><span><span>Thông tin Đại lý</span></span></a> &#160;&#160;&#160; 
+							</c:if>
+							<c:if test="${loginPos != null}">
+								<a href="${posDetailURL}/${loginPos.id}"
+										class="btn-1" title="Thông tin ĐBH"><span><span>Thông tin ĐBH</span></span></a> &#160;&#160;&#160; 
+							</c:if>
+							<c:if test="${loginUser != null}">
+								<a href="${editUserURL}/${loginUser.id}"
+										class="btn-1" title="Thông tin Nhân Viên Quản Lý"><span><span>Thông tin NV</span></span></a> &#160;&#160;&#160; 
+							</c:if>
+							<a href="javascript:void(0);"
+									class="btn-1" title="Báo Cáo Tổng Hợp" onClick="exportReport(false);"><span><span>Báo Cáo Tổng Hợp</span></span></a> &#160;&#160;&#160; 
+							<a href="javascript:void(0);" class="btn-1"
+									title="Báo Cáo Chi Tiết" onClick="exportReport(true);"><span><span>&#160;Báo Cáo Chi Tiết&#160;</span></span></a> &#160;&#160;&#160; 
+						</td>
+					</tr>
+					
+				</table>
+			</form:form>
+
+		</div>
+	</div>
+
+	<jsp:include page="searchForm.jspx"></jsp:include>
+	<jsp:include page="agentForm.jspx"></jsp:include>
+	<jsp:include page="posForm.jspx"></jsp:include>
+	<jsp:include page="userForm.jspx"></jsp:include>
+</div>

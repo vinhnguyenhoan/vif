@@ -1,0 +1,349 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:spring="http://www.springframework.org/tags" version="2.0"
+	class="navigationBar" xmlns:sec="http://www.springframework.org/security/tags">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imageFolder" value="/images" />
+	<spring:url var="home" value="/" />
+	<spring:url var="posListURL" value="/pos/list"  />
+	<spring:url var="newPosListURL" value="/newPos/list"  />
+	<spring:url var="nppListURL" value="/npp/list"  />
+	<spring:url var="posPrintURL" value="/pos/printQR"  />
+	<spring:url var="planListURL" value="/plan/list"  />
+	<spring:url var="createPlanURL" value="/plan/create"  />
+	<spring:url var="deviceListURL" value="/device/list"  />
+	<spring:url var="addDeviceURL" value="/device/add"  />
+	<spring:url var="userListURL" value="/user/list"  />
+	<spring:url var="addUserURL" value="/user/add"  />
+	<spring:url var="myplansURL" value="/plan/myplans"  />
+	<spring:url var="addUserURL" value="/user/add"  />
+	<spring:url var="customerCareURL" value="/pos/diary"  />
+	<spring:url var="mapURL" value="/map"  />
+	<spring:url var="mapSupervisorURL" value="/map/supervisor"  />
+	<spring:url var="superviseURL" value="/supervise/list"  />
+	<spring:url var="agentListURL" value="/agent/list"  />
+    <spring:url var="upcomingURL" value="/upcoming"  />
+	<spring:url var="performanceURL" value="/performance"  />
+	<spring:url var="performanceDonwLoadImagesURL" value="/performance/downloadImages"  />
+	<spring:url var="channelURL" value="/channel/list"/>
+	<spring:url var="revenueURL" value="/revenue/list/"/>	
+	<spring:url var="exportURL" value="/stock/exporter/"  />	
+    <spring:url var="createTargetURL" value="/planforsales/create"  />
+    <spring:url var="lisTargetURL" value="/planforsales/list/"  />
+    <spring:url var="processTargetURL" value="/planforsales/process/"  />
+    <spring:url var="settingsURL" value="/settings"  />
+    <spring:url var="levelURL" value="/settings/list/levels" />
+    <spring:url var="roleURL" value="/settings/list/roles" />
+    <spring:url var="provListURL" value="/settings/list/provinces"  />
+    <spring:url var="distListURL" value="/settings/list/districts"  />
+    <spring:url var="wardListURL" value="/settings/list/wards"  />
+    <spring:url var="streetListURL" value="/settings/list/streets"  />
+    <spring:url var="companiesListURL" value="/settings/list/company"  />
+    <spring:url var="perfSettingsURL" value="/performance/setting"  />
+    <spring:url var="sendSmsURL" value="/version/detail"  />
+    <spring:url var="changePasswdURL" value="/settings/changepasswd"  />
+    <spring:url var="logoutURL" value="/resources/j_spring_security_logout" />	
+	<spring:url var="inventoryListURL" value="/store/inventory/" />
+	<spring:url var="orderListURL" value="/order/list/" />
+	<spring:url var="requestListURL" value="/order/requestGoods/list" />
+    <spring:url var="stockTransExportURL" value="/stock/trans/"/>
+    <spring:url var="stockTransImportURL" value="/stock/trans/im/"/>
+    <spring:url var="digitalGoodsURL" value="/stock/digitalGoods"/>
+    <spring:url var="importInventoryForStaffURL" value="/stock/ImportInventoryForStaff"/>
+    <spring:url var="importInventoryForAgentURL" value="/stock/ImportInventoryForAgent"/>
+    <spring:url var="stockTransImportFromOtherURL" value="/stock/trans/importFromOther/"/>
+	<spring:url var="transVasURL" value="/vastrans/list/"  />
+    <spring:url var="commissionVasURL" value="/vascommission/list/"  />
+    <spring:url var="commissionURL" value="/commission/list/"  />
+	<spring:url var="rewardListURL" value="/reward/list"/>
+	<spring:url var="comDefListURL" value="/commissionDef/list"/>
+	<spring:url var="rewardDefListURL" value="/rewardDef/list"/>
+	<spring:url var="catListURL" value="/category/list/" />
+	<spring:url var="productListURL" value="/product/list/"/>
+	<spring:url var="discountURL" value="/discount/list"/>
+	<spring:url var="registerURL" value="/register/list"/>
+	<spring:url var="customerInforURL" value="/customer/inforRegisterList"/>
+	<spring:url var="comDefRedoListURL" value="/commissionDefRedo/list"/>
+	<spring:url var="salesTransHistories" value="/salestrans/histories/"/>
+	<spring:url var="attendURL" value="/attendance/list"/>
+	<spring:url var="gpsURL" value="/device/GPSsetting"  />
+	
+	<spring:url var="bestPosURL" value="/topPos/bestQuantity"  />
+	<spring:url var="bestCareURL" value="/topSalesman/bestCare"  />
+	<spring:url var="bestSalesURL" value="/topSalesman/bestSales"  />
+	<spring:url var="bestStaffURL" value="/topSalesman/bestStaff"  />
+	
+	
+	<spring:url var="rpt001URL" value="/report/rpt001/list"/>
+	<spring:url var="rpt002URL" value="/report/rpt002/list"/>
+	<spring:url var="rpt003URL" value="/report/rpt003/list"/>
+	
+   	<div id="sidebar-left" class="context-block">
+   	 
+	       	<sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">    
+                <div class="block-nav-left">
+                  <p class="title-1">
+                       <a href="#" title="">
+                           <img src="${imageFolder}/dummy.gif" class="ui-icon icon-05" alt="" />
+                                   <span>Trang Chủ</span>
+                           <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                       </a>
+                  </p>
+                  <ul style="display:none">                      
+                      <li><a href="${home}" title="Xem Dash board">Danh sách tổng hợp</a></li>
+                  </ul>
+            </div>
+            </sec:authorize>
+
+			<sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+           <div class="block-nav-left">
+               <p class="title-1">
+                       <a href="#" title="">
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-07" alt="" />
+                           <span>Quản Lý Nhân Viên Bán Hàng</span>
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                   </a>
+               </p>
+               <ul style="display:none">
+               		   <li><a href="${attendURL}" title="Danh sách hiện diện">Chấm công</a></li>
+               		   <li><a href="${createTargetURL}" title="Lập chỉ tiêu">Giao chỉ tiêu</a></li>                   
+                       <li><a href="${lisTargetURL}" title="Danh sách chỉ tiêu">Danh sách chỉ tiêu</a></li>
+                       <li><a href="${createPlanURL}" title="Lập tuyến đường">Lập Tuyến đường mới</a></li>
+                       <li><a href="${planListURL}" title="Danh sách các tuyến đường">Danh sách Tuyến đường</a></li>
+                        <!--  <li><a href="${processTargetURL}" title="Ds tiến độ thực hiện">Danh sách tiến độ</a></li> -->
+                        <li><a href="${mapURL}" title="Xem lộ trình NVBH">Lộ trình Nhân viên</a></li>
+                        <!--<li><a href="${inventoryListURL}" title="Danh Sách Hàng Tồn">Kho Hàng</a></li>-->
+                        <li><a href="${orderListURL}" title="Danh Sách Đơn Hàng">Danh Sách Đơn Hàng</a></li>
+                        <li><a href="${requestListURL}" title="Danh Sách Yêu Cầu Nhận Hàng">Theo dõi nhận hàng của NVBH</a></li> 
+                 </ul>
+           </div>
+           </sec:authorize>
+           
+           
+           <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+           <div class="block-nav-left">
+              <p class="title-1">
+                  <a href="#" title="">
+                      <img src="${imageFolder}/dummy.gif" class="ui-icon icon-08" alt="" />
+                      <span>Hệ Thống Kênh Phân Phối</span>
+                      <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                  </a>
+              </p>
+              <ul style="display:none">
+                       <li><a href="${nppListURL}" title="Danh sách nhà phân phối">Danh sách Nhà Phân Phối</a></li>
+                  		<li><a href="${posListURL}" title="Danh sách điểm bán hàng">Danh sách Điểm Bán Hàng</a></li>
+                   		<li><a href="${newPosListURL}" title="Danh sách điểm mới">Danh sách Điểm mới</a></li> 
+              </ul>
+          </div>
+          </sec:authorize>
+          
+           
+           <div class="block-nav-left" id="channelMenu">
+               <p class="title-1">
+                   <a href="#" title="">
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-08" alt="" />
+                       <span>Hệ Thống Kênh Quản Lý</span>
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                   </a>
+               </p>
+               <ul style="display:none">
+               		<c:forEach items="${levelList}" var="item">
+                       <li><a href="${channelURL}?level=${item.id}" title="Kênh quản lý cấp ${item.name}">${item.name}</a></li>
+               		</c:forEach>
+                    <c:if test="${showSupervisorTracking}">
+                      <li><a href="${mapSupervisorURL}" title="Xem lộ trình Giám sát">Lộ trình Giám sát</a></li>
+                    </c:if>
+              	</ul>
+           </div>
+           <![CDATA[
+               <script type="text/javascript">
+               	var flag =  0;
+                       jQuery(document).ready(function($) { 
+                       
+                         /*var url = "${pageContext.request.contextPath}/channel/getAgentLevel";
+                         $.ajax({
+                               type : 'GET',
+                               dataType : 'json',
+                               url : url,
+                               success : function(data) {
+                                   fillChannelMenu(data);
+                               }
+                           });*/
+                          checkHCSLaboratory() 
+                          
+                       });
+                       
+                       function fillChannelMenu(data) {
+                       		var list = data.levelList;
+                           var menu = $('#channelMenu');
+                           var ul = '<ul style="display:none">';
+                           for (i = 0; i < list.length; i ++) {
+                               var item = list[i];
+                               ul += '<li><a href="${channelURL}?level='+item.id+'" title="Kênh bán hàng cấp '+item.id+'">'+item.name+'</a></li>';
+                           }
+                           ul += '</ul>';
+                           menu.append(ul);
+                          /*if (data.showDigitalStock) {
+                          	menu = $('#inventoryMenu');
+                          	menu.append('<li><a href="${stockTransImportFromOtherURL}" title="Nhập Hàng Từ Ngoài">Nhập Hàng Từ Trung Tâm Khác</a></li>');
+                          	menu.append('<li><a href="${digitalGoodsURL}" title="Danh Sách Kho Số">Danh Sách Kho Số</a></li>');
+                          	if(data.showStaffImportInventory){
+                          		menu.append('<li><a href="${importInventoryForStaffURL}" title="Nhập Hàng Tồn Cho Nhân Viên Phát Triển Thị Trường">Nhập Hàng Tồn Cho NVPTTT</a></li>');
+                          	}
+                          	
+                          	if(data.showAgentImportInventory){
+                          		menu.append('<li><a href="${importInventoryForAgentURL}" title="Nhập Hàng Tồn Cho Tổng Đại Lý">Nhập Hàng Tồn Cho TĐL</a></li>');
+                          	}
+                          	menu = $('#salesMenu');
+                          	menu.append('<li><a href="${customerInforURL}" title="Danh Sách ĐK Thông Tin Thuê Bao Trả Trước">Danh Sách ĐK Thuê Bao</a></li>');
+                          }*/
+                          
+                          
+                          checkHCSLaboratory();
+                    	}
+                    	
+                    	function checkHCSLaboratory(){
+                   			HCSLaboratory.init();
+                    		var currentLink = $('div.navigationBar a[href^="'+document.location.pathname+'"]');
+                   			var len = currentLink.length;
+                   			if (len == 1) {
+                    			currentLink = $(currentLink[0]);
+              					currentLink.html('<b>' + currentLink.html() + '</b>');
+               				} else {
+               					//currentLink = $('div.navigationBar a[href!="#"]');
+               					for (var i = 0; i < len; i ++) {
+               						if (currentLink[i].href.indexOf(document.location.search) != -1) {
+               							currentLink = $(currentLink[i]);
+               							currentLink.html('<b>' + currentLink.html() + '</b>');
+               							break;
+               						}
+               					}
+               					if (currentLink.length > 1) {
+               						currentLink = $(currentLink[0]);
+               					}
+               				}
+                   			currentLink = currentLink.parents();
+                   			for (var i = 0; i < currentLink.length; i++) {
+                   				if (currentLink[i].getAttribute('class') == 'block-nav-left') {
+                   					currentLink = currentLink[i];
+                   					break;
+                   				}
+                   			}
+                   			try {
+                   				if (currentLink!=null && currentLink.firstChild!=null) {
+	                   				$(currentLink.firstChild.firstChild).click();
+                   				}
+                   			} catch(e){}
+                    	}
+               </script>
+           ]]>
+
+           <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+           <div class="block-nav-left">
+               <p class="title-1">
+                   <a href="#" title="">
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-06" alt="" />
+                       <span>Báo Cáo và Thống Kê</span>
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                   </a>
+               </p>
+               <ul style="display:none" id="">
+                      	
+                      	<!--
+                       	<li><a href="${bestCareURL}" title="Danh sách Nhân Viên Chăm Sóc tốt nhất">Danh sách top Nhân Viên CS</a></li>
+                       	<li><a href="${bestSalesURL}" title="Danh sách Nhân Viên Bán Hàng tốt nhất">Danh sách top Nhân Viên BH</a></li>
+                       	-->
+                       	<li><a href="${customerCareURL}" title="Nhật ký CS ĐBH">Nhật ký Chăm Sóc</a></li>
+                       	<li><a href="${transVasURL}" title="Danh sách Giao dịch">Nhật ký Bán Hàng</a></li>
+                       	<li><a href="${bestStaffURL}" title="Danh sách Top Nhân Viên">Danh sách top Nhân Viên</a></li> 
+                       	<li><a href="${bestPosURL}" title="Danh sách Top Điểm Bán Hàng">Danh sách top Điểm Bán</a></li>
+                       	 <li><a href="${rpt001URL}" title="Báo cáo danh sách khách hàng-tuyến">BC DS khách hàng-tuyến</a></li>    
+                       	 <li><a href="${rpt002URL}" title="Báo cáo tổng hợp danh sách khách hàng">BC tổng hợp DS khách hàng</a></li>
+                       	  <li><a href="${rpt003URL}" title="Báo cáo theo dõi nhận hàng tháng">BC theo dõi nhận hàng -tháng</a></li>
+              </ul>
+           </div>
+           </sec:authorize>
+
+           <!--<sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+           <div class="block-nav-left">
+               <p class="title-1">
+                   <a href="#" title="">
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-06" alt="" />
+                       <span>Báo cáo và Bảng biểu</span>
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                   </a>
+               </p>
+               <ul style="display:none">
+                       <li><a href="${transVasURL}" title="Danh sách giao dịch">Nhật ký bán hàng</a></li>
+               </ul>
+           </div>
+            </sec:authorize>
+  
+           --><div class="block-nav-left">
+               <p class="title-1">
+                   <a href="#" title="">
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-09" alt="" />
+                       <span>Tiện Ích và Hệ thống</span>
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                   </a>
+               </p>
+               
+               <ul style="display:none">
+	             	<li><a href="${provListURL}" title="Danh mục Tỉnh/Thành phố">Danh mục Tỉnh/Thành phố</a></li>
+	                   <li><a href="${distListURL}" title="Danh mục Quận/Huyện">Danh mục Quận/Huyện</a></li>
+	                   <li><a href="${wardListURL}" title="Danh mục Phường/Xã">Danh mục Phường/Xã</a></li>
+	                   <li><a href="${streetListURL}" title="Danh mục Tuyến đường">Danh mục Tuyến đường</a></li>
+	                   <!--<li><a href="${companiesListURL}" title="Danh mục Công ty">Danh mục Công ty</a></li>
+                 	--><!--<li><a href="${levelURL}" title="Danh sách Cấp Đại Lý">Danh sách Cấp Độ</a></li>     
+	                   <li><a href="${inventoryListURL}" title="Danh Sách Hàng Tồn">Danh Sách Hàng Tồn</a></li>
+	                   <li><a href="${agentListURL}" title="Danh sách đại lý">Danh sách Đại lý</a></li>
+	                   
+                    <li><a href="${stockTransExportURL}" title="Danh Sách Hàng Xuất">Danh Sách Hàng Xuất</a></li>
+                    <li><a href="${stockTransImportURL}" title="Danh Sách Hàng Nhận">Danh Sách Hàng Nhận</a></li>
+                    <li><a href="${posPrintURL}" title="In mã điểm bán hàng">In QRCode ĐBH</a></li>
+                    
+                      <li><a href="${performanceURL}" title="Đánh giá kết quả CSĐBH">Đánh giá kết quả CSĐBH</a></li>
+                      <li><a href="${perfSettingsURL}" title="Thông số đánh giá kết quả">Thông số đánh giá KQ CSĐBH</a></li>
+                      <li><a href="${performanceDonwLoadImagesURL}" title="Tải hình ảnh CSĐBH">Tải hình  CSĐBH</a></li>
+                      <li><a href="${roleURL}" title="Danh sách Vai trò">Danh sách Vai trò</a></li>
+                       
+                       <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_BRANCH_ADMIN,ROLE_SUPERVISOR,ROLE_MANAGER,ROLE_AGENT">    
+                          <li><a href="${createPlanURL}" title="Lập kế hoạch">Lập kế hoạch mới</a></li>
+                          <li><a href="${createTargetURL}" title="Giao chỉ tiêu">Giao chỉ tiêu bán hàng</a></li>
+                         </sec:authorize>
+                        
+                        <li><a href="${exportURL}" title="Xuất hàng">Xuất hàng</a></li>
+                        <li><a href="${registerURL}" title="Danh sách đăng ký">Danh sách đăng ký</a></li>
+                         
+                     <li><a href="${superviseURL}" title="Giám sát chăm sóc khách hàng">Giám sát CSĐBH</a></li>
+                     <li><a href="${bestCareURL}" title="Danh sách Nhân Viên Chăm Sóc tốt nhất">Danh sách top Nhân Viên CS</a></li>
+                   <li><a href="${bestSalesURL}" title="Danh sách Nhân Viên Bán Hàng tốt nhất">Danh sách top Nhân Viên BH</a></li>
+                   <li><a href="${bestStaffURL}" title="Danh sách Nhân Viên Giỏi Nhất">Danh sách top Nhân Viên</a></li> 
+               -->
+	             <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN">
+                                    
+                   <li><a href="${catListURL}" title="Danh sách loại hàng hóa">Danh sách Loại hàng hóa</a></li>
+                    <li><a href="${productListURL}" title="Danh sách hàng hóa">Danh sách Hàng hóa</a></li>   
+                 	
+	            </sec:authorize>
+	            
+	            <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_SUPERVISOR,ROLE_AGENT">
+                   <li><a href="${userListURL}" title="Danh sách người sử dụng">Danh sách Người sử dụng</a></li>
+                   <li><a href="${deviceListURL}" title="Danh mục thiết bị">Danh mục Thiết bị</a></li>
+                    <li><a href="${addDeviceURL}" title="Thêm thiết bị mới">Thêm thiết bị mới</a></li>
+                   
+                   
+                   <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN">
+	                   <li><a href="${gpsURL}" title="Cập nhật thông tin GPS">Thông tin giám sát lộ trình</a></li>
+	                   <li><a href="${sendSmsURL}" title="Cập nhật Version cho điện thoại">Cập nhật Version</a></li>
+                   </sec:authorize>
+                   
+                   <li><a href="${changePasswdURL}" title="Thay đổi mật khẩu">Thay đổi Mật khẩu</a></li>
+                   <li><a href="${logoutURL}" title="Thoát">Thoát</a></li>
+                 </sec:authorize>
+               </ul>
+           </div>
+    </div>
+
+</div>

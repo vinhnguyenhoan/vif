@@ -1,0 +1,186 @@
+﻿<div xmlns:spring="http://www.springframework.org/tags" 
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="FormInfoProduct" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+	
+	<jsp:directive.page import="java.util.Arrays"/>
+	<jsp:directive.page import="java.util.ArrayList"/>
+	<jsp:directive.page import="java.util.List"/>
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="imageFolder" value="/images" />
+	<spring:url var="posDetailsURL" value="/pos/details" />
+	<spring:url var="googlePlaceURL" value="https://www.google.com/maps/place" />
+	
+	<div id="inner-content">
+       	<span class="bor-left"><img src="${imageFolder}/dummy.gif" alt="" /></span>                    
+                    <div class="content-title">
+                        <h2><span>XEM TUYẾN ĐƯỜNG</span></h2>
+                    </div>
+                    <div id="content">
+                        	<table width="100%" border="0" cellspacing="5px" cellpadding="0" class="table-1">
+							<thead>
+								<tr>
+									<td width="15%"></td>
+									<td width="16%"></td>
+									<td width="2%"></td>
+									<td width="15%"></td>
+									<td width="16%"></td>
+									<td width="2%"></td>
+									<td width="15%"></td>
+									<td width="16%"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Tên Kế hoạch:</label></td>
+									<td>${kehoach.getTenKeHoach()}</td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Người Lập:</label></td>
+									<td>${kehoach.getTenNguoiLap()} </td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Ngày Lập:</label></td>
+									<td>${kehoach.geLocalDate(kehoach.getNgayGioLap())} </td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Người thực hiện:</label></td>
+									<td>${kehoach.getTenNhanVienSuDung()}</td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Ngày thực hiện:</label></td>
+									<td><fmt:formatDate value="${kehoach.getNgayBatDau()}" type="both" pattern="dd/MM/yyyy" /></td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Trạng thái:</label></td>
+
+									<td>
+										<c:choose>
+										<c:when test="${kehoach.getTrangThai()}">
+											<input type="checkbox"  disabled="disabled"  checked="checked"/>
+										</c:when>
+										<c:otherwise>
+											<input type="checkbox"  disabled="disabled"/>
+										</c:otherwise>
+										</c:choose>										
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Người cập nhật:</label></td>
+									<td>${kehoach.getTenNguoiCapNhat()}</td>
+									<td></td>
+									<td style="text-align:right" ><label class="field-label" for="">Ngày cập nhật:</label></td>
+									<td><fmt:formatDate value="${kehoach.getNgayCapNhatCuoiCung()}" type="both" pattern="dd/MM/yyyy" /></td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Ngày hoàn thành:</label></td>
+									<td><fmt:formatDate value="${kehoach.getNgayGioHoanThanh()}" type="both" pattern="dd/MM/yyyy" /></td>
+								</tr>
+								<tr>
+									<td style="text-align:right" valign="Top"><label class="field-label" for="">Danh sách chỉ tiêu:</label></td>
+									<td colspan="7">
+										<table width="70%" border="0" cellspacing="0" cellpadding="0" class="table-2">
+                                            <thead>
+                                                <tr>
+                                                    <td width="5%">STT</td>
+                                                    <td>Hàng hóa</td>
+                                                    <td width="30%">Sản lượng (bao)</td>
+                                                    <td width="25%">Điểm mới SP</td>
+													<td width="10%">Trọng tâm</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:if test="${not empty chiTieuChiTiets}">
+												<c:forEach items="${chiTieuChiTiets}" var="ct" varStatus="status">
+													<tr>
+														<td>${status.count}</td>
+														<td>${ct.goods.goodsName}</td>
+													    <td align="right"><fmt:formatNumber pattern="#.###" value="${ct.soLuongResult}"/>/
+													    <fmt:formatNumber pattern="#.###" value="${ct.soLuong}"/></td>
+														<td align="right"><fmt:formatNumber pattern="#.###" value="${ct.newPosResult}"/>/
+														<fmt:formatNumber pattern="#.###" value="${ct.diemMoi}"/> </td>
+														<td align="center">
+															<c:choose>
+															<c:when test="${ct.trongTam}">
+																<input type="checkbox"  disabled="disabled"  checked="checked"/>
+															</c:when>
+															<c:otherwise>
+																<input type="checkbox"  disabled="disabled"/>
+															</c:otherwise>
+															</c:choose>										
+														</td>
+													</tr>
+												</c:forEach>
+											</c:if>	 
+								 			</tbody>
+                                        </table>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align:right" valign="Top"><label class="field-label" for="">Chỉ tiêu điểm mới:</label></td>
+									<td colspan="7" align="left"><fmt:formatNumber pattern="#.###" value="${kehoach.diemMoiResult}"/>/
+														<fmt:formatNumber pattern="#.###" value="${kehoach.chiTieuBanHang.diemMoi}"/></td>
+								</tr>
+								<tr>
+									<td style="text-align:right" valign="Top"><label class="field-label" for="">Danh sách tuyến đường:</label></td>
+									<td colspan="7" align="left"><fmt:formatNumber pattern="#.###" value="${kehoach.completedPOS}"/>/
+														<fmt:formatNumber pattern="#.###" value="${kehoach.totalPOS}"/></td>
+								</tr>
+                                <tr>
+                                    <td colspan="8">
+                                    	<table width="99%" border="0" cellspacing="0" cellpadding="0" class="table-2">
+                                            <thead>
+                                                <tr>
+                                                    <td width="5%">STT</td>
+                                                    <td width="5%">Mã ĐBH</td>
+                                                    <td width="25%">Tên ĐBH</td>
+                                                    <td width="30%">Địa chỉ</td>
+													<td width="15%">Chủ cửa hàng</td>
+                                                    <td width="5%">Thứ tự thực hiện</td>
+                                                    <td width="5%">Hoàn thành</td>
+                                                    <td width="10%">Ngày CSĐBH</td>                                                  
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:if test="${not empty kehoachchitiets}">
+												<c:forEach items="${kehoachchitiets}" var="kehoachchitiet" varStatus="status">
+													<tr>
+														<td>${(page-1)*size+status.count}</td>
+														<td><a href="${posDetailsURL}/${kehoachchitiet.getDiemBanHang().getId()}" title="Xem điểm bán hàng">${kehoachchitiet.diemBanHang.maCuaHang}</a></td>
+													    <td><a href="${posDetailsURL}/${kehoachchitiet.getDiemBanHang().getId()}" title="Xem điểm bán hàng">${kehoachchitiet.getTenCuaHang()}</a></td>
+														<td>
+															<a target="_blank" href="${googlePlaceURL}/${kehoachchitiet.diemBanHang.viDo},${kehoachchitiet.diemBanHang.kinhDo}">
+																${kehoachchitiet.diemBanHang.diaChi}
+															</a> 
+														</td>
+														<td>${kehoachchitiet.getTenChuCuaHang()}</td>
+														<td align="center">${kehoachchitiet.getThuTuThucHien()}</td>
+														<td align="center">
+															<c:choose>
+															<c:when test="${kehoachchitiet.daHoanThanh}">
+																<input type="checkbox"  disabled="disabled"  checked="checked"/>
+															</c:when>
+															<c:otherwise>
+																<input type="checkbox"  disabled="disabled"/>
+															</c:otherwise>
+															</c:choose>										
+														</td>
+														<td><fmt:formatDate value="${kehoachchitiet.getNgayHoanThanh()}" type="both" pattern="dd/MM/yyyy" /></td>
+													</tr>
+												</c:forEach>
+											</c:if>	 
+								 			</tbody>
+                                        </table>
+									</td>
+                                </tr>
+                                 <tr>
+									<td colspan="5"></td>
+                                </tr>
+                                <!--
+                                <tr>
+                                    <td colspan="5"><a href="${pageContext.request.contextPath}/plan/create" class="btn-1" title="Danh sách kế hoạch"><span><span>Lập kế hoạch</span></span></a></td>
+                                </tr>
+                                -->
+							</tbody>	
+                         </table>
+                    </div>
+	</div>                    
+</div>                    

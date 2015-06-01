@@ -1,0 +1,519 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:form="http://www.springframework.org/tags/form" class="Provinces"
+	escapeXML="true">
+
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="posDetailURL" value="/pos/details" />
+	<spring:url var="superviseDetailURL" value="/supervise/detail" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+
+	<![CDATA[
+<script type="text/javascript" src="${scriptsFolder}/commonfilter.js?v=1"></script>
+<script type="text/javascript">
+	function viewResults() {
+		$('#frmDiaryList').submit();
+	}
+	$(document).ready(function() { 
+		$("select").select2(); 
+	});
+</script>
+]]>
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>THÔNG TIN GIÁM SÁT CSĐBH</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="frmDiaryList" id="frmDiaryList">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td><form:select path="filterBy" style="width:140px"
+								onchange="toggleSelection($('#province'),$('#district'),$('#ward'),$('#pointOfSale'),$('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#text'));">
+								<form:option value="0">Lọc theo ĐBH</form:option>
+								<form:option value="1">Lọc theo NV</form:option>
+							</form:select></td>
+						<td><c:choose>
+								<c:when test="${frmDiaryList.filterBy==0}">
+									<div id="filterByPos">
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="province" path="province"
+												style="width:140px"
+												onchange="changeProvince($('#province'),$('#district'),$('#ward'),$('#pointOfSale'));">
+												<form:options items="${provinceList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="district" path="district"
+												style="width:140px"
+												onchange="changeDistrict($('#district'),$('#ward'),$('#pointOfSale'));">
+												<form:options items="${districtList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="ward" path="ward" style="width:140px"
+												onchange="changeWard($('#ward'),$('#pointOfSale'));">
+												<form:options items="${wardList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="pointOfSale" path="pointOfSale"
+												style="width:140px">
+												<form:options items="${posList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+									</div>
+									<div id="filterByEmp" hidden="true">
+										<c:choose>
+											<c:when test="${frmDiaryList.userRole==0}">
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:when>
+											<c:when
+												test="${frmDiaryList.userRole==3 or frmDiaryList.userRole==4}">
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															disabled="true"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:when>
+											<c:when test="${frmDiaryList.userRole==5}">
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															disabled="true"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:when>
+											<c:otherwise>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															disabled="true"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															disabled="true"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:otherwise>
+										</c:choose>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select path="districtOfEmployer" hidden="true"
+												style="width:140px"
+												onchange="changeEmpDistrict($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'));">
+												<form:options items="${empDistrictList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="employer" path="employer"
+												style="width:140px">
+												<form:options items="${employerList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div id="filterByPos" hidden="true">
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="province" path="province"
+												style="width:140px"
+												onchange="changeProvince($('#province'),$('#district'),$('#ward'),$('#pointOfSale'));">
+												<form:options items="${provinceList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="district" path="district"
+												style="width:140px"
+												onchange="changeDistrict($('#district'),$('#ward'),$('#pointOfSale'));">
+												<form:options items="${districtList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="ward" path="ward" style="width:140px"
+												onchange="changeWard($('#ward'),$('#pointOfSale'));">
+												<form:options items="${wardList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="pointOfSale" path="pointOfSale"
+												style="width:140px">
+												<form:options items="${posList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+									</div>
+									<div id="filterByEmp">
+										<c:choose>
+											<c:when test="${frmDiaryList.userRole==0}">
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:when>
+											<c:when
+												test="${frmDiaryList.userRole==3 or frmDiaryList.userRole==4}">
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															disabled="true"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:when>
+											<c:when test="${frmDiaryList.userRole==5}">
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															disabled="true"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:when>
+											<c:otherwise>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy1" path="empType" value="1"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="branch" path="branch" style="width:120px"
+															disabled="true"
+															onchange="changeBranch($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy1'));">
+															<form:options items="${branchList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+												<div
+													style="width: 150px; padding-left: 10px; display: inline;">
+													<div style="display: inline;">
+														<form:radiobutton id="dummy2" path="empType" value="2"
+															disabled="true" onclick="changeEmployeeType(this)"></form:radiobutton>
+													</div>
+													<div style="display: inline;">
+														<form:select id="agent" path="agent" style="width:120px;"
+															disabled="true"
+															onchange="changeAgent($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'),$('#dummy2'));">
+															<form:options items="${agentList}" itemValue="id"
+																itemLabel="name" />
+														</form:select>
+													</div>
+												</div>
+											</c:otherwise>
+										</c:choose>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select path="districtOfEmployer" hidden="true"
+												style="width:140px"
+												onchange="changeEmpDistrict($('#branch'),$('#agent'),$('#empDistrict'),$('#employer'));">
+												<form:options items="${empDistrictList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+										<div
+											style="width: 150px; padding-left: 10px; display: inline;">
+											<form:select id="employer" path="employer"
+												style="width:140px">
+												<form:options items="${employerList}" itemValue="id"
+													itemLabel="name" />
+											</form:select>
+										</div>
+									</div>
+								</c:otherwise>
+							</c:choose></td>
+						<td><a href="javascript:;" onclick="viewResults()"
+							class="btn-1" title="Hiệu quả	CSĐBH"><span><span>&#160;&#160;Xem
+										kết quả&#160;&#160;</span></span></a></td>
+					</tr>
+					<tr>
+						<td><spring:message code="time_interval" htmlEscape="true" /></td>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="startDate" cssClass="dateField tcal" />
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="endDate" cssClass="dateField tcal" />
+							</div>
+
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="text_search" htmlEscape="true" />
+								<form:input id="text" path="searchText" style="width: 140px" />
+							</div>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="3" style="text-align: left;"><form:errors
+								path="filter_message"></form:errors></td>
+					</tr>
+					<tr>
+						<td colspan="3"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="diaryTopPagination"
+								formSubmit="frmDiaryList" submitMethod="POST" /></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table width="99%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="4%">STT</td>
+										<td width="8%">Mã ĐBH</td>
+										<td width="20%">Tên ĐBH</td>
+										<td width="22%">Địa chỉ ĐBH</td>
+										<td width="12%">Nhân viên giám sát</td>
+										<td width="7%">Ngày giờ bắt đầu</td>
+										<td width="7%">Ngày giờ kết thúc</td>
+										<td width="6%">Thời gian</td>
+										<td width="15%">Hành động</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${not empty posDiary}">
+											<c:forEach items="${posDiary}" var="item" varStatus="status">
+												<tr>
+													<td align="center">${(page-1)*size+status.count}</td>
+													<td><a href="${superviseDetailURL}/${item.id}">${item.diemBanHang.getMaCuaHang()}</a></td>
+													<td><a href="${superviseDetailURL}/${item.id}">${item.diemBanHang.getTenCuaHang()}</a></td>
+													<td>${item.diemBanHang.getDiaChi()}</td>
+													<td>${item.nhanVienGiamSat.getTen()}</td>
+													<td><fmt:formatDate
+															value="${item.ngayGioGiamSat.getTime()}" type="both"
+															dateStyle="medium" timeStyle="medium" var="formatedDate"
+															pattern="dd/MM/yyyy HH:mm:ss" /> ${formatedDate}</td>
+													<td><fmt:formatDate
+															value="${item.ngayGioKetThuc.getTime()}" type="both"
+															dateStyle="medium" timeStyle="medium" var="formatedDate"
+															pattern="dd/MM/yyyy HH:mm:ss" /> ${formatedDate}</td>
+													<td>${item.timeDiff}</td>
+													<td><a href="${superviseDetailURL}/${item.id}"
+														class="redTxt" title="Xem chi chi tiết kết quả giám sát">Xem</a>&#160;|&#160;
+														<a href="${posDetailURL}/${item.diemBanHang.getId()}"
+														class="redTxt" title="Xem chi tiết ĐBH">Xem ĐBH</a></td>
+												</tr>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<td colspan="9" align="center">Không có dữ liệu.</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="diaryBottomPagination"
+								formSubmit="frmDiaryList" submitMethod="POST" /></td>
+					</tr>
+				</table>
+			</form:form>
+		</div>
+	</div>
+</div>

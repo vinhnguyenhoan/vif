@@ -1,0 +1,127 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="UserDetailForm" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8"
+		pageEncoding="UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<![CDATA[
+		<script type="text/javascript">
+		</script>
+	]]>
+	<form:form action="${requestScope.deviceFormLink}" method="POST"
+		commandName="device">
+		<form:hidden path="id" />
+		<form:hidden path="phienBanPhanMem" />
+		<div class="formContent">
+			<table width="100%" cellpadding="0" cellspacing="5"
+				class="TableThongTinTram">
+				<col width="20%" />
+				<col width="80%" />
+
+				<tr>
+					<td></td>
+					<td>
+						<c:if test="${not empty success}">
+							<c:choose>
+								<c:when test="${success}">
+									<div class="infoMessage" id="messageArea">
+										<p>Thông tin được cập nhật thành công.</p>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="errorMessage" id="messageArea">
+										<p>Xảy ra lỗi khi lưu dữ liệu</p>
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Số IMEI (<label class="errorMessage">*</label>):
+					</td>
+					<td>
+					<c:choose>
+					<c:when test="${device.id==0}">
+					<form:input path="soImei" cssClass="textInput mediumWidth"/>
+					</c:when>
+					<c:otherwise>
+					<form:input path="soImei" cssClass="textInput mediumWidth" readonly="true"/>
+					</c:otherwise>
+					</c:choose>
+					
+						<form:errors path="soImei" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Subscriber ID (<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<c:choose>
+							<c:when test="${device.id==0}">
+							<form:input path="subcriberId" cssClass="textInput mediumWidth"/> 
+							</c:when>
+							<c:otherwise>
+								<form:input path="subcriberId" cssClass="textInput mediumWidth" readonly="true"/> 
+							</c:otherwise>
+						</c:choose>
+						<form:errors
+						path="subcriberId" cssClass="errorMessage" />(IMSI)</td>
+				</tr>
+				<tr>
+					<td align="right">Số điện thoại (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:input path="soDienThoai"
+							cssClass="textInput mediumWidth"/> <form:errors
+							path="soDienThoai" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Tên thiết bị:</td>
+					<td><form:input path="tenThietBi"
+							cssClass="textInput largerWidth" /></td>
+				</tr>
+				<tr>
+					<td align="right">Nhân viên sử dụng (<label
+						class="errorMessage">*</label>):
+					</td>
+					<td><form:select path="nhanVienSuDung.id" cssClass="selectBox select2_combo" style="width:250px">
+							<option value="0">--- Chọn nhân viên ---</option>
+							<c:forEach items="${userList}" var="userItem">
+								<c:choose>
+									<c:when
+										test="${device.getNhanVienSuDung().getId() == userItem[0]}">
+										<option value="${userItem[0]}" selected="selected">${userItem[1]}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${userItem[0]}">${userItem[1]}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</form:select> <form:errors path="nhanVienSuDung.id" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Kích hoạt:</td>
+					<td><form:checkbox path="daKichHoat" /></td>
+				</tr>
+				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr>
+					<td><label> <!-- Empty -->
+					</label></td>
+					<td><a href="javascript:;"
+						onclick="javascript:document.forms[0].submit();" class="btn-1"
+						title="Lưu thông tin thiết bị này"><span><span>Lưu</span></span></a>
+						<a href="javascript:;"
+						onclick="javascript:document.forms[0].reset();" class="btn-1"
+						title="Làm lại"><span><span>Reset</span></span></a></td>
+				</tr>
+			</table>
+		</div>
+	</form:form>
+</div>

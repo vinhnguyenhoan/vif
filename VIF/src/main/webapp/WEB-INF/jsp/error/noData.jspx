@@ -1,0 +1,13 @@
+
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:form="http://www.springframework.org/tags/form" class="Provinces"
+	escapeXML="true">
+	
+	<spring:url var="imagesFolder" value="/images" />
+<div style="text-align: center;font-size: 14px; font-weight: bold;width:80%"> <img src="${imagesFolder }/icon_1.png"/> Không có dữ liệu</div>
+
+</div>

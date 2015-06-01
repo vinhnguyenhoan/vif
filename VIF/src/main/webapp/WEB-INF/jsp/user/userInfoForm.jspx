@@ -1,0 +1,141 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="UserDetailForm" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8"
+		pageEncoding="UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	
+	<![CDATA[
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajax.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/listAgent.js"></script>
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js"></script>
+	<script type="text/javascript" src="${scriptsFolder}/user.js"></script>
+	<script type="text/javascript" src="${jsFolder}/user.js"></script>
+	<link href="${pageContext.request.contextPath}/css/thickbox.css" rel="stylesheet" type="text/css" />
+	<script src="${scriptsFolder}/thickbox-compressed.js"></script>
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";
+		function changeEmployeeType (employeeType) {
+		var type = employeeType.value ;
+		selectPhanLoai(type);
+			if (employeeType.value == 1) {
+				$("select#chiNhanh").attr('disabled', false);
+				$("select#daiLy").attr('disabled', true);
+				$("select#diemBanHang").attr('disabled', true);
+				//document.getElementById('diemBanHang').disabled = true;
+				//document.getElementById('diemBanHang').value = "";	
+			}
+			else if (employeeType.value == 2) {
+				$("select#chiNhanh").attr('disabled', true);
+				$("select#daiLy").attr('disabled', false);
+				$("select#diemBanHang").attr('disabled', true);
+				
+				//document.getElementById('diemBanHang').disabled = false;
+				//$("select#daiLy").attr('disabled', true);
+				//$("select#daiLy").val($("select#daiLy option:first").val());
+				//$("select#chiNhanh").attr('disabled', true);
+				//$("select#chiNhanh").val($("select#chiNhanh option:first").val());
+			}else if (employeeType.value == 3) {
+				$("select#chiNhanh").attr('disabled', true);
+				$("select#daiLy").attr('disabled', true);
+				$("select#diemBanHang").attr('disabled', false);
+				
+				//document.getElementById('diemBanHang').disabled = false;
+				//$("select#daiLy").attr('disabled', true);
+				//$("select#daiLy").val($("select#daiLy option:first").val());
+				//$("select#chiNhanh").attr('disabled', true);
+				//$("select#chiNhanh").val($("select#chiNhanh option:first").val());
+			}else if (employeeType.value == 4) {
+				$("select#chiNhanh").attr('disabled', true);
+				$("select#daiLy").attr('disabled', true);
+				$("select#diemBanHang").attr('disabled', true);
+				
+				//document.getElementById('diemBanHang').disabled = false;
+				//$("select#daiLy").attr('disabled', true);
+				//$("select#daiLy").val($("select#daiLy option:first").val());
+				//$("select#chiNhanh").attr('disabled', true);
+				//$("select#chiNhanh").val($("select#chiNhanh option:first").val());
+			}
+
+}
+	</script>
+]]>
+
+
+	<form:form action="${requestScope.userFormLink}" method="POST"
+		commandName="user">
+		<form:hidden path="id" />
+
+		<div class="formContent">
+			<table width="100%" cellpadding="0" cellspacing="5"
+				class="TableThongTinTram">
+				<col width="20%" />
+				<col width="80%" />
+
+				<tr>
+					<td></td>
+					<td><c:if test="${not empty success}">
+							<c:choose>
+								<c:when test="${success}">
+									<div class="infoMessage" id="messageArea">
+										<p>Thông tin được cập nhật thành công.</p>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="errorMessage" id="messageArea">
+										<p>Xảy ra lỗi khi lưu dữ liệu</p>
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</c:if></td>
+				</tr>
+				
+				
+				
+				<tr>
+					<td align="right">Họ tên:
+					</td>
+					<td>${user.ten}</td>
+				</tr>
+				<tr>
+					<td align="right">Mã nhân viên:
+					</td>
+					<td>${user.maNhanVien}</td>
+				</tr>
+				
+				<tr>
+					<td align="right">Ngày sinh:</td>
+					<td>${user.birthday}</td>
+				</tr>
+				<tr>
+					<td align="right">Email:
+					</td>
+					<td>${user.email}</td>
+				</tr>
+				
+				<tr>
+					<td align="right">Điện thoại di động:</td>
+					<td>${user.soDienThoai}</td>
+				</tr>
+				<tr>
+					<td align="right">Vai trò:
+					</td>
+					<td>${user.vaiTro}</td>
+				</tr>
+						
+			</table>
+		</div>
+	</form:form>
+	
+	
+</div>

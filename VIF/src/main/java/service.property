@@ -1,0 +1,2 @@
+#for testing, config main file in '/src/main/resources' folder
+url=http://localhost/salesmgt/api/sales/updateStatusVAS/

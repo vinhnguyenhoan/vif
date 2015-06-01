@@ -1,0 +1,468 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:form="http://www.springframework.org/tags/form" class="Provinces"
+	escapeXML="true">
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="posDetailURL" value="/pos/details" />
+	<spring:url var="ccURL" value="/pos/customercare" />
+	<spring:url var="ajaxURL" value="/ajax" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+
+	<![CDATA[
+<script type="text/javascript" src="${scriptsFolder}/transvas.js"></script>
+<script type="text/javascript">
+	var contextPath = "${pageContext.request.contextPath}";
+
+	function viewResults() {
+		$('#transListForm').submit();
+	}
+	
+	function viewResultsByMonth(){
+	
+		var fromDate = document.getElementById("frm_startDate").value
+	    var toDate= document.getElementById("frm_endDate").value
+		 var dateRegEx = null;
+            dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+			var sdayobj =null ;
+            if (dateRegEx.test(fromDate)){
+            	
+				var sdayfield=fromDate.split("/")[0];
+				var smonthfield=fromDate.split("/")[1];
+				var syearfield=fromDate.split("/")[2];
+				sdayobj = new Date(syearfield, smonthfield-1, sdayfield);
+				
+				// dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+	            var edayobj =null ;
+	            if(dateRegEx.test(toDate)) {
+	            	var edayfield=toDate.split("/")[0];
+					var emonthfield=toDate.split("/")[1];
+					var eyearfield=toDate.split("/")[2];
+					edayobj = new Date(eyearfield, emonthfield-1, edayfield);
+					
+					 var millisecondsPerDay = 86400 * 1000;
+           			 var compDate = (edayobj - sdayobj)/millisecondsPerDay;
+           
+		            if(compDate >= 0){
+		            	if(compDate<=31){
+							$('#transListForm').submit();	
+		            	} else {
+		            		alert('Sồ ngày làm báo cáo không ược quá 31 ngày. Bạn hãy nhập lại.' );
+		            	}
+                
+            }else {
+                alert('Ngày kết thúc(đến ngày) phải lớn hơn hoặc bằng ngày bắt đấu(từ ngày). Bạn hãy nhập lại.' );
+            }
+					
+					
+	            }else{
+	            	alert("Bạn chưa nhập dữ liệu vào ô 'Đến Ngày'. ");
+	            }
+				
+            }else{
+                alert("Bạn chưa nhập dữ liệu vào ô 'Từ Ngày'. ");
+            }
+	
+	}
+	
+	function exportDetailReport(type){
+	
+		var fromDate = document.getElementById("frm_startDate").value
+	    var toDate= document.getElementById("frm_endDate").value
+		 var dateRegEx = null;
+            dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+			var sdayobj =null ;
+            if (dateRegEx.test(fromDate)){
+            	
+				var sdayfield=fromDate.split("/")[0];
+				var smonthfield=fromDate.split("/")[1];
+				var syearfield=fromDate.split("/")[2];
+				sdayobj = new Date(syearfield, smonthfield-1, sdayfield);
+				
+				// dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+	            var edayobj =null ;
+	            if(dateRegEx.test(toDate)) {
+	            	var edayfield=toDate.split("/")[0];
+					var emonthfield=toDate.split("/")[1];
+					var eyearfield=toDate.split("/")[2];
+					edayobj = new Date(eyearfield, emonthfield-1, edayfield);
+					
+					 var millisecondsPerDay = 86400 * 1000;
+           			 var compDate = (edayobj - sdayobj)/millisecondsPerDay;
+           
+		            if(compDate >= 0){
+		            	if(compDate<=31){
+		            		var action = document.getElementById('transListForm').action;
+							document.getElementById('transListForm').action = contextPath +"/report/commissionDetailsList?type=" + type;
+							document.getElementById('transListForm').submit();
+							document.getElementById('transListForm').action = action;
+		            	} else {
+		            		alert('Sồ ngày làm báo cáo không ược quá 31 ngày. Bạn hãy nhập lại.' );
+		            	}
+                
+            }else {
+                alert('Ngày kết thúc(đến ngày) báo cáo phải lớn hơn hoặc bằng ngày bắt đấu(từ ngày). Bạn hãy nhập lại.' );
+            }
+					
+					
+	            }else{
+	            	alert("Bạn chưa nhập dữ liệu vào ô 'Đến Ngày'. ");
+	            }
+				
+            }else{
+                alert("Bạn chưa nhập dữ liệu vào ô 'Từ Ngày'. ");
+            }
+	
+	}
+	
+	function exportEZReport(type){
+	
+		var fromDate = document.getElementById("frm_startDate").value
+	    var toDate= document.getElementById("frm_endDate").value
+		 var dateRegEx = null;
+            dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+			var sdayobj =null ;
+            if (dateRegEx.test(fromDate)){
+            	
+				var sdayfield=fromDate.split("/")[0];
+				var smonthfield=fromDate.split("/")[1];
+				var syearfield=fromDate.split("/")[2];
+				sdayobj = new Date(syearfield, smonthfield-1, sdayfield);
+				
+				// dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+	            var edayobj =null ;
+	            if(dateRegEx.test(toDate)) {
+	            	var edayfield=toDate.split("/")[0];
+					var emonthfield=toDate.split("/")[1];
+					var eyearfield=toDate.split("/")[2];
+					edayobj = new Date(eyearfield, emonthfield-1, edayfield);
+					
+					 var millisecondsPerDay = 86400 * 1000;
+           			 var compDate = (edayobj - sdayobj)/millisecondsPerDay;
+           
+		            if(compDate >= 0){
+		            	if(compDate<=31){
+		            		var action = document.getElementById('transListForm').action;
+							document.getElementById('transListForm').action = contextPath +"/report/commissionEZList?type=" + type;
+							document.getElementById('transListForm').submit();
+							document.getElementById('transListForm').action = action;
+		            	} else {
+		            		alert('Sồ ngày làm báo cáo không ược quá 31 ngày. Bạn hãy nhập lại.' );
+		            	}
+                
+            }else {
+                alert('Ngày kết thúc(đến ngày) báo cáo phải lớn hơn hoặc bằng ngày bắt đấu(từ ngày). Bạn hãy nhập lại.' );
+            }
+					
+					
+	            }else{
+	            	alert("Bạn chưa nhập dữ liệu vào ô 'Đến Ngày'. ");
+	            }
+				
+            }else{
+                alert("Bạn chưa nhập dữ liệu vào ô 'Từ Ngày'. ");
+            }
+	
+	}
+	
+	function exportServiceReport(type){
+	
+		var fromDate = document.getElementById("frm_startDate").value
+	    var toDate= document.getElementById("frm_endDate").value
+		 var dateRegEx = null;
+            dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+			var sdayobj =null ;
+            if (dateRegEx.test(fromDate)){
+            	
+				var sdayfield=fromDate.split("/")[0];
+				var smonthfield=fromDate.split("/")[1];
+				var syearfield=fromDate.split("/")[2];
+				sdayobj = new Date(syearfield, smonthfield-1, sdayfield);
+				
+				// dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+	            var edayobj =null ;
+	            if(dateRegEx.test(toDate)) {
+	            	var edayfield=toDate.split("/")[0];
+					var emonthfield=toDate.split("/")[1];
+					var eyearfield=toDate.split("/")[2];
+					edayobj = new Date(eyearfield, emonthfield-1, edayfield);
+					
+					 var millisecondsPerDay = 86400 * 1000;
+           			 var compDate = (edayobj - sdayobj)/millisecondsPerDay;
+           
+		            if(compDate >= 0){
+		            	if(compDate<=31){
+		            		var action = document.getElementById('transListForm').action;
+							document.getElementById('transListForm').action = contextPath +"/report/commissionServiceList?type=" + type;
+							document.getElementById('transListForm').submit();
+							document.getElementById('transListForm').action = action;
+		            	} else {
+		            		alert('Sồ ngày làm báo cáo không ược quá 31 ngày. Bạn hãy nhập lại.' );
+		            	}
+                
+            }else {
+                alert('Ngày kết thúc(đến ngày) báo cáo phải lớn hơn hoặc bằng ngày bắt đấu(từ ngày). Bạn hãy nhập lại.' );
+            }
+					
+					
+	            }else{
+	            	alert("Bạn chưa nhập dữ liệu vào ô 'Đến Ngày'. ");
+	            }
+				
+            }else{
+                alert("Bạn chưa nhập dữ liệu vào ô 'Từ Ngày'. ");
+            }
+	
+	}
+	
+	$(document).ready(function() { 
+		$("select").select2(); 
+	});
+	
+	function showNote(note) {
+		alert(note);
+	}
+</script>
+]]>
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>Danh Sách Hoa Hồng VAS</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="transListForm" id="transListForm">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td>
+						<div style="padding-left: 10px; display: inline;">
+							<form:select id="branch" path="branch" style="width:170px"
+								onchange="changeBranch($('#branch'),$('#agent'),$('#pointOfSale'),$('#employer'));">
+								<form:options items="${branchList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;">
+							<form:select id="agent" path="agent" style="width:170px"
+								onchange="changeAgent($('#agent'),$('#pointOfSale'),$('#employer'));">
+								<form:options items="${agentList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;">
+							<form:select id="pointOfSale" path="pointOfSale" style="width:170px"
+								onchange="changePOS($('#pointOfSale'),$('#employer'));">
+								<form:options items="${posList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;">
+						<form:select id="employer" path="employer" style="width:170px">
+								<form:options items="${employerList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>	
+						</div>
+						
+						&#160;&#160;&#160;
+						<a href="javascript:;" onclick="viewResultsByMonth()"
+							class="btn-1" title="Xem Kết Quả"><span><span>&#160;&#160;Xem Kết Quả&#160;&#160;</span></span></a>
+						</td>
+					</tr>
+					
+					<tr>
+						
+						<td>
+						<div style="padding-left: 10px; display: inline;">
+							<form:select id="serviceId" path="serviceId" style="width:170px">
+								<form:options items="${serviceList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;">
+							<form:select id="status" path="status" style="width:170px">
+								<form:options items="${statusList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;">
+							<form:select id="times" path="times" style="width:170px">
+								<form:options items="${typeList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;"> Giao Dịch/ Tên-Mã NV/ Số EZ :
+								<form:input path="searchText" cssStyle="width: 120px" />
+						</div>
+						
+						</td>
+					</tr>
+					
+					<tr>	
+						<td>
+						<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="startDate" cssClass="dateField tcal" />
+						</div>
+						
+						<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="endDate" cssClass="dateField tcal" />
+						</div>
+						</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td colspan="4" style="text-align: left;">
+							<form:errors path="filter_message" cssClass="errorMessage" /></td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="diaryTopPagination"
+								formSubmit="transListForm" submitMethod="POST" /></td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<table width="99%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="4%">STT</td>
+										<td width="5%">Mã Giao Dịch </td>
+										<td width="8%">Số EZ</td>
+										<td width="10%">Nhân Viên BH</td>
+										<td width="10%">Tổng ĐL</td>
+										<td width="8%">Số Khách Hàng</td>
+										<td width="10%">Sản Phẩm/ Dịch Vụ - Giá Tiền</td>
+										<td width="8%">Ngày Giao Dịch</td>
+										<td width="5%">Chu Kỳ</td>
+										<td width="6%">HH VAS</td>
+										
+										<c:forEach var="i" begin="1" end="${level}" varStatus="statusHH">
+											<td width="5%">HH C${i}</td>
+										</c:forEach>
+										
+										<td width="10%">Trạng Thái</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${not empty transList}">
+											<c:forEach items="${transList}" var="item" varStatus="status">
+												<tr>
+													<td align="center">${(page-1)*size+status.count}</td>
+													<td align="center">${item.transId}</td>
+													<td align="center">${item.EZnumber}</td>
+													<td align="center">${item.employerName}</td>
+													<td align="center">${item.generalAgentName}</td>
+													<td align="center">${item.userPhoneNumber}</td>
+													<td align="center">${item.seriveType} - <fmt:formatNumber type="number" 
+            											pattern="###,###" value="${item.goodsPrice}" /></td>
+													
+													<td align="center"><fmt:formatDate
+														value="${item.transDate}" type="both"
+														dateStyle="medium" timeStyle="medium"
+														pattern="dd/MM/yyyy hh:mm:ss" /></td>
+													
+													<td align="center">${item.times}</td>
+													<td align="center"><fmt:formatNumber type="number" 
+            											pattern="###,###" value="${item.commissionAgent}" /></td>
+            										
+            										
+            										<td align="center"><fmt:formatNumber type="number" 
+            												pattern="###,###" value="${item.comValues1}"/></td> 
+            												
+													
+            										<td align="center"><fmt:formatNumber type="number" 
+            												pattern="###,###" value="${item.comValues2}"/></td> 
+            												
+            										
+            										<td align="center"><fmt:formatNumber type="number" 
+            												pattern="###,###" value="${item.comValues3}"/></td>
+            												
+            										
+            										<td align="center"><fmt:formatNumber type="number" 
+            												pattern="###,###" value="${item.comValues4}"/></td>  
+													
+																										
+													<c:choose>
+														<c:when test="${item.isCheck==1 and item.status==3}">
+															<td align="center">Thành Công</td>
+														</c:when>
+														<c:otherwise>
+															<td align="center">
+															  
+																<a href="javascript:" onclick="showNote('${item.note}');"
+																class="redTxt" title="Xem Lỗi">Chờ</a>
+															
+															</td>
+														</c:otherwise>
+													</c:choose>
+												</tr>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<spring:url value="15" var="col"></spring:url>	
+												<td colspan="${col}" align="center">Không có dữ liệu.</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="diaryBottomPagination"
+								formSubmit="transListForm" submitMethod="POST" /></td>
+					</tr>
+					
+					
+					<tr>
+						<td colspan="4">
+							<a href="javascript:exportServiceReport('xls');" class="btn-1" title="Export XLS">
+								<span><span>Báo Cáo Theo Dịch Vụ</span></span>
+							</a>
+							
+							<a href="javascript:exportEZReport('xls');" class="btn-1" title="Export XLS">
+								<span><span>Báo Cáo Theo Cấp</span></span>
+							</a>
+						
+							<a href="javascript:exportDetailReport('xls');" class="btn-1" title="Export XLS">
+								<span><span>Báo Cáo Chi Tiết</span></span>
+							</a>
+						</td>
+					</tr>
+
+				</table>
+			</form:form>
+		</div>
+	</div>
+</div>

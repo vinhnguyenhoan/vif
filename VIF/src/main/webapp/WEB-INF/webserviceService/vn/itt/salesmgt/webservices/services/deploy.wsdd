@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from webserviceService WSDL service -->
+
+  <service name="webservice" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://services.webservices.salesmgt.itt.vn"/>
+      <parameter name="wsdlServiceElement" value="webserviceService"/>
+      <parameter name="schemaQualified" value="http://services.webservices.salesmgt.itt.vn"/>
+      <parameter name="wsdlServicePort" value="webservice"/>
+      <parameter name="className" value="vn.itt.salesmgt.webservices.services.webservice"/>
+      <parameter name="wsdlPortType" value="webservice"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://services.webservices.salesmgt.itt.vn" xmlns:retNS="http://services.webservices.salesmgt.itt.vn" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="sendResponse" qname="operNS:sendResponse" returnQName="retNS:sendResponseReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://services.webservices.salesmgt.itt.vn" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:transId" type="tns:string"/>
+        <parameter xmlns:pns="http://services.webservices.salesmgt.itt.vn" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:status" type="tns:string"/>
+        <parameter xmlns:pns="http://services.webservices.salesmgt.itt.vn" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:response" type="tns:string"/>
+        <parameter xmlns:pns="http://services.webservices.salesmgt.itt.vn" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:time" type="tns:string"/>
+        <parameter xmlns:pns="http://services.webservices.salesmgt.itt.vn" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:commission" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="sendResponse"/>
+
+  </service>
+</deployment>

@@ -1,0 +1,324 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:form="http://www.springframework.org/tags/form" class="Provinces"
+	escapeXML="true">
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="posDetailURL" value="/pos/sales" />
+	<spring:url var="agentDetailURL" value="/agent/edit" />
+	<spring:url var="userDetailURL" value="/user/detail" />
+	<spring:url var="ccURL" value="/pos/customercare" />
+	<spring:url var="stockExporterURL" value="/stock/exporter/"/>
+	<spring:url var="ajaxURL" value="/ajax" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	
+
+	<![CDATA[
+<script type="text/javascript" src="${scriptsFolder}/transvas.js"></script>
+<script type="text/javascript">
+	var contextPath = "${pageContext.request.contextPath}";
+
+	function exportReport(type){
+		if ($('#frm_startDate').val() == ""
+			|| $('#frm_endDate').val() == "") {
+			alert("Chọn ngày xuất báo cáo");
+			return;
+		}
+		var action = document.getElementById('transListForm').action;
+		document.getElementById('transListForm').action = contextPath +"/report/transvaslist?type=" + type;
+		document.getElementById('transListForm').submit();
+		document.getElementById('transListForm').action = action;
+	}
+
+	function viewResults() {
+		$('#transListForm').submit();
+	}
+	
+	function exportGeneralReport(type){
+	
+		var fromDate = document.getElementById("frm_startDate").value
+	    var toDate= document.getElementById("frm_endDate").value
+		 var dateRegEx = null;
+            dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+			var sdayobj =null ;
+            if (dateRegEx.test(fromDate)){
+            	
+				var sdayfield=fromDate.split("/")[0];
+				var smonthfield=fromDate.split("/")[1];
+				var syearfield=fromDate.split("/")[2];
+				sdayobj = new Date(syearfield, smonthfield-1, sdayfield);
+				
+				// dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+	            var edayobj =null ;
+	            if(dateRegEx.test(toDate)) {
+	            	var edayfield=toDate.split("/")[0];
+					var emonthfield=toDate.split("/")[1];
+					var eyearfield=toDate.split("/")[2];
+					edayobj = new Date(eyearfield, emonthfield-1, edayfield);
+					
+					 var millisecondsPerDay = 86400 * 1000;
+		            var compDate = (edayobj - sdayobj)/millisecondsPerDay;
+		           
+		            if(compDate >= 0){
+		            	if(compDate<=31){
+		            		var action = document.getElementById('transListForm').action;
+							document.getElementById('transListForm').action = contextPath +"/report/translist?type=" + type;
+							document.getElementById('transListForm').submit();
+							document.getElementById('transListForm').action = action;
+		            	} else {
+		            		alert('Sồ ngày làm báo cáo không ược quá 31 ngày. Bạn hãy nhập lại.' );
+		            	}
+                
+            }else {
+                alert('Ngày kết thúc(đến ngày) báo cáo phải lớn hơn hoặc bằng ngày bắt đấu(từ ngày). Bạn hãy nhập lại.' );
+            }
+					
+	            }else{
+	            	alert("Bạn chưa nhập dữ liệu vào ô 'Đến Ngày'. ");
+	            }
+				
+				
+            }else{
+                alert("Bạn chưa nhập dữ liệu vào ô 'Từ Ngày'. ");
+            }
+
+	}
+
+	
+	function exportDetailsReport(type){
+	
+		var fromDate = document.getElementById("frm_startDate").value
+	    var toDate= document.getElementById("frm_endDate").value
+		 var dateRegEx = null;
+            dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+			var sdayobj =null ;
+            if (dateRegEx.test(fromDate)){
+            	
+				var sdayfield=fromDate.split("/")[0];
+				var smonthfield=fromDate.split("/")[1];
+				var syearfield=fromDate.split("/")[2];
+				sdayobj = new Date(syearfield, smonthfield-1, sdayfield);
+				
+				// dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
+	            var edayobj =null ;
+	            if(dateRegEx.test(toDate)) {
+	            	var edayfield=toDate.split("/")[0];
+					var emonthfield=toDate.split("/")[1];
+					var eyearfield=toDate.split("/")[2];
+					edayobj = new Date(eyearfield, emonthfield-1, edayfield);
+					
+					var millisecondsPerDay = 86400 * 1000;
+		            var compDate = (edayobj - sdayobj)/millisecondsPerDay;
+		           
+		            if(compDate >= 0){
+		            	if(compDate<=31){
+		            		var action = document.getElementById('transListForm').action;
+							document.getElementById('transListForm').action = contextPath +"/report/translistDetails?type=" + type;
+							document.getElementById('transListForm').submit();
+							document.getElementById('transListForm').action = action;
+		            	} else {
+		            		alert('Sồ ngày làm báo cáo không ược quá 31 ngày. Bạn hãy nhập lại.' );
+		            	}
+		                
+		            }else {
+		                alert('Ngày kết thúc(đến ngày) báo cáo phải lớn hơn hoặc bằng ngày bắt đấu(từ ngày). Bạn hãy nhập lại.' );
+		            }	
+	
+	            }else{
+	            	alert("Bạn chưa nhập dữ liệu vào ô 'Đến Ngày'. ");
+	            }
+				
+            }else{
+                alert("Bạn chưa nhập dữ liệu vào ô 'Từ Ngày'. ");
+            }
+         
+	}
+
+
+	function viewResults() {
+		var agent = document.getElementById("agent").value;
+		var pointOfSale = document.getElementById("pointOfSale").value;
+		var employer = document.getElementById("employer").value;
+		$('#transListForm').submit();
+		
+	}
+	function exportForm() {
+		window.location.href = '${stockExporterURL}';
+	}
+</script>
+]]>
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>Báo Cáo Doanh Thu</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="transListForm" id="transListForm">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td>
+							<form:select id="branch" path="branch" style="width:230px"
+								onchange="changeBranch($('#branch'),$('#agent'),$('#pointOfSale'),$('#employer'));">
+								<form:options items="${branchList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</td>
+						<td>
+							<form:select id="agent" path="agent" style="width:230px"
+								onchange="changeAgent($('#agent'),$('#pointOfSale'),$('#employer'));">
+								<form:options items="${agentList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</td>
+						<td>
+							<form:select id="pointOfSale" path="pointOfSale" style="width:230px"
+								onchange="changePOS($('#pointOfSale'),$('#employer'));">
+								<form:options items="${posList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</td>
+						<td rowspan="2" valign="top"><a href="javascript:;" onclick="viewResults()"
+							class="btn-1" title="Xem kết quả"><span><span>&#160;&#160;Xem
+										kết quả&#160;&#160;</span></span></a>
+							</td>
+					</tr>
+					<tr>
+						<td>
+							<form:select id="employer" path="employer" style="width:230px">
+								<form:options items="${employerList}" itemValue="id"
+									itemLabel="name" />
+							</form:select>
+						</td>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="startDate" cssClass="dateField tcal" />
+							</div>
+						</td>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="endDate" cssClass="dateField tcal" />
+							</div>
+						</td>
+					</tr>
+					
+					
+					
+					
+					
+					<tr>
+						<td colspan="4" style="text-align: left;"><form:errors
+								path="filter_message"></form:errors></td>
+					</tr>
+					<tr>
+						<td colspan="4"> </td>
+					</tr>
+					
+					
+				</table>
+				<c:set var="iWidth" value="340" scope="page"/>
+				<c:choose>
+					
+					<c:when test="${not empty lisDate}">
+						<c:forEach items="${lisDate}" var="item" varStatus="status">
+							<c:set var="iWidth" value="${iWidth+80}" scope="page"/>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<c:set var="iWidth" value="${iWidth+700}" scope="page"/>
+					</c:otherwise>
+				</c:choose>
+										
+				<table style="width:${iWidth}px;" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="40px">STT</td>
+										<td width="300px">Ten</td>
+										<c:choose>
+											<c:when test="${not empty lisDate}">
+												<c:forEach items="${lisDate}" var="item" varStatus="status">
+													<td width="80px">${item.name}</td>
+												</c:forEach>
+											</c:when>
+										</c:choose>
+										
+										
+										
+										<!--<c:if test="${showCommissionAgent}">
+											<td width="6%">Hoa hồng ĐL</td>
+										</c:if>
+										<td width="6%">Hoa hồng BL</td>
+									--></tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${not empty listRevennue}">
+											
+											 
+											<c:forEach items="${listRevennue}" var="item" varStatus="status">
+												 <c:if test="${status.count%2==1}">
+												 	<c:set var="style" value="background-color:#FAFAFA" scope="page"/>
+												 </c:if>
+													<tr style="${style}">
+													<td align="center">${(page-1)*size+status.count}</td>
+													
+													<td align="">
+													${item[2]}
+													</td>
+													<c:choose>
+														<c:when test="${not empty lisDate}">
+															<c:set var="iCol" value="0" scope="page"/>
+															<c:forEach items="${lisDate}" var="itemDate" varStatus="statusDate">
+																<td width="100px" align="right">
+																	<fmt:formatNumber type="number" pattern="###,###" value="${item[5+iCol]}" />
+																</td>
+																<c:set var="iCol" value="${iCol + 1}" scope="page"/>
+															</c:forEach>
+														</c:when>
+													</c:choose>
+													
+													<!--<c:if test="${showCommissionAgent}">
+														<td align="right"><fmt:formatNumber type="number" 
+	            											pattern="###,###" value="${item.commissionAgent}" /></td>
+													</c:if>
+													<td align="right"><fmt:formatNumber type="number" 
+            											pattern="###,###" value="${item.commission}"/></td>
+												--></tr>
+											</c:forEach>
+												
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<td colspan="11" align="center">Không có dữ liệu.</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+			</form:form>
+		</div>
+	</div>
+</div>

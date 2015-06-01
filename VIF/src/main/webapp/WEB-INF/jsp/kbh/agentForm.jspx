@@ -1,0 +1,197 @@
+﻿
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url var="imageFolder" value="/images" />
+
+	<div id="agentDialog" style="display:none">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0" class="table-1" name="agentDialog">
+					<tr>
+						<td colspan="4" align="center">
+							<div class="infoMessage" id="a_messageInfor">
+								
+							</div>
+							
+							<div class="errorMessage" id="a_messageError">
+								
+							</div>
+						</td>
+					</tr>
+					<tr class="info"><td align="left" colspan="4"><strong>Thông tin miền</strong></td></tr>
+					<tr class="more">
+						<td style="text-align: right" width="20%">
+							<label for="">Tên (<label class="errorMessage">*</label>):
+							</label>
+						</td>
+						<td width="30%">
+							<input id="a_ten" style="width:100%;" />
+						</td>
+						<td colspan="2">
+							Thời gian làm việc từ:  
+							<select id="a_hourWorkStart" class="selectBox" width="10px">
+								<c:forEach items="${am}" var="item">
+									<c:choose>
+										<c:when test="${item==8}">
+											<option value="${item}" selected="selected">${item}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${item}">${item}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+							<select id="a_minuteWorkStart" class="selectBox" width="10px">
+								<c:forEach items="${minute}" var="item">
+									<option value="${item}">${item}</option>
+								</c:forEach>
+							</select>
+							 đến:  
+							<select id="a_hourWorkEnd" class="selectBox" width="10px">
+								<c:forEach items="${pm}" var="item">
+									<c:choose>
+										<c:when test="${item==17}">
+											<option value="${item}" selected="selected">${item}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${item}">${item}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+							<select id="a_minuteWorkEnd" class="selectBox" width="10px">
+								<c:forEach items="${minute}" var="item">
+									<option value="${item}">${item}</option>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr class="more">
+						<td valign="top" style="text-align: right"><label for="">Ghi
+								chú:</label></td>
+						<td colspan="3">
+							<textarea rows="2" style="width:100%" id="a_ghiChu">Ghi chú</textarea>
+						</td>
+					</tr>
+					<tr class="more">
+						<td valign="top" style="text-align: right">
+							<label for="">Tỉnh/thành quản lý (<label class="errorMessage">*</label>):</label></td>
+						<td colspan="3">
+							<c:set var="select_province" scope="request">a_provinces</c:set>
+							<jsp:include page="../provinceSelector.jspx"></jsp:include>
+						</td>
+					</tr>
+					<tr class="info"><td align="left" colspan="4"><strong>Thông tin người quản trị</strong></td></tr>
+					<tr class="info"><td align="left" colspan="4"><strong><i>Thông tin đăng nhập</i></strong></td></tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Họ tên: (<label class="errorMessage">*</label>):
+						</td>
+						<td>
+							<input id="a_managerUser.ten" class="textInput mediumWidth" type="text"/>
+						</td>
+						<td style="text-align: right">Số thẻ:
+						</td>
+						<td><input id="a_managerUser.soThe" class="textInput" type="text"/>
+						</td>
+					</tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Mật khẩu đăng nhập: (<label class="errorMessage">*</label>):
+						</td>
+						<td>
+							<input id="a_managerUser.matKhau" class="textInput" type="password"/>
+						</td>
+						<td style="text-align: right">
+							Nhập lại mật khẩu: (<label class="errorMessage">*</label>):
+						</td>
+						<td>
+							<input id="a_managerUser.retypePassword" class="textInput" type="password"/>
+						</td>
+					</tr>
+					<tr class="info"><td align="left" colspan="4"><strong><i>Thông tin cá nhân</i></strong></td></tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Ngày sinh:<br/><i>(20/12/2000)</i>
+						</td>
+						<td>
+							<input id="a_managerUser.birthday" class="textInput" type="text"/>
+						</td>
+						<td style="text-align: right">
+							Giới tính:
+						</td>
+						<td>
+							<select id="a_managerUser.gioiTinh" class="select2_combo">
+								<option value="">--- Chọn giới tính ---</option>
+								<option value="M">Nam</option>
+								<option value="F">Nữ</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Email (<label class="errorMessage">*</label>):
+						</td>
+						<td>
+							<input id="a_managerUser.email" class="textInput" type="text"/>
+						</td>
+						<td style="text-align: right">
+							Điện thoại di động (<label class="errorMessage">*</label>):
+						</td>
+						<td>
+							<input id="a_managerUser.soDienThoai" class="textInput" type="text"/>
+						</td>
+					</tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Địa chỉ:
+						</td>
+						<td colspan="3">
+							<input id="a_managerUser.diaChi" class="textInput mediumWidth" width="100%" type="text"/>
+						</td>
+					</tr>
+					<tr class="info"><td align="left" colspan="4"><strong><i>Thông tin Công Ty</i></strong></td></tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Vai trò (<label class="errorMessage">*</label>):
+						</td>
+						<td>
+							<select id="a_managerUser.vaiTro" class="select2_combo" style="width:150px">
+								<option value="ROLE_AGENT">Quản Trị Miền</option>
+							</select>
+						</td>
+						<td style="text-align: right">
+						</td>
+						<td>
+						</td>
+					</tr>
+					<tr class="more">
+						<td style="text-align: right">
+							Đang bị khóa:
+						</td>
+						<td>
+							<input id="a_managerUser.locked" type="checkbox"/>
+						</td>
+						<td style="text-align: right"><!--
+							Gửi email kích hoạt:
+						--></td>
+						<td>
+							<!--<input id="a_managerUser.sendEmail" type="checkbox"/>
+						--></td>
+					</tr>
+					<tr>
+						<td colspan="4" align="center">
+							<a href="javascript:;" onclick="createAgent();" class="btn-1"><span><span style="width:50px">Tạo mới</span></span></a>
+							<a href="javascript:;" onclick="tb_remove();" class="btn-1"><span><span style="width:50px">Hủy bỏ</span></span></a>
+						</td>
+					</tr>
+				</table>
+	</div>
+</div>
+

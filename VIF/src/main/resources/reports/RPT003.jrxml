@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RPT003" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20" uuid="2f913e49-1e49-4761-a03f-7158a304f5ad">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<style name="header" hAlign="Left" vAlign="Middle" fontSize="14" isBold="true">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#CFD5E3"/>
+			<leftPen lineWidth="0.5" lineColor="#CFD5E3"/>
+			<bottomPen lineWidth="0.5" lineColor="#CFD5E3"/>
+			<rightPen lineWidth="0.5" lineColor="#CFD5E3"/>
+		</box>
+		<paragraph leftIndent="5" rightIndent="5"/>
+	</style>
+	<style name="small header" vAlign="Middle" fontSize="12" isBold="true">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#CFD5E3"/>
+			<leftPen lineWidth="0.5" lineColor="#CFD5E3"/>
+			<bottomPen lineWidth="0.5" lineColor="#CFD5E3"/>
+			<rightPen lineWidth="0.5" lineColor="#CFD5E3"/>
+		</box>
+		<paragraph leftIndent="5" rightIndent="5"/>
+	</style>
+	<style name="table header" forecolor="#000000" backcolor="#F0F0F0" hAlign="Center" vAlign="Middle" fontSize="12" isBold="true">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<paragraph leftIndent="5" rightIndent="5"/>
+	</style>
+	<style name="table td" mode="Transparent" forecolor="#000000" fill="Solid" vAlign="Middle" pattern="" fontSize="12">
+		<box>
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+		<paragraph leftIndent="5" rightIndent="5"/>
+	</style>
+	<subDataset name="dataset1" uuid="f2293209-a807-485f-8234-a15bd90f7d2e"/>
+	<parameter name="tenNhanVien" class="java.lang.String"/>
+	<parameter name="thang" class="java.lang.String"/>
+	<parameter name="tenDaiLy" class="java.lang.String"/>
+	<parameter name="tenTinhThanh" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\ITT\\IT1414-VMS2\\Project\\EntMgt\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="ngayBan" class="java.util.Date"/>
+	<field name="loaiSanPham" class="java.lang.String"/>
+	<field name="soLuongBan" class="java.lang.Integer"/>
+	<field name="soLuongTon" class="java.lang.Integer"/>
+	<field name="soLuongNhan" class="java.lang.Integer"/>
+	<variable name="sumSoLuongNhan" class="java.lang.Integer" resetType="Group" resetGroup="GroupDate" calculation="Sum">
+		<variableExpression><![CDATA[$F{soLuongNhan}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="sumSoLuongTon" class="java.lang.Integer" resetType="Group" resetGroup="GroupDate" calculation="Sum">
+		<variableExpression><![CDATA[$F{soLuongTon}]]></variableExpression>
+	</variable>
+	<variable name="sumSoLuongBan" class="java.lang.Integer" resetType="Group" resetGroup="GroupDate" calculation="Sum">
+		<variableExpression><![CDATA[$F{soLuongBan}]]></variableExpression>
+	</variable>
+	<group name="GroupDate" isStartNewPage="true">
+		<groupExpression><![CDATA[(new SimpleDateFormat("dd/MM/yyyy")).format($F{ngayBan})]]></groupExpression>
+		<groupHeader>
+			<band height="98">
+				<staticText>
+					<reportElement uuid="3b192403-4e76-4ebd-ab88-8e0eadc06ee4" style="table header" mode="Opaque" x="0" y="43" width="96" height="30"/>
+					<textElement/>
+					<text><![CDATA[Ngày]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e3ca0d99-7bab-4913-b567-e3d01442f0c8" style="table header" mode="Opaque" x="96" y="43" width="197" height="30"/>
+					<textElement/>
+					<text><![CDATA[Sản Phẩm]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="119f2935-a7a2-4a0f-9543-eb06e7e15fd3" style="table header" mode="Opaque" x="293" y="43" width="70" height="30"/>
+					<textElement/>
+					<text><![CDATA[SL Nhận]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a7be1adb-8137-420d-a24f-39624b4f8704" style="table header" mode="Opaque" x="363" y="43" width="70" height="30"/>
+					<textElement/>
+					<text><![CDATA[SL Tồn]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e9fc8393-681d-4302-bb0f-5037594fee4c" style="table header" mode="Opaque" x="603" y="43" width="100" height="30"/>
+					<textElement/>
+					<text><![CDATA[Giá bán]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="fa89dcab-3586-41b3-9aaa-b96272a9820f" style="table header" mode="Opaque" x="703" y="43" width="139" height="30"/>
+					<textElement/>
+					<text><![CDATA[Thanh toán]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="9c25eb58-1995-41f8-89f9-9d10f2457683" style="table header" mode="Opaque" x="503" y="43" width="100" height="30"/>
+					<textElement/>
+					<text><![CDATA[Khuyến mãi]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="1653748e-e6dd-41c4-bb5c-28d00de22a12" style="table header" mode="Opaque" x="433" y="43" width="70" height="30"/>
+					<textElement/>
+					<text><![CDATA[SL Bán]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d24e67c1-2001-4828-bc1e-fdbf83700a9e" style="small header" x="0" y="0" width="842" height="43" isPrintInFirstWholeBand="true"/>
+					<textElement>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="86f108ef-aebb-475a-9f69-797c7c5d313d" style="table td" mode="Opaque" x="503" y="73" width="100" height="25" isPrintWhenDetailOverflows="true"/>
+					<textElement markup="none">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="816d1142-7256-4dbe-9efd-a7c692888533" style="table td" mode="Opaque" x="603" y="73" width="100" height="25" isPrintWhenDetailOverflows="true"/>
+					<textElement markup="none">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="eb14b908-6215-4dd5-be62-762280078b41" style="table td" mode="Opaque" x="703" y="73" width="139" height="25" isPrintWhenDetailOverflows="true"/>
+					<textElement markup="none">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="GroupDate" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement uuid="21b9e4fb-6a66-40f5-bafc-4e5260a4482e" style="table td" mode="Opaque" x="433" y="73" width="70" height="25" printWhenGroupChanges="GroupDate"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumSoLuongBan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="GroupDate" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement uuid="2e8d1429-b822-4ebb-9923-0a20742205db" style="table td" mode="Opaque" x="293" y="73" width="70" height="25" printWhenGroupChanges="GroupDate"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumSoLuongNhan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="GroupDate" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement uuid="d353e168-3073-435a-9367-b069aa5d213a" style="table td" mode="Opaque" x="363" y="73" width="70" height="25" printWhenGroupChanges="GroupDate"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumSoLuongTon}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="47">
+				<staticText>
+					<reportElement uuid="bfc1cc50-803e-4ebf-bf16-740217658120" style="table td" x="0" y="0" width="842" height="47"/>
+					<textElement>
+						<font isBold="true"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[     Công nợ: .......................................(Đồng)     Nhân viên bán hàng: .............................................      Xác nhận đại lý: .........................................]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="128">
+			<textField>
+				<reportElement uuid="2aa4e758-323d-42b3-9ca8-ada1ce5edc5d" x="0" y="0" width="842" height="21"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ngày xuất báo cáo:  "+(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")).format(new Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4dfad656-acb3-4744-99ff-67d4fa6263a7" style="header" x="0" y="21" width="842" height="37" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA["THEO DÕI NHẬN HÀNG THÁNG "+$P{thang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7c7fc127-0764-4be2-98c9-d800a6033fc5" style="small header" x="0" y="58" width="96" height="50" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Nhân viên:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0cd6de6c-899d-4221-a99e-6e68a29ca340" style="small header" x="0" y="108" width="96" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="de1e2a48-e09b-4ff7-8df1-17269668295c" style="small header" x="293" y="58" width="70" height="50" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Đại lý:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="227707c6-cba6-4ade-a5db-872a9bce3f0e" style="small header" x="363" y="58" width="140" height="50" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement markup="none">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tenDaiLy}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9a23887f-5021-497b-a8b6-9da28ada1067" style="small header" x="96" y="58" width="197" height="50" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement markup="none">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tenNhanVien}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0ccfacb8-2a43-41d9-bc7a-0fbce33bb903" style="small header" x="503" y="58" width="100" height="50" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Tỉnh:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="491f7650-2850-48b3-b77d-0961014c814f" style="small header" x="603" y="58" width="239" height="50" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement markup="none">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tenTinhThanh}.trim()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="25">
+			<staticText>
+				<reportElement uuid="1b7c8ad2-1660-41fd-99ed-ddbbacb7abed" style="table td" x="603" y="0" width="100" height="25"/>
+				<textElement markup="none"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="787c646b-841a-43f4-b906-22380e7c1c9a" style="table td" x="503" y="0" width="100" height="25"/>
+				<textElement markup="none"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="835948b3-a8e6-471e-a52f-21da4614ed9e" style="table td" mode="Opaque" x="433" y="0" width="70" height="25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{soLuongBan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="cf534ce2-4da6-4471-a0a2-aea10c4a6ad3" style="table td" mode="Opaque" x="363" y="0" width="70" height="25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{soLuongTon}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="97fa2b63-7613-4f7f-9076-4edf4dfab243" style="table td" mode="Opaque" x="293" y="0" width="70" height="25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{soLuongNhan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="94667819-e3ac-481e-96f0-3c0ce78ccaad" style="table td" mode="Opaque" x="96" y="0" width="197" height="25"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{loaiSanPham}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="dcc8000b-cbc3-47b0-87cd-46bccd73bfa7" style="table td" x="703" y="0" width="139" height="25"/>
+				<textElement markup="none"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c7bcb29e-86b6-4c82-ab31-b08a0b2ab4e9" style="table td" isPrintRepeatedValues="false" mode="Opaque" x="0" y="-25" width="293" height="25"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("dd/MM/yyyy")).format($F{ngayBan})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

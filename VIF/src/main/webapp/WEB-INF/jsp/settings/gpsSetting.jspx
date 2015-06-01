@@ -1,0 +1,309 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:sec="http://www.springframework.org/security/tags" 
+	xmlns:form="http://www.springframework.org/tags/form">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="imagesFolder" value="/images" />
+	<div id="inner-content">
+	
+		<spring:url value="/device/GPSsetting" var="gpsFormLink" scope="request">
+				<spring:param name="update" />
+			</spring:url>
+	
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>THÔNG TIN GIÁM SÁT LỘ TRÌNH</span>
+			</h2>
+		</div>
+		<div id="content">
+			
+			<form:form action="${requestScope.gpsFormLink}" method="POST"
+				commandName="tracking">
+				<form:hidden path="id" />
+		
+				<div class="formContent">
+					<table width="100%" cellpadding="0" cellspacing="5" class="TableThongTinTram">
+						<col width="20%" />
+						<col width="80%" />
+						
+						<tr>
+							<td></td>
+							<td>
+								
+									<c:if test="${param.updateSuccess=='t' or updateSuccess=='t'}">
+										<div class="infoMessage" id="messageArea">
+										<p>Thông tin được cập nhật thành công.</p>
+										</div>
+									</c:if>	
+									<c:if test="${param.updateSuccess=='f' or updateSuccess=='f'}">
+										<div class="errorMessage" id="messageArea">
+										<p>Cập nhật không thành công.</p>
+										</div>
+									</c:if>			
+								
+							</td>
+						</tr>
+						<!--
+						<tr>
+							<td></td>
+							<td ><c:if test="${not empty success}">
+									<c:choose>
+										<c:when test="${param.success=='true' or success=='true'}">
+											<div class="infoMessage" id="messageArea">
+												<p>Thông tin được cập nhật thành công.</p>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="errorMessage" id="messageArea">
+												<p>Xảy ra lỗi khi xử lý dữ liệu</p>
+											</div>
+										</c:otherwise>
+									</c:choose>
+								</c:if></td>
+								
+						</tr>
+						-->
+						<tr>
+							<td align="right" width="200">
+							<strong>Thông số hệ thống </strong>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Khoảng cách giữa 2 điểm  :</td>
+							<td>
+								<form:input path="radiusCheck" class="textInput numberField" 
+									onkeyup="restrictInputDoubleOnly(event,this)"/> (m)
+							</td>
+						</tr>
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="200">Thông tin chấm công
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Giờ vào :</td>
+							<td>
+								<form:select path="gioVao" cssClass="selectBox" width="10px">
+								<form:options items="${am}"/>
+								</form:select>
+								<form:select path="phutVao" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+							</td>
+						</tr>
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="200">Thời gian làm việc
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Bắt đầu :</td>
+							<td>
+								<form:select path="hourWorkStart" cssClass="selectBox" width="10px">
+								<form:options items="${am}"/>
+								</form:select>
+								<form:select path="minuteWorkStart" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Kết thúc:</td>
+							<td>
+								<form:select path="hourWorkEnd" cssClass="selectBox" width="10px">
+								<form:options items="${pm}"/>
+								</form:select>
+								<form:select path="minuteWorkEnd" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="200">Thời gian nhận dữ liệu
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="100">Buổi sáng
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Bắt đầu :</td>
+							<td>
+								<form:select path="batDau" cssClass="selectBox" width="10px">
+								<form:options items="${am}"/>
+								</form:select>
+								<form:select path="minuteServerStartAm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Kết thúc:</td>
+							<td>
+								<form:select path="ketThuc" cssClass="selectBox" width="10px">
+								<form:options items="${am}"/>
+								</form:select>
+								<form:select path="minuteServerEndAm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+								<form:errors path="ketThuc" cssClass="errorMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="100">Buổi chiều
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Bắt đầu :</td>
+							<td>
+								<form:select path="batDauPm" cssClass="selectBox" width="10px">
+								<form:options items="${pm}"/>
+								</form:select>
+								<form:select path="minuteServerStartPm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Kết thúc:</td>
+							<td>
+								<form:select path="ketThucPm" cssClass="selectBox" width="10px">
+								<form:options items="${pm}"/>
+								</form:select>
+								<form:select path="minuteServerEndPm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+								<form:errors path="ketThucPm" cssClass="errorMessage" />
+							</td>
+						</tr>
+
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="200">
+							<strong>Thông số từ thiết bị </strong>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Thời gian giữa 2 lần lấy tọa độ :</td>
+							<td>
+								<form:input path="period" class="textInput numberField" 
+									onkeyup="restrictInputDoubleOnly(event,this)"/> (mili-giây)
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Thời gian giữa 2 lần gửi :</td>
+							<td>
+								<form:input path="periodSubmit" class="textInput numberField" 
+									onkeyup="restrictInputDoubleOnly(event,this)"/> (phút)
+							</td>
+						</tr>
+						<!--<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="200">Thời gian lấy dữ liệu
+							</td>
+						</tr>					
+						<tr>
+							<td align="right" width="100">Buổi sáng
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="100">Bắt đầu :</td>
+							<td>
+								<form:select path="deviceStartTimeAm" cssClass="selectBox" width="10px">
+									<form:options items="${am}"/>
+								</form:select>
+								<form:select path="minuteStartAm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>								
+							</td>
+						</tr>
+						
+						<tr>
+							<td align="right">Kết thúc :</td>
+							<td>
+								<form:select path="deviceEndTimeAm" cssClass="selectBox" width="10px">
+									<form:options items="${am}"/>
+								</form:select>
+								<form:select path="minuteEndAm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>	
+								<form:errors path="deviceEndTimeAm" cssClass="errorMessage" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td align="right" width="100">Buổi chiều
+							</td>
+						</tr>
+						<tr>
+							<td align="right" >Bắt đầu :</td>
+							<td>
+								<form:select path="deviceStartTimePm" cssClass="selectBox" width="10px">
+									<form:options items="${pm}"/>
+								</form:select>
+								<form:select path="minuteStartPm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+							</td>
+						</tr>
+						 
+						<tr>
+							<td align="right">Kết thúc :</td>
+							<td>
+								<form:select path="deviceEndTimePm" cssClass="selectBox" width="10px">
+									<form:options items="${pm}"/>
+								</form:select>
+								<form:select path="minuteEndPm" cssClass="selectBox" width="10px">
+									<form:options items="${minute}"/>
+								</form:select>
+								<form:errors path="deviceEndTimePm" cssClass="errorMessage" />
+							</td>
+						</tr>-->
+						
+
+						<tr>
+							<td>&#160;</td>
+						</tr>
+						<tr>
+							<td><label>
+									<!-- Empty -->
+							</label></td>
+							<td>
+								<a href="javascript:;" onclick="javascript:document.forms[0].submit();" class="btn-1" title="Lưu">
+								<span><span>Lưu</span></span>
+								</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</form:form>
+		</div>
+	</div>
+</div>

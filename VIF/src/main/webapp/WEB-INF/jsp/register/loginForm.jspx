@@ -1,0 +1,65 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:sec="http://www.springframework.org/security/tags" 
+	xmlns:form="http://www.springframework.org/tags/form">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	
+	<![CDATA[
+		<link href="${pageContext.request.contextPath}/css/thickbox.css" rel="stylesheet" type="text/css" />
+		<script src="${scriptsFolder}/thickbox-compressed.js"></script>
+	]]>		
+	<div id="loginDialog" style="display: none;">
+		<table width="100%" cellpadding="0" cellspacing="5"
+						class="TableThongTinTram" border="0" name="searchDialog">
+			<tr>
+				<td>
+					<table width="100%" cellpadding="0" cellspacing="5"
+						class="TableThongTinTram" border="0">
+						<tr>
+							<td align="center" colspan="2">
+								<b>Vui lòng nhập số thuê bao/mật khẩu của Mobifone Portal...</b>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" colspan="2">
+								<div id="l_messageError" style="color:red"></div>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="30%">
+								Số thuê bao:
+							</td>
+							<td align="center">
+								<input name="l_userName" id="l_userName" style="width:90%" onkeypress="if(event.keyCode==13) {login();}">
+								</input>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="30%">
+								Mật khẩu:
+							</td>
+							<td align="center">
+								<input type="password" name="l_password" id="l_password" style="width:90%" onkeypress="if(event.keyCode==13) {login();}">
+								</input>
+							</td>
+						</tr>
+					</table>	
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<a href="javascript:;" onclick="login();" class="btn-1"><span><span style="width:100px">Đăng nhập</span></span></a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

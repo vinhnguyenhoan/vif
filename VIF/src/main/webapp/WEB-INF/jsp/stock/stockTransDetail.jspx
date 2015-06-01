@@ -1,0 +1,329 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:sec="http://www.springframework.org/security/tags" 
+	xmlns:form="http://www.springframework.org/tags/form">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="stockTransURL" value="/stock/trans/" />
+    <spring:url var="stockTransImportURL" value="/stock/trans/im/"/>
+	<spring:url var="stockTransDetailURL" value="/stock/trans/DetailsUpdate/" />
+	<spring:url var="stockTransDestroyURL" value="/stock/trans/destroy" />
+	<![CDATA[
+		<script type="text/javascript">
+			function backList() {
+				if (${isExport}) {
+					window.location.href = "${stockTransURL}";
+				} else {
+					window.location.href = "${stockTransImportURL}";
+				}
+			}
+			function accept() {
+				$('#accept').val(true);
+				$('form').submit();
+			}
+			function cancel() {
+				$('#accept').val(false);
+				$('form').submit();
+			}
+			function destroy(){
+				if(confirm("Bạn có muốn hủy đơn hàng ")){
+					$('form').attr("action", "${stockTransDestroyURL}/${id}/");
+					$('form').submit();
+				}
+				return;
+			}
+		</script>
+	]]>
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>CHI TIẾT ĐƠN HÀNG</span>
+			</h2>
+		</div>
+		<div id="content">
+
+			<form action="${stockTransDetailURL}" method="POST" >
+				<input type="hidden" name="id" value="${id}"/>
+				<input type="hidden" id="accept" name="accept" value="true"/>
+				<input type="hidden" id="isExport" name="isExport" value="${isExport}"/>
+				<div class="formContent">
+					<table width="100%" cellpadding="0" cellspacing="5"
+						class="TableThongTinTram" border="0">
+						
+						<tr>
+								<td width="25%">
+									<!-- Empty -->
+								</td>
+								<td width="5%">
+									<!-- Empty -->
+								</td>
+								<td width="10%">
+									<!-- Empty -->
+								</td>
+								<td width="15%">
+									<!-- Empty -->
+								</td>
+								<td width="10%">
+									<!-- Empty -->
+								</td>
+								<td width="5%">
+									<!-- Empty -->
+								</td>
+								
+								<td width="30%">
+									<!-- Empty -->
+								</td>
+						</tr>
+						
+						<tr>
+								<td colspan="7" align="center">
+									<div class="infoMessage" id="messageArea">
+										<c:if test="${accept}">
+											<p>Đã xác nhận đơn hàng!</p>
+										</c:if>
+										<c:if test="${accept!=null and !accept}">
+											<p>Đã hủy đơn hàng!</p>
+										</c:if>
+										<c:if test="${errCode!=null and errCode=='ERR_TRANS_DESTROY_0'}">
+											<p>Không hủy được đơn hàng, có thể hàng hóa được giao đã được bán!</p>
+										</c:if>
+										<c:if test="${errCode!=null and errCode=='ERR_TRANS_DESTROY_1'}">
+											<p>Đã hủy đơn hàng!</p>
+										</c:if>
+										<c:if test="${errCode!=null and errCode=='ERR_TRANS_DESTROY_2'}">
+											<p>Có lỗi xảy ra trong quá trình hủy đơn hàng!</p>
+										</c:if>
+										<c:if test="${errCode!=null and errCode=='ERR_TRANS_DESTROY_3'}">
+											<p>Không tìm thấy đơn hàng!</p>
+										</c:if>
+										<c:if test="${errCode!=null and errCode=='ERR_TRANS_DESTROY_4'}">
+											<p>Bạn không có quyền hủy đơn hàng!</p>
+										</c:if>
+									</div>
+								</td>
+						</tr>
+						<!-- ///////////////////////////////////////////////////// -->
+						<tr>
+							<td colspan="7" align="lef">
+								<b>Thông tin bên xuất hàng:</b>
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Mã ĐL/CH:</td>
+							<td>
+								<input type="text" name="shop_code" id="shop_code" value="${sourceCode}"  disabled="disabled" />
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Tên ĐL/CH:</td>
+							<td colspan="6">
+								<input type="text" name="shop_name" id="shop_name" value="${sourceName}" style="width:700px;" disabled="disabled"/>
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Người Đại Diện:</td>
+							<td colspan="2">
+								<input type="text" name="staff" id="staff" value="${sourceInstead}" style="width:300px;" disabled="disabled"/>
+							</td>
+							<td align="right">Số Điện Thoại:</td>
+							<td colspan="2">
+								<input type="text" name="sdt" id="sdt" value="${sourcePhoneNum}" style="width:295px;" disabled="disabled"/>
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Địa Chỉ:</td>
+							<td colspan="6">
+								<input type="text" name="shop_name" id="shop_name" value="${sourceAddress}" style="width:700px;" disabled="disabled"/>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="7" align="lef">
+								<br/>
+								<b>Thông tin bên nhập hàng:</b>
+							</td>
+						</tr>
+						
+						<tr>
+							
+							<td align="right">Mã ĐL/CH:</td>
+							<td>
+								<input type="text" name="desCode" id="desCode" value="${desCode}" disabled="disabled" />
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Tên ĐL/CH:</td>
+							<td colspan="6">
+								<input type="text" name="desName" id="desName" value="${desName}" style="width:700px;" disabled="disabled"/>
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Người Đại Diện:</td>
+							<td colspan="2">
+								<input type="text" name="desInstead" id="desInstead" value="${desInstead}" style="width:300px;" disabled="disabled"/>
+							</td>
+							<td align="right">Số Điện Thoại:</td>
+							<td colspan="2">
+								<input type="text" name="desPhoneNum" id="desPhoneNum" value="${desPhoneNum}" style="width:295px;" disabled="disabled"/>
+							</td>
+						</tr>
+						<tr>
+							
+							<td align="right">Địa Chỉ:</td>
+							<td colspan="6">
+								<input type="text" name="desAddress" id="desAddress" value="${desAddress}" style="width:700px;" disabled="disabled"/>
+							</td>
+						</tr>
+						
+						
+						<!-- //////////////////////////////////////////////// -->
+						<c:if test="${not empty salesTransEvents}">
+						<tr>
+							<td colspan="7" align="lef">
+								<br/>
+								<b>Thông tin sự kiện:</b>
+							</td>
+						</tr>
+						
+						<tr>
+							
+							<td align="right">Mã sự kiện:</td>
+							<td>
+								${salesTransEvents.eventCode}
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Tên sự kiện:</td>
+							<td align="left" colspan="6">
+								${salesTransEvents.eventName}
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Mã người triển khai:</td>
+							<td align="left" colspan="6">
+								${salesTransEvents.staffCode}
+							</td>
+						</tr>
+						<tr>
+							<td align="right">Tên người triển khai:</td>
+							<td align="left" colspan="6">
+								${salesTransEvents.staffName}
+							</td>
+						</tr>
+						</c:if>
+						<!-- ////////////////////////////////////////////// -->
+						
+						<tr>
+							<td colspan="7" align="lef">
+								<br/>
+								<b>Chi tiết đơn hàng:</b>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="7">
+								<table width="99%" border="0" cellspacing="0" cellpadding="0"
+									class="table-2">
+									<thead>
+										<tr>
+											<td width="8%">#</td>
+											<td>Tên Hàng Hóa</td>
+											<td width="20%">Số Lượng</td>
+											<td width="10%">Trạng thái</td>
+										</tr>
+									</thead>
+									
+									<tbody>
+										<c:forEach items="${listGoods}" var="item" varStatus="status">
+										<tr>
+											<td align="center">${status.count}</td>
+											<td>
+												${item[0]}
+											</td>
+											<td align="right">
+												<fmt:formatNumber type="number" 
+            											pattern="###,###" value="${item[1]}" />
+											</td>
+											<td align="center">
+												${transStatus}
+											</td>
+										</tr>
+										</c:forEach>
+										<tr>
+											<td align="center" colspan="2"><b>Tổng</b></td>
+											<td align="right"><b>
+												<fmt:formatNumber type="number" 
+            											pattern="###,###" value="${totalAmount}" />
+												</b>
+											</td>
+											<td>
+											</td>
+										</tr>
+											
+									</tbody>
+									
+								</table>
+							</td>
+						</tr>
+						
+						<!-- ///////////////////////////////////////////////////// -->
+						
+						<tr>
+								<td colspan="7">
+								<br/>
+								<c:if test="${needProccess}">
+									<label class="errorMessage">Đơn hàng này chưa được xác nhận!</label> <br/><br/>
+									<a href="javascript:void(0);"
+										onclick="accept();" class="btn-1"
+										title="Xác nhận"><span><span>Xác nhận</span></span></a>
+									&#160;&#160;&#160;
+								</c:if>
+								<c:if test="${needProccess or cancelable}">
+									<a href="javascript:void(0);"
+										onclick="cancel();" class="btn-1"
+										title="Hủy bỏ"><span><span>Hủy bỏ</span></span></a>
+									&#160;&#160;&#160;
+								</c:if>
+								<c:if test="${!needProccess}">
+									<a href="javascript:void(0);"
+										onclick="destroy();" class="btn-1"
+										title="Hủy bỏ Đơn hàng"><span><span>Hủy bỏ đơn hàng</span></span></a>
+									&#160;&#160;&#160;
+								</c:if>
+									<a href="javascript:;"
+										onclick="backList();" class="btn-1"
+										title="Trở về"><span><span>Trở về</span></span></a>
+								</td>
+								
+						</tr>
+						
+					</table>
+				</div>
+				<input type="hidden" name="type" id="type" value="1" />		
+		 </form>
+		
+			<div id="loading" style="display:none;z-index:103">
+			  <img id="loading-image" src="${imagesFolder}/loading.gif" alt="Đang xử lý dữ liệu..." width="100px" />
+			</div>
+
+			<jsp:include page="serialForm.jspx"></jsp:include>
+
+		</div>
+	</div>
+</div>

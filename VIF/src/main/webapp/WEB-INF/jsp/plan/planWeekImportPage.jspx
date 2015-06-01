@@ -1,0 +1,167 @@
+﻿
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="FormInfoProduct" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imageFolder" value="/images" />
+	<spring:url var="statusURL" value="/plan/import/status" />
+
+	<div id="inner-content">
+		<![CDATA[
+		<script type="text/javascript">
+			var contextPath = "${pageContext.request.contextPath}";
+			function importPlan() {
+				if ($('#employee').val()=='0') {
+					alert('Chưa chọn nhân viên');
+					return;
+				}
+				if ($('#importFile').val()=='') {
+					alert('Chưa chọn file');
+					return;
+				}
+				submitActionForm('planForm','');
+				updateStatus();
+			}
+			
+			function updateStatus() {
+				setInterval(function() {
+					$.ajax({
+						url : '${statusURL}',
+						dataType : "html",
+						contentType : "text/html; charset=utf-8",
+						success : function(data) {
+							$('.loading-indicator').html(data);
+						}
+				
+					});
+				}, 500);
+			}
+			
+			function deletePlan() {
+				if ($('#employee').val()=='0') {
+					alert('Chưa chọn nhân viên');
+					return;
+				}
+				$('#planForm').append('<input type="hidden" name="delete" value="true"/>');
+				submitExportForm('planForm','');
+			}
+		</script>
+		<style>
+			.loading-indicator {
+				color: black;
+			    font-size: 14px;
+			    font-weight: bold;
+			    line-height: 300px;
+			    text-align: center;
+			}
+		</style>
+		]]>
+		<span class="bor-left"><img src="${imageFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>IMPORT TUYẾN ĐƯỜNG</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form method="POST" id="planForm" enctype="multipart/form-data">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td width="10%">
+							<!-- Empty -->
+						</td>
+						<td width="15%">
+							<!-- Empty -->
+						</td>
+						<td width="7%">
+							<!-- Empty -->
+						</td>
+						<td>
+						</td>
+						<td width="12%">
+							<!-- Empty -->
+						</td>
+						<td width="36%">
+							<!-- Empty -->
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6" align="center">
+							<c:if test="${not empty success}">
+								<c:choose>
+									<c:when test="${success}">
+										<div class="infoMessage" id="messageArea">
+											<p>Thông tin được cập nhật thành công.</p>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="errorMessage" id="messageArea">
+											<p>${errorMgs}</p>
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: right"><label for="">Tỉnh Thành
+								(<label class="errorMessage">*</label>):
+						</label></td>
+						<td>
+							<select id="employee" name="employee" style="width:180px;" class="select2_combo">
+								<option value="0">--- Chọn nhân viên ---</option>
+								<c:forEach items="${staffList}" var="item">
+									<c:choose>
+										<c:when test="${item.key==employee}">
+											<option value="${item.key}" selected="selected">${item.value}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${item.key}">${item.value}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</td>
+						<td style="text-align:left" colspan="4">
+							Chọn file: <input type="file" name="importFile" id="importFile"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="10%">&#160;</td>
+						<td colspan="5">
+							<a href="javascript:deletePlan();"
+							class="btn-1"><span><span>Xóa tuyến bán hàng</span></span></a>
+							
+							<a href="javascript:importPlan();"
+								class="btn-1"><span><span>Import tuyến bán hàng</span></span></a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<c:if test="${not empty warningList}">
+								<div class="infoMessage" id="messageArea">
+									<c:forEach items="${warningList}" var="item" varStatus="itemStatus">
+										<c:if test="${itemStatus.index > 0}"><br/></c:if>
+										${item}
+									</c:forEach>
+								</div>
+							</c:if>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+

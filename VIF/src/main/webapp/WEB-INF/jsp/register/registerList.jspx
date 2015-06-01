@@ -1,0 +1,242 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:sec="http://www.springframework.org/security/tags" 
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form" escapeXML="true">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="userAddURL" value="/user/add" />
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="ajaxURL" value="/ajax" />
+	
+	<![CDATA[
+	<script type="text/javascript" src="${scriptsFolder}/user.js"></script>
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js"></script>
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";
+	</script>
+]]>
+
+	<div id="inner-content">
+	
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>DANH SÁCH ĐĂNG KÝ</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" id="FrmRegList" name="FrmRegList" commandName="FrmRegList">
+				<input type="hidden" id="page" value="${page}" />
+				<input type="hidden" id="size" value="${size}" />
+				<table width="100%" border="0" cellspacing="3px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td colspan="5">
+							
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+						
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<form:select path="branch" style="width:140px">
+									<form:options items="${branchList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							
+							<div style="padding-left: 10px; display: inline;">
+								<form:select path="type" style="width:140px">
+									<form:options items="${typeList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							
+							<div style="padding-left: 10px; display: inline;">
+								<form:select path="status" style="width:140px">
+									<form:options items="${statusList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							
+							
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="fromDate" cssClass="dateField tcal" />
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="toDate" cssClass="dateField tcal" />
+							</div>
+							
+							&#160;
+							<div style="padding-left: 10px; display: inline;"> Tên ĐK/ E-Mail/ Phone :
+								<form:input path="searchText" cssStyle="width: 120px" />
+							</div>
+							&#160;&#160;&#160;
+						</td>
+						<td>
+							
+							<a href="javascript:void(0);" onclick="javascript:document.getElementById('FrmRegList').submit();" class="btn-1"
+							title="Tìm kết quả"><span><span>Tìm Kiếm</span></span></a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="5"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" submitMethod="POST" formSubmit="FrmRegList"
+								id="devTopPagination" /></td>
+					</tr>
+					<tr>
+						<td colspan="5">
+						 
+							<table width="100%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="3%">STT</td>
+										<td width="7%">Người đăng ký</td>						
+										<td width="5%">Vai Trò</td>
+										<td width="7%">Email</td>
+										<td width="7%">Điện thoại</td>
+										<td width="7%">Địa chỉ</td>
+										<td width="10%">Người giới thiệu</td>
+										<td width="7%">Ngày giới thiệu</td>
+										<td width="7%">Trạng thái đăng ký</td>
+										<c:choose>
+											<c:when test="${permission > 0}">
+												<td width="7%">Hành Động</td>
+											</c:when>
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+									</tr>
+								</thead>
+								<tbody>
+							
+								<c:choose>
+									<c:when test="${not empty registerList}">
+									
+									<c:forEach items="${registerList}" var="item" varStatus="status">
+										<tr>
+											<td align="center">${(page-1)*size+status.count}</td>
+											<td align="center">${item.name}</td>
+											
+											<c:choose>
+													<c:when test="${item.type == 1}">
+														<td align="center"> Đại Lý </td>
+													</c:when>
+													<c:when test="${item.type == 2}">
+														<td align="center"> Điểm Bán Hàng </td>
+													</c:when>
+													<c:when test="${item.type == 3}">
+														<td align="center"> Nhân Viên BH </td>
+													</c:when>
+													<c:otherwise>
+														<td></td>
+													</c:otherwise>
+											</c:choose>	
+
+											<!--  <td align="center">${item.type}</td> -->
+											<td align="center">${item.email}</td>		
+											<td align="center">${item.phone}</td> 
+											<td align="center">${item.address}</td> 
+											<td align="center">${item.introducerName}</td>
+											<td align="center">
+											<fmt:formatDate
+														value="${item.updateDate}" type="both"
+														dateStyle="medium" timeStyle="medium"
+														pattern="dd/MM/yyyy HH:mm:ss" />
+											</td>
+											<td id="status${item.id}" align="center">
+											<c:choose>
+													<c:when test="${item.status == 1}">
+														Thành Công
+													</c:when>
+													<c:when test="${item.status == 2}">
+														Thất Bại
+													</c:when>	
+													<c:otherwise>
+														Chờ 
+													</c:otherwise>
+											</c:choose>	
+											</td>		 
+											<!--  <td align="center">${item.status}</td> -->
+											<c:choose>
+												<c:when test="${permission > 0}">
+													<td align="center">
+														<c:choose>
+															<c:when test="${item.status == 0}">
+															<!--
+																<a  href="javascript:" onclick="addRegister('${item.id}');" class="redTxt"
+																	title="Đăng ký NV">Đăng Ký</a> 
+																	&#160;|&#160;
+															--> 
+																<a href="javascript:" onclick="rejectUser('${item.id}');"
+																			class="redTxt" title="Từ Chối">Từ Chối</a>
+															</c:when>	 
+															<c:when test="${item.status == 2}">
+															<!-- 
+																<a  href="javascript:" onclick="addRegister('${item.id}');" class="redTxt"
+																	title="Đăng Ký NV">Đăng Ký</a> 
+															-->
+															</c:when>
+															<c:otherwise>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:when>
+												<c:otherwise>
+												</c:otherwise>	
+											</c:choose>
+										</tr>
+									</c:forEach>
+									
+									</c:when>
+									<c:otherwise>
+										<tr>
+											<spring:url value="10" var="col"></spring:url>
+											<td colspan="${col}" align="center">Không có dữ liệu</td>
+										</tr>
+									</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+							
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5"><util:pagination maxPages="${maxPages}" submitMethod="POST" formSubmit="FrmRegList"
+								page="${page}" size="${size}" id="devBottomPagination" /></td>
+					</tr>
+					
+				</table>
+			</form:form>
+		</div>
+	</div>
+</div>

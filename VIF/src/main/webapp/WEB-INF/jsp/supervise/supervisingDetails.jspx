@@ -1,0 +1,217 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="FormInfoProduct" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+	
+	<jsp:directive.page import="java.util.Arrays"/>
+	<jsp:directive.page import="java.util.ArrayList"/>
+	<jsp:directive.page import="java.util.List"/>
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+                <div id="inner-content">
+                	<span class="bor-left"><img src="${imageFolder}/dummy.gif" alt="" /></span>                  
+                    <div class="content-title">
+                        <h2><span>KẾT QUẢ GIÁM SÁT NHÂN VIÊN BÁN HÀNG</span></h2>
+                    </div>
+                    <div id="content">
+                    <form:form method="POST" commandName="planCheckingInfoForm" >
+						<table width="100%" border="0" cellspacing="5" cellpadding="0" class="table-1">
+							<colgroup>
+								<col width="20%" />
+								<col width="29%" />
+								<col width="2%" />
+								<col width="20%" />
+								<col width="29%" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<td style="text-align:left;text-transform:uppercase;"><label class="field-label" for="">THÔNG TIN CHUNG:</label></td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">ĐBH:</label></td>
+									<td>${thongtingiamsat.diemBanHang.tenCuaHang} (${thongtingiamsat.diemBanHang.maCuaHang})</td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Địa chỉ:</label></td>
+									<td>${thongtingiamsat.diemBanHang.getDiaChi()}</td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Ngày CSĐBH:</label></td>
+									<td><fmt:formatDate value="${thongtingiamsat.ngayCuoiCungCskh}" type="both" dateStyle="medium" timeStyle="medium" var="formatedDate" pattern="dd/MM/yyyy HH:mm:ss" />
+														${formatedDate}</td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Điện thoại:</label></td>
+									<td>${thongtingiamsat.diemBanHang.soDienThoaiBan}</td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Nhân viên CSĐBH:</label></td>
+									<td>${thongtingiamsat.nhanVienCskh.ten}</td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Fax:</label></td>
+									<td>${thongtingiamsat.diemBanHang.fax}</td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Nhân viên giám sát:</label></td>
+									<td>${thongtingiamsat.nhanVienGiamSat.ten}</td>
+									<td></td>
+									<td style="text-align:right"><label class="field-label" for="">Email:</label></td>
+									<td>${thongtingiamsat.diemBanHang.email}</td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Ngày giờ thực hiện:</label></td>
+									<td><fmt:formatDate value="${thongtingiamsat.ngayGioGiamSat.getTime()}" type="both" dateStyle="medium" timeStyle="medium" var="formatedDate" pattern="dd/MM/yyyy HH:mm:ss" />
+														${formatedDate}
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align:right"><label class="field-label" for="">Ngày giờ kết thúc:</label></td>
+									<td><fmt:formatDate value="${thongtingiamsat.ngayGioKetThuc.getTime()}" type="both" dateStyle="medium" timeStyle="medium" var="formatedDate" pattern="dd/MM/yyyy HH:mm:ss" />
+														${formatedDate}
+									</td>
+								</tr>
+								<tr>
+									<td>&#160;</td>
+								</tr>
+								<tr>
+									<td style="text-align:left;text-transform:uppercase;"><label class="field-label" for="">Chi tiết thông tin giám sát:</label></td>
+								</tr>
+								<tr>
+									<td colspan="5">
+										<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table-1">
+											<tr>
+												<td width="32%" valign="top" style="text-align:right;">
+													<table width="100%" border="0">
+														<colgroup>
+															<col width="85%" />
+															<col width="15%" />
+														</colgroup>
+														<tr class="groupHeader">
+															<td colspan="2" style="text-align:left"><label class="field-label" for="">Kiểm tra hình ảnh ĐBH</label></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng hiệu ngang</td>
+															<td style="text-align:left;" align="left"> <form:checkbox path="bangHieuNgang"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng hiệu đứng</td>
+															<td style="text-align:left"><form:checkbox path="bangHieuDung"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng Điểm Bán Hàng MBF</td>
+															<td style="text-align:left"><form:checkbox path="bangDbhMbf"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Đèn LED</td>
+															<td style="text-align:left"><form:checkbox path="denLed"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng vẩy</td>
+															<td style="text-align:left"><form:checkbox path="bangVay"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Băng rôn</td>
+															<td style="text-align:left"><form:checkbox path="bangRon"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Poster</td>
+															<td style="text-align:left"><form:checkbox path="poster"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Tờ rơi</td>
+															<td style="text-align:left"><form:checkbox path="toRoi"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Decal</td>
+															<td style="text-align:left"><form:checkbox path="decal"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng Khuyến Mãi 50%</td>
+															<td style="text-align:left"><form:checkbox path="bangKhuyenMai"  disabled="true"/></td>
+														</tr>
+														
+													</table>
+												</td>
+												<td width="2%"></td>
+												<td width="32%" valign="top">
+													<table width="100%" border="0">
+														<colgroup>
+															<col width="85%" />
+															<col width="15%" />
+														</colgroup>
+														<tr class="groupHeader">
+															<td colspan="2" style="text-align:left"><label class="field-label" for="">Kiểm tra trang thiết bị MBF</label></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Tủ trưng bày</td>
+															<td style="text-align:left"><form:checkbox path="tuTrungBay"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Khung poster</td>
+															<td style="text-align:left"><form:checkbox path="khungPoster"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Kệ ấn phẩm</td>
+															<td style="text-align:left"><form:checkbox path="khungPoster"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bàn ghế MBF</td>
+															<td style="text-align:left"><form:checkbox path="banGheMbf"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Dù MBF</td>
+															<td style="text-align:left"><form:checkbox path="duMbf"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng giá cước</td>
+															<td style="text-align:left"><form:checkbox path="bangGiaCuoc"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Bảng giá SPDV</td>
+															<td style="text-align:left"><form:checkbox path="bangGiaSpdv"  disabled="true"/></td>
+														</tr>
+													</table>
+												</td>	
+												<td width="2%"></td>
+												<td width="32%" valign="top" style="text-align:right;">
+													<table width="100%" border="0">												
+														<colgroup>
+															<col width="85%" />
+															<col width="15%" />
+														</colgroup>
+														<tr class="groupHeader">
+															<td colspan="2" style="text-align:left"><label class="field-label" for="">Kiểm tra chăm sóc Điểm Bán Hàng</label></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Vệ sinh bàn / ghế / kệ, … </td>
+															<td style="text-align:left"><form:checkbox path="veSinh"  disabled="true"/></td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Sắp xếp hàng hóa, ấn phẩm gọn gàng, dễ thấy … </td>
+															<td style="text-align:left"><form:checkbox path="nganNap"  disabled="true"/></td>
+														</tr>
+														<tr><td>&#160;</td></tr>
+														<tr class="groupHeader">
+															<td colspan="2" style="text-align:left"><label class="field-label" for="">Đánh giá thái độ làm việc của NV</label></td>
+														</tr>
+														
+														<tr>
+															<td style="text-align:right">1 tháng NV đến chăm sóc mấy lần?</td>
+															<td style="text-align:left">${thongtingiamsat.soLanCskhTrongThang}</td>
+														</tr>
+														<tr>
+															<td style="text-align:right">Ko bị phàn nàn về thái độ phục vụ?</td>
+															<td style="text-align:left"><form:checkbox path="khongBiPhanNan"  disabled="true"/></td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form:form>
+						<br/>
+                    </div>	
+                </div>
+</div>	

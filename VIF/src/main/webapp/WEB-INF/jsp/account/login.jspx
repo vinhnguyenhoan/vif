@@ -1,0 +1,50 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="content_wrapper" xmlns:form="http://www.springframework.org/tags/form" disable-url-rewriting="true">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imageFolder" value="/images" />
+	<spring:message code="security_login_form_name_message" var="name_msg" htmlEscape="false" />
+	<spring:message code="security_login_form_password_message" var="pwd_msg" htmlEscape="false" />
+	<spring:url value="/resources/j_spring_security_check" var="form_url" />
+
+	<div id="main">
+           <div class="wrap-popup-3">
+   	        <div class="title-1">
+       	        <h4>Đăng nhập vào chương trình CSĐBH</h4>
+               </div>
+               <form id="loginForm" action="${fn:escapeXml(form_url)}" method="POST" class="frm-popup3">
+                   <h2 class="errorMessage">	
+                   		<c:if test="${not empty param.login_error}">
+                   			<!-- Tên đăng nhập hoặc mật khẩu không hợp lệ. -->
+                   			 
+								<spring:message code="security_login_unsuccessful" />
+								<c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}." />
+							
+						</c:if>
+				   </h2>
+                   <p>
+                       <label>Tên đăng nhập:</label>
+                       <input type="text" value="" name="j_username" id="j_username" class="" />
+                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                   </p>
+                   <p>
+                       <label>Mật khẩu:</label>
+                       <input type="password" value="" name="j_password" id="j_password" class="" onkeypress="if(event.keyCode==13) {document.forms[0].submit();}"/>
+                   </p>
+                   <dl>
+                       <dd><img src="${imageFolder}/security-login.png" width="80px" height="80px" style="margin-right:25px;" /></dd>
+                       <dt>
+                           <p><input type="checkbox" name="_spring_security_remember_me" id="remember_checkbox" /> Ghi nhớ lại mật khẩu của tôi<!-- | <a href="#" class="redTxt" title="Quên mật khẩu">Quên mật khẩu</a> --> </p>
+                           <p>
+                           	   <!--<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
+                               --><a href="javascript:document.getElementById('loginForm').submit();" id="proceed" class="btn-1" title="Đăng nhập"><span><span>Đăng nhập</span></span></a>
+                           </p>    
+                       </dt>
+                   </dl>
+               </form>
+           </div>
+       </div>
+        	
+</div>

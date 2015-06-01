@@ -1,0 +1,165 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:form="http://www.springframework.org/tags/form" class="Provinces"
+	escapeXML="true">
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="stockTransImporterDetailURL" value="/stock/transImport/details" />
+	<spring:url var="stockImporterURL" value="/stock/importer/"/>
+	<spring:url var="scriptsFolder" value="/scripts" />
+
+	<![CDATA[
+<script type="text/javascript" src="${scriptsFolder}/stockExporter.js"></script>
+<script type="text/javascript">
+	var contextPath = "${pageContext.request.contextPath}";
+	function exportReport(type){
+		if ($('#frm_startDate').val() == ""
+			|| $('#frm_endDate').val() == "") {
+			alert("Chọn ngày xuất báo cáo");
+			return;
+		}
+		var action = document.getElementById('stockTransForm').action;
+		document.getElementById('stockTransForm').action = contextPath +"/report/transvaslist?type=" + type;
+		document.getElementById('stockTransForm').submit();
+		document.getElementById('stockTransForm').action = action;
+	}
+
+	function viewResults() {
+		$('#stockTransForm').submit();
+	}
+	function importForm() {
+		window.location.href = '${stockImporterURL}';
+	}
+</script>
+]]>
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>Nhập hàng từ trung tâm khác</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="stockTransForm" id="stockTransForm">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td>
+						</td>
+						<td style="padding-right:10px;">
+						</td>
+						<td>
+						</td>
+						<td rowspan="2">
+							<a href="javascript:;" onclick="viewResults()"
+								class="btn-1" title="Xem kết quả"><span><span style="width:90px">Xem
+										kết quả</span></span></a>
+								<a href="javascript:;" onclick="importForm()"
+									class="btn-1" title="Nhập kho"><span><span style="width:90px">Nhập kho</span></span></a>
+										
+						</td>
+					</tr>
+					<tr>
+						<td><spring:message code="time_interval" htmlEscape="true" /></td>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="startDate" cssClass="dateField tcal" />
+							</div>
+						</td>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="endDate" cssClass="dateField tcal" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" style="text-align: left;"><form:errors
+								path="filter_message"></form:errors></td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="transTopPagination"
+								formSubmit="stockTransForm" submitMethod="POST" /></td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<table width="99%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="4%">STT</td>
+										<td>Tên ĐL/CH</td>
+										<td width="8%">Ngày giao dịch</td>
+										<td width="35%">Ghi chú</td>
+										<td width="8%">Số lượng</td>
+										<td width="10%">Hàng động</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${not empty transList}">
+											<c:forEach items="${transList}" var="item" varStatus="status">
+												<spring:url value="" var="waitClass"/>
+												<tr>
+													<td align="center">${(page-1)*size+status.count}</td>
+													<td>${item.name} (${item.code})</td>
+													<td align="center"><fmt:formatDate
+														value="${item.createDate}" type="both"
+														dateStyle="medium" timeStyle="medium"
+														pattern="dd/MM/yyyy HH:mm:ss" /></td>
+													<td>${item.note}</td>
+													<td align="right">
+														<fmt:formatNumber type="number" 
+            											pattern="###,###" value="${item.quantity}" /></td>
+													<td align="center">
+														<a href="${stockTransImporterDetailURL}/${item.id}">Xem</a>
+													</td>
+												</tr>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<td colspan="6" align="center">Không có dữ liệu.</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="transBottomPagination"
+								formSubmit="stockTransForm" submitMethod="POST" /></td>
+					</tr>
+					<tr>
+						<td colspan="4"><!--<a href="javascript:exportReport('xls');"
+							class="btn-1" title="Export XLS"><span><span>Xuất
+										ra Excel</span></span></a> &#160;&#160;&#160;
+										--></td>
+					</tr>
+				</table>
+			</form:form>
+		</div>
+	</div>
+</div>

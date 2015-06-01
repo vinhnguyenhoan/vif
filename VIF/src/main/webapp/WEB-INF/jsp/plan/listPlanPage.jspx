@@ -1,0 +1,249 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="FormInfoProduct" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="userDetailURL" value="/user/detail" />
+	<spring:url var="imageFolder" value="/images" />
+	<spring:url var="planDetailURL" value="/plan/view" />
+	<spring:url var="copyPlanURL" value="/plan/copy" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<![CDATA[
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js?v=2"></script>
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";
+		function FilterList(){
+			showLoading();
+			document.getElementById('listPlanForm').submit();
+		}
+		function DeleteKehoach(keHoachId){
+			if (confirm('Bạn chắc chắn xóa kế hoạch này không?')) {
+				showLoading();
+				document.getElementById('keHoachId').value= keHoachId;
+				document.getElementById('pageName').value= "DeleteKeHoach";
+				document.getElementById('listPlanForm').action='../plan/list';
+				document.getElementById('listPlanForm').submit();
+			}	
+		}
+		function EditKehoach(keHoachId,trangThaiKeHoach){
+			//if(trangThaiKeHoach){
+			//	alert('Không thể sửa khi kế hoạch đã hoàn thành');
+			//}else{
+				showLoading();
+				window.location=contextPath+"/plan/edit/"+keHoachId;
+			//}		
+		}		
+		
+		function exportData(){
+			if ($('#frm_startDate').val() == ""
+				|| $('#frm_endDate').val() == "") {
+				alert("Chọn ngày xuất báo cáo");
+				return;
+			}else if($('#employer').val()==0){
+					alert("Chọn nhân viên");
+			}else
+				submitExportForm('listPlanForm', contextPath + "/export/khChamSocDBH");
+		}
+	</script>
+	]]>
+	<div id="inner-content">
+
+		<span class="bor-left"><img src="${imageFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>DANH SÁCH TUYẾN ĐƯỜNG</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="listPlanForm">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td><spring:message code="filter_by_user" htmlEscape="true" /></td>
+						<td>
+								<c:choose>
+									<c:when test="${companyLogin!=null}">
+										<input type="hidden" name="company" id="company" value="${companyLogin}"/>
+									</c:when>
+									<c:otherwise>
+										<div style="display: inline;width:150px;padding-right:10px">
+											<form:select path="company" style="width:150px" cssClass="select2_combo"
+												onchange="changeUserCompany($(this) ,$('#agent'), $('#employer'));">
+												<form:options items="${companies}" itemValue="id"
+													itemLabel="ten" />
+											</form:select>
+										</div>
+									</c:otherwise>
+								</c:choose>
+								<div style="display: inline;width:150px;padding-right:20px">
+									<form:select path="agent" style="width:150px;" cssClass="select2_combo"
+										onchange="changeRegionList($(this), $('#area'), [$('#provinceArea'), $('#employer')]);">
+										<form:options items="${regionList}" itemValue="id"
+											itemLabel="name" />
+									</form:select>
+								</div>
+								<div style="width: 150px;padding-right:20px; display: inline;">
+									<form:select path="area" cssClass="select2_combo"
+										style="width:150px" onchange="changeAreaList($(this), $('#provinceArea'), $('#employer'));">
+										<form:options items="${areaList}" itemValue="id"
+											itemLabel="name" />
+									</form:select>
+								</div>
+								<div style="width: 150px; padding-right:20px; display: inline;">
+									<form:select id="provinceArea" path="province" cssClass="select2_combo"
+										style="width:150px" onchange="changeProvinceList($(this), $('#employer'));">
+										<form:options items="${provinceAreaList}" itemValue="id"
+											itemLabel="name" />
+									</form:select>
+								</div>
+								<div style="width: 150px; padding-right:20px; display: inline;">
+									<form:select id="employer" path="employer" cssClass="select2_combo"
+										style="width:150px">
+										<form:options items="${employerList}" itemValue="id"
+											itemLabel="name" />
+									</form:select>
+								</div>
+							</td>
+						<td><a href="javascript:FilterList();" class="btn-1"
+							title="Xem Kế Hoạch"><span><span>Xem Kế Hoạch</span></span></a></td>
+					</tr>
+					<tr>
+						<td><spring:message code="time_interval" htmlEscape="true" /></td>
+						<td>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="startDate" cssClass="dateField tcal" />
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="endDate" cssClass="dateField tcal" />
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="text_search" htmlEscape="true" />
+								<form:input id="text" path="searchText" style="width:140px" 
+								onkeypress="if(event.keyCode==13) {FilterList();}"/>
+							</div>
+						</td>
+						<td><form:hidden path="pageName" /> 
+							<form:hidden path="keHoachId" /> </td>
+					</tr>
+
+					<tr>
+						<td colspan="3"><strong> <util:pagination
+									maxPages="${maxPages}" page="${page}" size="${size}"
+									id="posBottomPagination" submitMethod="POST" listingURL=""
+									formSubmit="listPlanForm" />
+						</strong></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table width="99%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="5%">#</td>
+										<td>Tên tuyến</td>
+										<td width="6%">Ngày thực hiện</td>
+										<td width="6%">Ngày lập</td>
+										<td width="5%">Số thẻ</td>
+										<td width="12%">Nhân viên</td>
+										<td width="8%">Tỉnh thành</td>
+										<td width="12%">Người lập</td>
+										<td width="5%">Tiến độ chỉ tiêu</td>
+										<td width="6%">Tình trạng</td>
+										<td width="16%">Hành động</td>
+									</tr>
+								</thead>
+								<tbody>
+								<c:choose>
+									<c:when test="${not empty planList}">
+										<c:forEach items="${planList}" var="planItem" varStatus="status">
+											<tr>
+												<td>${planItem[0]}</td>
+												<td><a href="${planDetailURL}/${planItem[0]}"
+													title="Xem kế hoạch">${planItem[1]}</a></td>
+												<td><fmt:formatDate value="${planItem[2]}" type="both"
+														pattern="dd/MM/yyyy" /></td>
+												<td><fmt:formatDate value="${planItem[3]}" type="both"
+														pattern="dd/MM/yyyy" /></td>
+												<td><a href="${userDetailURL}/${planItem[8]}">${planItem[9]}</a></td>
+												<td><a href="${userDetailURL}/${planItem[8]}">${planItem[4]}</a></td>
+												<td>${planItem[10]}</td>
+												<td>${planItem[5]}</td>
+												<td align="right"><fmt:formatNumber pattern="###.#" value="${completies[status.index]}"/> %</td>
+												<td style="text-align: center"><c:choose>
+														<c:when test="${planItem[6]}">
+															<input type="checkbox" disabled="disabled"
+																checked="checked" value="${planItem[6]}" />
+														</c:when>
+														<c:otherwise>
+															<input type="checkbox" disabled="disabled"
+																value="${planItem[6]}" />
+														</c:otherwise>
+													</c:choose></td>
+												<td><a href="${planDetailURL}/${planItem[0]}"
+													class="redTxt" title="Xem kế hoạch">Xem</a>&#160;|&#160; 
+													<a	href="javascript:EditKehoach(${planItem[0]},${planItem[6]});"
+														class="redTxt" title="Chỉnh sửa kế hoạch">Sửa</a>&#160;|&#160;
+													<a href="javascript:DeleteKehoach(${planItem[0]});"
+														class="redTxt" title="Xóa kế hoạch">Xóa</a>&#160;|&#160;
+													<a href="${copyPlanURL}?kehoach=${planItem[0]}"
+													class="redTxt" title="Copy kế hoạch">Sao chép</a></td>
+											</tr>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<tr>
+											<td colspan="11" align="center">Không có dữ liệu</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"><strong> <util:pagination
+									maxPages="${maxPages}" page="${page}" size="${size}"
+									id="posBottomPagination" submitMethod="POST" listingURL=""
+									formSubmit="listPlanForm" />
+						</strong></td>
+					</tr>
+					<tr>
+						<td colspan="3"></td>
+					</tr>
+					<tr>
+						<td colspan="3"><a
+							href="${pageContext.request.contextPath}/plan/create"
+							class="btn-1" title="Lập Kế Hoạch Mới"><span><span>Lập
+										Kế Hoạch Mới</span></span></a>
+							<a href="javascript:exportData()" 
+					       class="btn-1" title="Export Lịch Công Tác">
+					       <span><span>Export Lịch Công Tác</span></span></a> &#160;&#160;&#160;
+										
+					</td>
+										
+					</tr>
+				</table>
+			</form:form>
+		</div>
+	</div>
+</div>

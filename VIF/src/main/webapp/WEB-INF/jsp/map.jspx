@@ -1,0 +1,297 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	id="mapContainer">
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>
+					<c:choose>
+						<c:when test="${showSupervisorTracking}">
+							LỘ TRÌNH CỦA NHÂN VIÊN GIÁM SÁT
+						</c:when>
+						<c:otherwise>
+							GIÁM SÁT LỘ TRÌNH CHĂM SÓC ĐIỂM BÁN HÀNG
+						</c:otherwise>
+					</c:choose>
+				</span>
+			</h2>
+		</div>
+		<div id="content">
+			<!-- Filter -->
+			<form id="form" name="form">
+				<div class="mapFiler" id="filterContainer">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+								<div class="field">
+									<!-- User name -->
+									<div class="label_filter">
+										<spring:message code="map_filter_user" htmlEscape="true" />
+										:
+									</div>
+									<select id="frm_user_id" name="frm_user_id"  class="select2_combo" style="width:180px;">
+										<option value="0">--- Chọn nhân viên ---</option>
+										<c:forEach items="${userList}" var="item">
+											<c:choose>
+											<c:when test="${item.key==frm_user_id}">
+											<option value="${item.key}" selected="selected">${item.value}</option>
+											</c:when>
+											<c:otherwise>
+											<option value="${item.key}">${item.value}</option>
+											</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="field">
+									<!-- From date -->
+									<div class="label_filter">
+										<spring:message code="map_filter_from_date" htmlEscape="true" />
+										:
+									</div>
+									<fmt:formatDate value="${frm_from_date}" type="both"
+										dateStyle="medium" timeStyle="medium" var="formatedDate"
+										pattern="dd/MM/yyyy" />
+									<input type="text" name="frm_from_date" value="${formatedDate}"
+										id="frm_from_date" class="dateField tcal" />
+								</div>
+								<div class="field">
+									<!-- To date -->
+									<div class="label_filter">
+										<spring:message code="map_filter_to_date" htmlEscape="true" />
+										:
+									</div>
+									<fmt:formatDate value="${frm_to_date}" type="both"
+										dateStyle="medium" timeStyle="medium" var="formatedDate"
+										pattern="dd/MM/yyyy" />
+									<input type="text" id="frm_to_date" name="frm_to_date"
+										value="${formatedDate}" class="dateField tcal" />
+								</div>
+								<div class="field">
+									<!-- Search button -->
+									<spring:message code="button_search" var="searchLabel"
+										htmlEscape="false" />
+									<spring:url value="/map" var="searchLink" />
+									<c:if test="${showSupervisorTracking}">
+									<spring:url value="/map/supervisor" var="searchLink" />
+									</c:if>
+									<a href="javascript:;" class="btn-1" title="${searchLabel}"
+										onclick="submitAjaxPostReplaceListElement('${searchLink}', 
+										getListElementIdArrays('renderAreaForGoogleMap'),
+										getListElementArrays('frm_user_id, frm_from_date, frm_to_date'));">
+										<span><span>${searchLabel}</span></span></a>
+								</div> <!--  Zoom control -->
+								<div style="float: right;" id="zoomLinkFilterColumn">
+									<spring:message code="map_zoom_in" var="zoomIn"
+										htmlEscape="false" />
+									<spring:message code="map_zoom_out" var="zoomOut"
+										htmlEscape="false" />
+									<input type="hidden" id="zoomInLabel" value="${zoomIn}" /> <input
+										type="hidden" id="zoomOutLabel" value="${zoomOut}" /> <a
+										href="javascript:;" id="zoomLink" class="zoomIn">${zoomIn}</a>
+								</div>
+							</td>
+						</tr>
+						<!--<tr>
+							<td>
+								 City 
+								<div class="field">
+									<div class="label_filter">
+										<spring:message code="map_filter_city" htmlEscape="true" />
+										:
+									</div>
+									<select id="frm_city" name="frm_city" style="width:180px"
+										onchange="citySelected($('#frm_city'), $('#frm_district'));">
+										<option value="-1">
+											 Empty 
+										</option>
+										<c:forEach items="${dsTinhThanhPho}" var="tinhThanhPho">
+											<c:choose>
+												<c:when test="${tinhThanhPho.id == frm_city}">
+													<option value="${tinhThanhPho.id}" selected="selected">${tinhThanhPho.tenTinh}</option>
+												</c:when>
+												<c:otherwise>
+													<option value="${tinhThanhPho.id}">${tinhThanhPho.tenTinh}</option>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</select>
+								</div>  District 
+								<div class="field">
+									<div class="label_filter">
+										<spring:message code="map_filter_district" htmlEscape="true" />
+										:
+									</div>
+									<select id="frm_district" name="frm_district" style="width:150px"
+										onclick="districtSelected($('#frm_district'), $('#frm_ward'))">
+										<option value="-1">
+											 Empty 
+										</option>
+										<c:if test="${not empty dsQuanHuyen}">
+											<c:forEach items="${dsQuanHuyen}" var="quanHuyen">
+												<c:choose>
+													<c:when test="${quanHuyen.id == frm_district}">
+														<option value="${quanHuyen.id}" selected="selected">${quanHuyen.ten}</option>
+													</c:when>
+													<c:otherwise>
+														<option value="${quanHuyen.id}">${quanHuyen.ten}</option>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</c:if>
+									</select>
+								</div>
+								<div class="field">
+									<div class="label_filter">
+										<spring:message code="map_filter_ward" htmlEscape="true" />
+										:
+									</div>
+									<select id="frm_ward" name="frm_ward" style="width:150px">
+										<option value="-1">
+											 Empty 
+										</option>
+										<c:if test="${not empty dsPhuongXa}">
+											<c:forEach items="${dsPhuongXa}" var="phuongXa">
+												<c:choose>
+													<c:when test="${phuongXa.id == frm_district}">
+														<option value="${phuongXa.id}" selected="selected">${phuongXa.ten}</option>
+													</c:when>
+													<c:otherwise>
+														<option value="${phuongXa.id}">${phuongXa.ten}</option>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</c:if>
+									</select>
+								</div>
+							</td>
+						</tr>
+					--></table>
+				</div>
+			</form>
+			<spring:url value="/scripts/googleMap.js?v=2"
+				var="googleMapScript" />
+			<script type="text/javascript" src="${googleMapScript}">
+			<!-- Empty -->
+				
+			</script>
+			<c:url value="https://maps.googleapis.com/maps/api/js"
+				var="googleAPIUrl">
+				<c:param name="key" value="AIzaSyBUPnRiwUaRWBwlKGwxe8-MoSmGa9N9rdg" />
+				<c:param name="sensor" value="true" />
+			</c:url>
+			<script type="text/javascript" src="${googleAPIUrl}">
+			<!-- Google API URL -->
+				
+			</script>
+			<spring:url var="imagesURL" value="/images" />
+			<spring:url var="mapURL" value="/map" />
+			<input value="${latitude}" name="latitude" id="latitude"
+				type="hidden" /> 
+			<input value="${longitude}" name="longitude"
+				id="longitude" type="hidden" /> 
+			<input value="${mapType}"
+				name="mapType" id="mapType" type="hidden" /> 
+			<input value="${zoom}"
+				name="zoom" id="zoom" type="hidden" />
+
+			<div id="renderAreaForGoogleMap">
+				<table style="width: 100%;">
+					<tbody>
+						<tr id="zoomLinkFullCotainer">
+							<!-- Zoom link container -->
+						</tr>
+					</tbody>
+				</table>
+				<div id="map_canvas"
+					style="width: 98%; height: 500px; border: 1px solid;">
+					<!-- Canvas to display map -->
+				</div>
+				<![CDATA[
+				<script type="text/javascript">
+					function createCheckedImage(index, isSold) {
+						return createMarkerImage(
+								'${mapURL}/worker.png?index=' + index + '&sold=' + isSold, 64, 64, 48, 48);
+					}
+					
+					var map = reloadMap($('#latitude').val(), $('#longitude')
+							.val(), $('#mapType').val(), $('#zoom').val());
+					//var workerImage = createMarkerImage(
+					//		'${imagesURL}/triangle_icon.png', 32, 32, 32, 32);
+					var workerImage = createMarkerImage(
+							'${imagesURL}/checked.png', 32, 32, 72, 72);
+					var storeImage = createMarkerImage(
+							'${imagesURL}/store-64x64.png', 64, 64, 48, 48);
+					var pointImage = createMarkerImage(
+							'${imagesURL}/point-image.png', 32, 32, 28, 28);
+					//var pointStartImage = createMarkerImage(
+					//		'${imagesURL}/point-image-green.png', 32, 32, 32, 64);
+					var pointStartImage = createMarkerImage(
+							'${imagesURL}/start.png', 32, 32, 64, 64);
+					//var pointEndImage = createMarkerImage(
+					//		'${imagesURL}/point-image-pink.png', 32, 32, 32, 64);
+					var pointEndImage = createMarkerImage(
+							'${imagesURL}/end.png', 32, 32, 64, 64);
+							
+					var dsThongTinCskh = ${dsThongTinCskh};
+
+					createMarkerFromDsThongTinCskh(dsThongTinCskh, map,
+							storeImage, workerImage);
+							
+					var dsLoTrinh = ${dsLoTrinh};
+					var tenNV = '${tenNV}';		
+					createMarkerFromDsLoTrinh(dsLoTrinh, map,pointImage,tenNV,pointStartImage,pointEndImage);
+					
+					updateMapZoomLink();
+					citySelected($('#frm_city'), $('#frm_district'));
+					$(document).ready(function() { 
+						$("#frm_city").select2(); 
+						$("#frm_district").select2(); 
+						$("#frm_ward").select2(); 
+						/*$("#frm_user_id").select2({
+							minimumInputLength: 1,
+						    ajax: {
+						    	type:"POST",
+						        dataType: "json",
+						        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+						        url: "${pageContext.request.contextPath}/map/userList",
+						        data: function (term, page) {
+						        	return {
+						        		key: term // search term
+						        	};
+						        },
+						        results: function (data) {
+						            return {results: data.results};
+						        }
+						    },
+						    initSelection: function(element, callback) {
+						    	var id=$(element).val();
+						    	if (id!=="") {
+							    	$.ajax("${pageContext.request.contextPath}/map/user", {
+								    	data: {
+								    		id: id
+								    	},
+								    	dataType: "json"
+							    	}).done(function(data) { callback(data); });
+						    	}
+						    }
+						});*/ 
+					});
+				</script>
+				]]>
+			</div>
+		</div>
+	</div>
+</div>

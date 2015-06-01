@@ -1,0 +1,228 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:form="http://www.springframework.org/tags/form" class="Provinces"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	escapeXML="true">
+	<jsp:directive.page import="java.util.Arrays" />
+	<jsp:directive.page import="java.util.ArrayList" />
+	<jsp:directive.page import="java.util.List" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="ajaxURL" value="/ajax" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="orderViewURL" value="/order/view" />
+	<spring:url var="imagesFolder" value="/images" />
+	<spring:url var="userDetailURL" value="/user/detail" />
+	<spring:url var="posSaleURL" value="/pos/sales" />
+
+	<![CDATA[
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js?v=2"></script>
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";
+	
+		function viewResults() {
+			showLoading();
+			$('#orderListForm').submit();
+		}
+	</script>
+	]]>
+	<style>
+		.wait_row{color:red;}	
+	</style>
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>Danh Sách Đơn Hàng</span>
+			</h2>
+		</div>
+		<div id="content">
+			<form:form method="POST" commandName="orderListForm" id="orderListForm">
+				<table width="100%" border="0" cellspacing="5px" cellpadding="0"
+					class="table-1">
+					<tr>
+						<td>
+							<c:choose>
+								<c:when test="${companyLogin!=null}">
+									<input type="hidden" name="company" value="${companyLogin}"/>
+								</c:when>
+								<c:otherwise>
+									<div style="padding-left: 10px; display: inline;">
+										<form:select style="width:140px;" path="company" cssClass="select2_combo"
+											onchange="changeUserCompany($(this) ,$('#agent'), $('#employer'));">
+											<form:options items="${companies}" itemValue="id"
+												itemLabel="ten" />
+										</form:select>
+									</div>
+								</c:otherwise>
+							</c:choose>
+							
+							<div style="display: inline;padding-right:20px">
+								<form:select path="agent" style="width:150px;" cssClass="select2_combo"
+									onchange="changeRegionList($(this), $('#area'), [$('#provinceArea'), $('#employer')]);">
+									<form:options items="${regionList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							<div style="padding-right:20px; display: inline;">
+								<form:select path="area" cssClass="select2_combo"
+									style="width:150px" onchange="changeAreaList($(this), $('#provinceArea'), $('#employer'));">
+									<form:options items="${areaList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							<div style="padding-right:20px; display: inline;">
+								<form:select id="provinceArea" path="province" cssClass="select2_combo"
+									style="width:150px" onchange="changeProvinceList($(this), $('#employer'));">
+									<form:options items="${provinceAreaList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							<div style="padding-right:20px; display: inline;">
+								<form:select id="employer" path="employer" cssClass="select2_combo"
+									style="width:150px">
+									<form:options items="${employerList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+						</td>
+						<td>
+
+							
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="padding-right: 10px; display: inline;">
+								<form:select path="status" style="width:150px" cssClass="select2_combo">
+									<form:option value="0">--- Trạng Thái ---</form:option>
+									<form:options items="${statusList}" itemValue="id"
+										itemLabel="name" />
+								</form:select>
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_from_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_startDate}" var="startDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_startDate" size="14"
+									path="startDate" cssClass="dateField tcal" />
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<spring:message code="map_filter_to_date" htmlEscape="true" />
+								:
+								<fmt:formatDate value="${frm_endDate}" var="endDate"
+									pattern="dd/MM/yyyy" />
+								<form:input type="text" id="frm_endDate" size="14"
+									path="endDate" cssClass="dateField tcal" />
+							</div>
+							<div style="padding-left: 10px; display: inline;">
+								<label>
+									Tên NV:
+								</label>
+								<form:input path="searchText" cssStyle="width: 120px" onkeypress="if(event.keyCode==13) {viewResults();}"/>
+							</div>
+						</td>
+						<td><a href="javascript:;" onclick="viewResults()"
+							class="btn-1" title="Xem kết quả"><span><span>&#160;&#160;Xem
+										kết quả&#160;&#160;</span></span></a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="4" style="text-align: left;"><form:errors
+								path="filter_message"></form:errors></td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="catTopPagination"
+								formSubmit="catListForm" submitMethod="POST" /></td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<table width="99%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="4%">STT</td>
+										<td width="13%">Nơi Đặt Hàng</td>
+										<td>Địa Chỉ</td>
+										<td width="6%">Số Lượng</td>
+										<td width="6%">Số Thẻ</td>
+										<td width="13%">Nhân Viên CS</td>
+										<td width="8%">Tỉnh Thành</td>
+										<td width="7%">Ngày Đặt</td>
+										<td width="7%">Ngày Giao</td>
+										<td width="7%">Trạng thái</td>
+										<td width="10%">Hành động</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${not empty orderList}">
+											<c:forEach items="${orderList}" var="item" varStatus="status">
+												<c:set var="wcl"></c:set>
+												<c:if test="${item.status==2}"><c:set var="wcl">wait_row</c:set></c:if>
+												<tr class="${wcl}">
+													<td align="center">${(page-1)*size+status.count}</td>
+													<td>
+														<a href="${posSaleURL}/${item.posId}">${item.noiDatHang}</a>
+													</td>
+													<td>
+															${item.diaChi}
+													</td>
+													<td align="right"><fmt:formatNumber type="number"
+															pattern="###,###" value="${item.soLuong}" /></td>
+													<td><a href="${userDetailURL}/${item.nhanVienCs.id}">${item.nhanVienCs.soThe}</a></td>
+													<td><a href="${userDetailURL}/${item.nhanVienCs.id}">${item.nhanVienCs.ten}</a></td>
+													<td>${item.province.tenTinh}</td>
+													<td align="center"><fmt:formatDate
+															value="${item.ngayGioDatHang}" type="both"
+															dateStyle="medium" timeStyle="medium"
+															pattern="dd/MM/yyyy HH:mm:ss" /></td>
+													<td align="center"><fmt:formatDate
+															value="${item.ngayGioGiaoHang}" type="both"
+															dateStyle="medium" timeStyle="medium"
+															pattern="dd/MM/yyyy" /></td>
+													<td align="center">${item.statusString}</td>
+            										<td align="center">
+														<a href="${orderViewURL}/${item.id}" class="redTxt" title="Xem">
+															Xem
+														</a>
+													</td>
+												</tr>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<td colspan="9" align="center">Không có dữ liệu.</td>
+											</tr>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" id="catBottomPagination"
+								formSubmit="catListForm" submitMethod="POST" /></td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<!--<a href="javascript:exportReport('xls');"
+							class="btn-1" title="Export XLS"><span><span>Xuất
+										ra Excel</span></span></a> &#160;&#160;&#160;
+						--></td>
+					</tr>
+				</table>
+			</form:form>
+		</div>
+	</div>
+</div>
