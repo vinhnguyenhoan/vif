@@ -65,6 +65,6 @@
 			</list>
 		</property>
 	</bean>
-<bean id="planValidator" class="vn.itt.customercare.validation.PlanValidation"/>
-<bean id="agentValidator" class="vn.itt.customercare.validation.AgentValidation"/>
+<!-- <bean id="planValidator" class="vn.itt.customercare.validation.PlanValidation"/>
+<bean id="agentValidator" class="vn.itt.customercare.validation.AgentValidation"/> -->
 </beans>

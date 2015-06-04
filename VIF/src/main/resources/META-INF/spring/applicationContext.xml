@@ -189,16 +189,16 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 		-->
 	</bean>
 	
-	<task:annotation-driven />
+	<!-- <task:annotation-driven />
 	<util:properties id="systemPros" location="/WEB-INF/system.properties" />
 	<context:property-placeholder properties-ref="systemPros"  />
 	<bean id="CommissionSchedule" class="vn.itt.commissionmgt.controllers.CommissionSchedule" />
 	
 	  
 	<task:scheduled-tasks>
-        <!--  <task:scheduled ref="CommissionSchedule" method="testTimer" cron="0 28 21 * * ?"></task:scheduled> -->
+         <task:scheduled ref="CommissionSchedule" method="testTimer" cron="0 28 21 * * ?"></task:scheduled>
     	<task:scheduled ref="CommissionSchedule" method="testTimer" cron="#{systemPros['system.timer.setting']}"></task:scheduled>
-    </task:scheduled-tasks>
+    </task:scheduled-tasks> -->
     
 	
     
