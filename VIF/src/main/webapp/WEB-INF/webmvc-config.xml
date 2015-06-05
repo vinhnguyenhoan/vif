@@ -9,7 +9,7 @@
 	
 	<util:properties id="systemProperties" location="/WEB-INF/system.properties"/>
 	
-	<context:component-scan base-package="vn.itt" annotation-config="true" use-default-filters="false">
+	<context:component-scan base-package="vn.vif" annotation-config="true" use-default-filters="false">
 		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation" />
 		<context:include-filter expression="org.springframework.stereotype.Repository" type="annotation" />
 		<context:include-filter expression="org.springframework.stereotype.Service" type="annotation" />
@@ -65,6 +65,6 @@
 			</list>
 		</property>
 	</bean>
-<!-- <bean id="planValidator" class="vn.itt.customercare.validation.PlanValidation"/>
-<bean id="agentValidator" class="vn.itt.customercare.validation.AgentValidation"/> -->
+<!-- <bean id="planValidator" class="vn.vif.customercare.validation.PlanValidation"/>
+<bean id="agentValidator" class="vn.vif.customercare.validation.AgentValidation"/> -->
 </beans>

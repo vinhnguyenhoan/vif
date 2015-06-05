@@ -64,7 +64,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
         The most commonly used annotation is @Autowired, which instructs Spring to
         dependency inject an object into your class.
     -->
-    <context:component-scan base-package="vn.itt">
+    <context:component-scan base-package="vn.vif">
         <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
     </context:component-scan>
     
@@ -122,27 +122,27 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>vn.itt.customercare.models</value>
-				<value>vn.itt.customercare.webservices.models</value>
-				<value>vn.itt.salesmgt.webservices.models</value>
-				<value>vn.itt.salesmgt.models</value>
+				<value>vn.vif.customercare.models</value>
+				<value>vn.vif.customercare.webservices.models</value>
+				<value>vn.vif.salesmgt.webservices.models</value>
+				<value>vn.vif.salesmgt.models</value>
 				
-				<value>vn.itt.historymgt.webservices.models</value>
-				<value>vn.itt.historymgt.models</value>
+				<value>vn.vif.historymgt.webservices.models</value>
+				<value>vn.vif.historymgt.models</value>
 				
-				<value>vn.itt.productsmgt.webservices.models</value>
-				<value>vn.itt.productsmgt.models</value>
+				<value>vn.vif.productsmgt.webservices.models</value>
+				<value>vn.vif.productsmgt.models</value>
 				
-				<value>vn.itt.storemgt.webservices.models</value>
-				<value>vn.itt.storemgt.models</value>
+				<value>vn.vif.storemgt.webservices.models</value>
+				<value>vn.vif.storemgt.models</value>
 				
-				<value>vn.itt.channelsmgt.webservices.models</value>
-				<value>vn.itt.channelsmgt.models</value>
+				<value>vn.vif.channelsmgt.webservices.models</value>
+				<value>vn.vif.channelsmgt.models</value>
 				
-				<value>vn.itt.commissionmgt.webservices.models</value>
-				<value>vn.itt.commissionmgt.models</value>
+				<value>vn.vif.commissionmgt.webservices.models</value>
+				<value>vn.vif.commissionmgt.models</value>
 				
-				<value>vn.itt.report.models</value>
+				<value>vn.vif.report.models</value>
 			</list>
 		</property>
 		<property name="annotatedClasses">
@@ -192,7 +192,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	<!-- <task:annotation-driven />
 	<util:properties id="systemPros" location="/WEB-INF/system.properties" />
 	<context:property-placeholder properties-ref="systemPros"  />
-	<bean id="CommissionSchedule" class="vn.itt.commissionmgt.controllers.CommissionSchedule" />
+	<bean id="CommissionSchedule" class="vn.vif.commissionmgt.controllers.CommissionSchedule" />
 	
 	  
 	<task:scheduled-tasks>

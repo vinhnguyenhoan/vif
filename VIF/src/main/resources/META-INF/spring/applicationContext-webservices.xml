@@ -21,7 +21,7 @@
             for classes configured as Spring managed beans and automatically sets up objects annotated with  
             @Controller, @Service etc.  
       -->
-      <context:component-scan base-package="vn.itt" />
+      <context:component-scan base-package="vn.vif" />
 	   
       <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		 <property name="order" value="1" /> 	
