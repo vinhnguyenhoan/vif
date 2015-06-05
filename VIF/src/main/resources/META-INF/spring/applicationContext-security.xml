@@ -40,7 +40,7 @@
 		<intercept-url pattern="/import/**" access="hasRole('ROLE_ADMIN')" />
 	</http>
 	
-	<beans:bean id="LoginUserDetailsService" class="vn.itt.daos.LoginUserDetailsService"></beans:bean>
+	<beans:bean id="LoginUserDetailsService" class="vn.vif.daos.LoginUserDetailsService"></beans:bean>
 	
 	<!-- Configure Authentication mechanism -->
 	<authentication-manager alias="authenticationManager">
