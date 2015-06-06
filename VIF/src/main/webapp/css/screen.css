@@ -23,13 +23,13 @@ html{ height:100%}
 table, caption, tbody, tfoot, thead, tr, th, td {font-size:100%; vertical-align:baseline; outline:0; margin:0; padding:0;}
 table { border-collapse:collapse; border-spacing: 0;}*/
 /******* Default rules tags *******/
-body {font-family:Tahoma, Geneva, sans-serif; color:#333333; font-size:11px; background-color:#1A5CBA; height:100%;}
+body {font-family:Tahoma, Geneva, sans-serif; color:#333333; font-size:11px; background-color:#c31f5c; height:100%;}
 h1 {font-size:20px;}
 h2 {font-size:18px; }
 h3 {font-size:16px;}
 h4 {font-size:12px; padding:15px 0}
 h5 {font-size:12px;}
-a{text-decoration:none; color:#1A5CBA;}
+a{text-decoration:none; color:#c31f5c;}
 a:hover{text-decoration:none; color:#0099cc}
 input, select, textarea {font-size:11px; border:1px solid #CCC; font-family:Arial, Helvetica, sans-serif;}
 input[type="checkbox"]{ border:none;}
@@ -65,7 +65,7 @@ input[type="checkbox"]{ border:none;}
 	    max-width: 280px;
 	}
 	/*******main*******/
-	#main { overflow:hidden; background-color:#1A5CBA; height:100%;}
+	#main { overflow:hidden; background-color:#c31f5c; height:100%;}
 		/********Context*******/			
 		#wrap-context{ width:20%; float:left; background:url(../images/line_r.png) 100% 0 repeat-y; padding-right:2px; position:relative}
 			#inner-context{ background:#333333 url(../images/bgd_main.png) 0 0 repeat-x; padding-top:2px}
@@ -86,7 +86,7 @@ input[type="checkbox"]{ border:none;}
 			#content h3{ height:20px; margin-bottom:20px; border-bottom:solid 1px #666666; position:relative; font-size:12px;}
 				#content h3 span{ display:block; padding:0 10px 0 0; background-color:#e8e8e8; position:absolute; top:13px; left:0}
 	/********footer********/
-	#footer { width:100%; height:52px; background:url(../images/bgloop-footer.png) repeat-x; position:absolute; bottom:0; left:0; z-index:10}	
+	#footer { width:100%; height:52px; background-color:#c31f5c; position:absolute; bottom:0; left:0; z-index:10}	
 		#footer_cnt{ width:442px; height:25px; margin:0 auto; text-align:center; padding-top:5px; font-weight:bold; color:#fff; font-size:11px; background:url(../images/bgd_footer.png) 0 0 no-repeat}
 		.HiddenBg{ background:none !important}	
 			#footer_cnt p span{ color:#0099cc}	

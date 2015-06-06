@@ -12,7 +12,7 @@
 	<div id="main">
            <div class="wrap-popup-3">
    	        <div class="title-1">
-       	        <h4>Đăng nhập vào chương trình CSĐBH</h4>
+       	        <h4>Đăng nhập vào hệ thống VIF</h4>
                </div>
                <form id="loginForm" action="${fn:escapeXml(form_url)}" method="POST" class="frm-popup3">
                    <h2 class="errorMessage">	

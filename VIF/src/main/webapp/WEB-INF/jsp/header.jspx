@@ -22,7 +22,7 @@
 						<img src="${home}${imagesRoot}/companies/${companyLogo}?v=${ver}" height="43" alt="mSales - Bán Hàng KPP" />
 					</c:when>
 					<c:otherwise>
-						<img src="${imagesFolder}/logo_itt.png" width="285" height="43" alt="mSales - Bán Hàng KPP" />
+						<img src="${imagesFolder}/logo.png" height="43" alt="mSales - Bán Hàng KPP" />
 					</c:otherwise>
 				</c:choose>
 			</a>
