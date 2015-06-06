@@ -124,24 +124,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 			<list>
 				<value>vn.vif.customercare.models</value>
 				<value>vn.vif.customercare.webservices.models</value>
-				<value>vn.vif.salesmgt.webservices.models</value>
-				<value>vn.vif.salesmgt.models</value>
-				
-				<value>vn.vif.historymgt.webservices.models</value>
-				<value>vn.vif.historymgt.models</value>
-				
-				<value>vn.vif.productsmgt.webservices.models</value>
-				<value>vn.vif.productsmgt.models</value>
-				
-				<value>vn.vif.storemgt.webservices.models</value>
-				<value>vn.vif.storemgt.models</value>
-				
-				<value>vn.vif.channelsmgt.webservices.models</value>
-				<value>vn.vif.channelsmgt.models</value>
-				
-				<value>vn.vif.commissionmgt.webservices.models</value>
-				<value>vn.vif.commissionmgt.models</value>
-				
+				<value>vn.vif.models</value>
 				<value>vn.vif.report.models</value>
 			</list>
 		</property>

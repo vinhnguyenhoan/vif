@@ -56,9 +56,9 @@ public enum UserRole {
 		}
 	}
 	
-	public static List<UserRole> getListUserRole(NguoiSuDung user){
+	public static List<UserRole> getListUserRole(VIFUser user){
 		List<UserRole> list = new ArrayList<UserRole>();
-		if(user.getVaiTro().equalsIgnoreCase(ROLE_ADMIN.id)){
+		if(user.getRole().equalsIgnoreCase(ROLE_ADMIN.id)){
 			list.add(ROLE_ADMIN);
 			list.add(ROLE_COMPANY_ADMIN);
 			list.add(ROLE_MANAGER);
@@ -66,18 +66,18 @@ public enum UserRole {
 			list.add(ROLE_SUPERVISOR);
 			list.add(ROLE_LEADER);
 			list.add(ROLE_SALESMAN);
-		}else if(user.getVaiTro().equalsIgnoreCase(ROLE_COMPANY_ADMIN.id)){
+		}else if(user.getRole().equalsIgnoreCase(ROLE_COMPANY_ADMIN.id)){
 			list.add(ROLE_MANAGER);
 			list.add(ROLE_AREA_MANAGER);
 			list.add(ROLE_SUPERVISOR);
 			list.add(ROLE_LEADER);
 			list.add(ROLE_SALESMAN);
-		}else if(user.getVaiTro().equalsIgnoreCase(ROLE_MANAGER.id)){
+		}else if(user.getRole().equalsIgnoreCase(ROLE_MANAGER.id)){
 			list.add(ROLE_AREA_MANAGER);
 			list.add(ROLE_SUPERVISOR);
 			list.add(ROLE_LEADER);
 			list.add(ROLE_SALESMAN);
-		}else if(user.getVaiTro().equalsIgnoreCase(ROLE_AREA_MANAGER.id)){
+		}else if(user.getRole().equalsIgnoreCase(ROLE_AREA_MANAGER.id)){
 			list.add(ROLE_SUPERVISOR);
 			list.add(ROLE_LEADER);
 			list.add(ROLE_SALESMAN);

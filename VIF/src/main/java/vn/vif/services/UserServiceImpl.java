@@ -6,26 +6,26 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.vif.models.NguoiSuDung;
+import vn.vif.models.VIFUser;
 
 @Service
-public class NguoiSuDungServiceImpl extends GeneralServiceImpl<NguoiSuDung>
-		implements NguoiSuDungService {
+public class UserServiceImpl extends GeneralServiceImpl<VIFUser>
+		implements UserService {
 	@Autowired
 	protected SessionFactory sessionFactory;
 
-	public Class<NguoiSuDung> getEntityClass() {
-		return NguoiSuDung.class;
+	public Class<VIFUser> getEntityClass() {
+		return VIFUser.class;
 	}
 	
-	public NguoiSuDung findByUsername(String username) {
+	public VIFUser findByUsername(String username) {
 
 		String[] fieldNames = new String[1];
-		fieldNames[0] = "maDangNhap";
+		fieldNames[0] = "userName";
 		String[] fieldValues = new String[1];
 		fieldValues[0] = username;
 
-		List<NguoiSuDung> userList = list(fieldNames, fieldValues, false, null,
+		List<VIFUser> userList = list(fieldNames, fieldValues, false, null,
 				0, 1);
 		if (null != userList && !userList.isEmpty()) {
 			return userList.get(0);

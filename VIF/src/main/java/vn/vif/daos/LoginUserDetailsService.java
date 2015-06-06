@@ -13,31 +13,31 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import vn.vif.models.NguoiSuDung;
-import vn.vif.services.NguoiSuDungService;
+import vn.vif.models.VIFUser;
+import vn.vif.services.UserService;
 
 
 @Transactional(readOnly=true)
 @Service("LoginUserDetailsService")
 public class LoginUserDetailsService implements UserDetailsService{
 	@Autowired
-	private NguoiSuDungService userService;
+	private UserService userService;
 	
 	public UserDetails loadUserByUsername(String username)
 	        throws UsernameNotFoundException {
-		NguoiSuDung loggedInUser = userService.findByUsername(username);				
+		VIFUser loggedInUser = userService.findByUsername(username);				
 	    if(loggedInUser==null) {throw new UsernameNotFoundException("No such user: " + username);
 	    } else if (loggedInUser.getAuthorities().isEmpty()) {
 	        throw new UsernameNotFoundException("User " + username + " has no authorities");
 	    }
 	    boolean accountNonExpired = true;
 	    boolean credentialsNonExpired = true;	   
-	    SecurityUser user=new SecurityUser(loggedInUser.getMaDangNhap(),
-	    		loggedInUser.getMatKhau().toLowerCase(),
-	    		loggedInUser.getIsActive(),
+	    SecurityUser user=new SecurityUser(loggedInUser.getUserName(),
+	    		loggedInUser.getPassword().toLowerCase(),
+	    		!loggedInUser.isLocked(),
 	            accountNonExpired,
 	            credentialsNonExpired,
-	            !loggedInUser.getLocked(),
+	            !loggedInUser.isLocked(),
 	            getAuthorities(loggedInUser.getAuthorities()));
 	    user.setUser(loggedInUser);	  
 	    return user;

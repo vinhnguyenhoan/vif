@@ -7,18 +7,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
-import vn.vif.models.NguoiSuDung;
-import vn.vif.services.NguoiSuDungService;
+import vn.vif.models.VIFUser;
+import vn.vif.services.UserService;
 
 @Repository
 public class SecurityUtil {
 
 	@Autowired
-	private NguoiSuDungService nguoiSuDungService;
+	private UserService nguoiSuDungService;
 
-	public NguoiSuDung getCurrentUser() {
+	public VIFUser getCurrentUser() {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<NguoiSuDung> dsNguoiSuDungs = nguoiSuDungService.list(new String[] { "maDangNhap" },
+		List<VIFUser> dsNguoiSuDungs = nguoiSuDungService.list(new String[] { "userName" },
 				new Object[] { user.getUsername() }, true, null, 0, 1);
 		if (dsNguoiSuDungs.size() > 0) {
 			return dsNguoiSuDungs.get(0);

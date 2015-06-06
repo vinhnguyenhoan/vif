@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import vn.vif.models.NguoiSuDung;
+import vn.vif.models.VIFUser;
 
 public class SecurityUser extends org.springframework.security.core.userdetails.User{
 
@@ -13,15 +13,15 @@ public class SecurityUser extends org.springframework.security.core.userdetails.
 	 */
 	private static final long serialVersionUID = 3908817079906409363L;
 	
-	private NguoiSuDung user;
+	private VIFUser user;
   
 
-    public NguoiSuDung getUser() {
+    public VIFUser getUser() {
 		return user;
 	}
 
 
-	public void setUser(NguoiSuDung user) {
+	public void setUser(VIFUser user) {
 		this.user = user;
 	}
 
