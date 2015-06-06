@@ -3,7 +3,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>vn.vif</groupId>
     <artifactId>vif</artifactId>
-    <packaging>maven-plugin</packaging>
     <name>VIF</name>
     <properties>
         <aspectj.version>1.7.0.RC1</aspectj.version>

@@ -81,7 +81,7 @@
 	
    	<div id="sidebar-left" class="context-block">
    	 
-	       	<sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">    
+	       	<sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">    
                 <div class="block-nav-left">
                   <p class="title-1">
                        <a href="#" title="">
@@ -96,7 +96,7 @@
             </div>
             </sec:authorize>
 
-			<sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+			<sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
            <div class="block-nav-left">
                <p class="title-1">
                        <a href="#" title="">
@@ -120,42 +120,6 @@
            </div>
            </sec:authorize>
            
-           
-           <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
-           <div class="block-nav-left">
-              <p class="title-1">
-                  <a href="#" title="">
-                      <img src="${imageFolder}/dummy.gif" class="ui-icon icon-08" alt="" />
-                      <span>Hệ Thống Kênh Phân Phối</span>
-                      <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
-                  </a>
-              </p>
-              <ul style="display:none">
-                       <li><a href="${nppListURL}" title="Danh sách nhà phân phối">Danh sách Nhà Phân Phối</a></li>
-                  		<li><a href="${posListURL}" title="Danh sách điểm bán hàng">Danh sách Điểm Bán Hàng</a></li>
-                   		<li><a href="${newPosListURL}" title="Danh sách điểm mới">Danh sách Điểm mới</a></li> 
-              </ul>
-          </div>
-          </sec:authorize>
-          
-           
-           <div class="block-nav-left" id="channelMenu">
-               <p class="title-1">
-                   <a href="#" title="">
-                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-08" alt="" />
-                       <span>Hệ Thống Kênh Quản Lý</span>
-                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
-                   </a>
-               </p>
-               <ul style="display:none">
-               		<c:forEach items="${levelList}" var="item">
-                       <li><a href="${channelURL}?level=${item.id}" title="Kênh quản lý cấp ${item.name}">${item.name}</a></li>
-               		</c:forEach>
-                    <c:if test="${showSupervisorTracking}">
-                      <li><a href="${mapSupervisorURL}" title="Xem lộ trình Giám sát">Lộ trình Giám sát</a></li>
-                    </c:if>
-              	</ul>
-           </div>
            <![CDATA[
                <script type="text/javascript">
                	var flag =  0;
@@ -239,7 +203,7 @@
                </script>
            ]]>
 
-           <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+           <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
            <div class="block-nav-left">
                <p class="title-1">
                    <a href="#" title="">
@@ -265,7 +229,7 @@
            </div>
            </sec:authorize>
 
-           <!--<sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_AGENT,ROLE_SUPERVISOR">
+           <!--<sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
            <div class="block-nav-left">
                <p class="title-1">
                    <a href="#" title="">
@@ -308,7 +272,7 @@
                       <li><a href="${performanceDonwLoadImagesURL}" title="Tải hình ảnh CSĐBH">Tải hình  CSĐBH</a></li>
                       <li><a href="${roleURL}" title="Danh sách Vai trò">Danh sách Vai trò</a></li>
                        
-                       <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_BRANCH_ADMIN,ROLE_SUPERVISOR,ROLE_MANAGER,ROLE_AGENT">    
+                       <sec:authorize ifAnyGranted="ADMIN,ROLE_BRANCH_ADMIN">    
                           <li><a href="${createPlanURL}" title="Lập kế hoạch">Lập kế hoạch mới</a></li>
                           <li><a href="${createTargetURL}" title="Giao chỉ tiêu">Giao chỉ tiêu bán hàng</a></li>
                          </sec:authorize>
@@ -321,20 +285,20 @@
                    <li><a href="${bestSalesURL}" title="Danh sách Nhân Viên Bán Hàng tốt nhất">Danh sách top Nhân Viên BH</a></li>
                    <li><a href="${bestStaffURL}" title="Danh sách Nhân Viên Giỏi Nhất">Danh sách top Nhân Viên</a></li> 
                -->
-	             <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN">
+	             <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
                                     
                    <li><a href="${catListURL}" title="Danh sách loại hàng hóa">Danh sách Loại hàng hóa</a></li>
                     <li><a href="${productListURL}" title="Danh sách hàng hóa">Danh sách Hàng hóa</a></li>   
                  	
 	            </sec:authorize>
 	            
-	            <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN,ROLE_MANAGER,ROLE_SUPERVISOR,ROLE_AGENT">
+	            <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
                    <li><a href="${userListURL}" title="Danh sách người sử dụng">Danh sách Người sử dụng</a></li>
                    <li><a href="${deviceListURL}" title="Danh mục thiết bị">Danh mục Thiết bị</a></li>
                     <li><a href="${addDeviceURL}" title="Thêm thiết bị mới">Thêm thiết bị mới</a></li>
                    
                    
-                   <sec:authorize ifAnyGranted="ROLE_SMD_ADMIN,ROLE_COMPANY_ADMIN">
+                   <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
 	                   <li><a href="${gpsURL}" title="Cập nhật thông tin GPS">Thông tin giám sát lộ trình</a></li>
 	                   <li><a href="${sendSmsURL}" title="Cập nhật Version cho điện thoại">Cập nhật Version</a></li>
                    </sec:authorize>

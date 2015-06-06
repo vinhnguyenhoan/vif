@@ -9,7 +9,7 @@
 <jsp:directive.page pageEncoding="UTF-8" />
 
 <head>
-	<title>mSales - Bán Hàng KPP</title>
+	<title>VIF</title>
 	<util:load-scripts />
 </head>
 

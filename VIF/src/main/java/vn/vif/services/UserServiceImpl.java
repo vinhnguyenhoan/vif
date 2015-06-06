@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import vn.vif.daos.SecurityUser;
 import vn.vif.models.VIFUser;
 
 @Service
@@ -17,6 +21,24 @@ public class UserServiceImpl extends GeneralServiceImpl<VIFUser>
 	public Class<VIFUser> getEntityClass() {
 		return VIFUser.class;
 	}
+	
+	public VIFUser getLogin() {
+		VIFUser loggedInUser = null;
+		Object principal = SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		
+		if (principal instanceof SecurityUser){
+			SecurityUser userObj=(SecurityUser) principal;
+			loggedInUser = userObj.getUser();
+		} else {
+			Authentication auth = SecurityContextHolder.getContext()
+					.getAuthentication();
+			loggedInUser = findByUsername(((User) auth.getPrincipal())
+					.getUsername());
+		}
+		return loggedInUser;
+	}
+
 	
 	public VIFUser findByUsername(String username) {
 
@@ -32,4 +54,5 @@ public class UserServiceImpl extends GeneralServiceImpl<VIFUser>
 		}
 		return null;
 	}
+	
 }

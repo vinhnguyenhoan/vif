@@ -7,7 +7,7 @@ xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframewor
 	<div id="footer">
        	<div id="footer_cnt" class="HiddenBg">
        		<spring:eval var="systemVersion" expression="@systemProperties['system.version']" />
-               <p>Bản quyền (C) 2012 thuộc <span>ITT</span>. Bảo lưu mọi quyền. ${systemVersion}.</p>
+               <p>Bản quyền (C) 2015 thuộc <span>VIF</span>. Bảo lưu mọi quyền. ${systemVersion}.</p>
         </div>
 	</div>
 </div>

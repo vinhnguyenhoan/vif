@@ -9,7 +9,7 @@
 
 	<div id="header-login">
 		<h1>
-			<a href="${home }" title="GPS Tracking"><span class="header-login-helper"></span><img id="header-login-logo" src="${imagesFolder}/logo_itt.png" alt="GPS Tracking" /></a>
+			<a href="${home }" title="VIF"><span class="header-login-helper"></span><img id="header-login-logo" src="${imagesFolder}/logo.png" alt="VIF" /></a>
 		</h1>
 	</div>
 </div>
