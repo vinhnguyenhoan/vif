@@ -4,6 +4,7 @@
     <groupId>vn.vif</groupId>
     <artifactId>vif</artifactId>
     <name>VIF</name>
+    <packaging>war</packaging>
     <properties>
         <aspectj.version>1.7.0.RC1</aspectj.version>
         <java.version>1.7</java.version>
@@ -380,19 +381,9 @@
             <version>${spring-security.version}</version>
         </dependency>
         <dependency>
-		    <groupId>com.oracle</groupId>
-		    <artifactId>ojdbc6</artifactId>
-		    <version>11.2.0</version>
-		</dependency>
-        <dependency>
         	<groupId>org.codehaus.jackson</groupId>
         	<artifactId>jackson-mapper-asl</artifactId>
         	<version>${jackson.mapper.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>jssc</groupId>
-            <artifactId>jssc</artifactId>
-            <version>0.9.0-Release</version>
         </dependency>
         <dependency>
 			<groupId>org.apache.axis</groupId>
@@ -438,16 +429,6 @@
 	    	<artifactId>mail</artifactId>
 	    	<version>1.4.3</version>
     	</dependency>
-    	<dependency>
-			<groupId>zxing.core</groupId>
-			<artifactId>core</artifactId>
-			<version>2.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>zxing.javase</groupId>
-			<artifactId>javase</artifactId>
-			<version>2.2</version>
-		</dependency>
     </dependencies>
     <build>
         <plugins>
