@@ -33,8 +33,10 @@ public class UserServiceImpl extends GeneralServiceImpl<VIFUser>
 		} else {
 			Authentication auth = SecurityContextHolder.getContext()
 					.getAuthentication();
-			loggedInUser = findByUsername(((User) auth.getPrincipal())
-					.getUsername());
+			if (auth.getPrincipal() instanceof User) {
+				loggedInUser = findByUsername(((User) auth.getPrincipal())
+						.getUsername());
+			}
 		}
 		return loggedInUser;
 	}
