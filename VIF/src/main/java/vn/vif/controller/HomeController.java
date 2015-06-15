@@ -13,7 +13,7 @@ public class HomeController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	@RequestMapping(value = "/index", method = { RequestMethod.GET,
+	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public String index(HttpServletRequest request, Model uiModel) {
 		return home(request, uiModel);

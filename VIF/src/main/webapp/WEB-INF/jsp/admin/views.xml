@@ -3,12 +3,12 @@
 <tiles-definitions>
 
   <definition extends="default" name="index">
-    <put-attribute name="body" value="/WEB-INF/jsp/index.jspx"/>
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/index.jspx"/>
     <!-- <put-attribute name="body" value="/WEB-INF/jsp/home.jspx"/> -->
   </definition>
 
   <definition extends="public" name="login">
-     <put-attribute name="body" value="/WEB-INF/jsp/account/login.jspx"/>
+     <put-attribute name="body" value="/WEB-INF/jsp/admin/account/login.jspx"/>
   </definition>
   
   <definition extends="default" name="posList">
