@@ -16,7 +16,8 @@ public class HomeController {
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public String index(HttpServletRequest request, Model uiModel) {
-		return home(request, uiModel);
+
+		return "index";
 	}
 
 	/*
@@ -63,7 +64,7 @@ public class HomeController {
 	public String home(HttpServletRequest request, Model uiModel) {
 		
 		
-		return "index";
+		return "web";
 	}
 
 }
