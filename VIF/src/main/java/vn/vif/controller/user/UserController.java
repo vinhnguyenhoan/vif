@@ -208,7 +208,7 @@ public class UserController {
 				
 				uiModel.addAttribute("success", true);
 				
-				return "redirect:/user/detail/" + user.getId();
+				return "redirect:/admin/user/detail/" + user.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
 				uiModel.addAttribute("success", false);
