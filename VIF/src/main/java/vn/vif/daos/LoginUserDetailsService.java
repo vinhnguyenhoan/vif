@@ -34,10 +34,10 @@ public class LoginUserDetailsService implements UserDetailsService{
 	    boolean credentialsNonExpired = true;	   
 	    SecurityUser user=new SecurityUser(loggedInUser.getUserName(),
 	    		loggedInUser.getPassword().toLowerCase(),
-	    		!loggedInUser.isLocked(),
+	    		!loggedInUser.getLocked(),
 	            accountNonExpired,
 	            credentialsNonExpired,
-	            !loggedInUser.isLocked(),
+	            !loggedInUser.getLocked(),
 	            getAuthorities(loggedInUser.getAuthorities()));
 	    user.setUser(loggedInUser);	  
 	    return user;

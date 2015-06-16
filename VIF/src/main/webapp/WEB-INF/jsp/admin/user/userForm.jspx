@@ -13,6 +13,7 @@
 	<spring:url var="scriptsFolder" value="/scripts" />
 	<spring:url var="jsFolder" value="/resources/js" />
 	<spring:url var="userPOSURL" value="/pos/user" />
+	<spring:url var="userListURL" value="/admin/user/list"/>
 	
 	<![CDATA[
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.1.js"></script>
@@ -155,163 +156,26 @@
 				</tr>
 				
 				
-				<tr class="info">
-					<td align="right"><strong>Thông tin Công Ty</strong></td>
-				</tr>
-				<c:choose>
-					<c:when test="${companyLogin!=null}">
-						<input type="hidden" name="companyID" id="companyID" value="${companyLogin}"/>
-					</c:when>
-					<c:otherwise>
-						<tr>
-							<td align="right">Công ty (<label class="errorMessage">*</label>):
-							</td>
-							<td>
-							<form:select cssClass="select2_combo" disabled="true" style="width:150px;" path="companyID" onchange="$('#nhanVienCongTy').click();">
-								<form:options items="${companies}" itemValue="id"
-									itemLabel="ten" />
-							</form:select></td>
-						</tr>
-					</c:otherwise>
-				</c:choose>
-						
-						<tr>
-							<td align="right">
-								<label for="vungMien" style="display: inline-block; width: 150px;">Vùng Miền :
-								</label>
-							</td>
-							<td>
-									<select name="vungMien" class="select2_combo" disabled="true" style="width:150px">
-									<option value="${region.id}">${region.ten}</option>
-									</select> 
-							</td>
-						</tr>
-
-						<c:if test="${um!=null}">
-							<tr>
-								<td align="right">
-										<label for="nvQuanLy" style="display: inline-block; width: 150px;">Quản Lý Trực Tiếp:
-										</label> 
-								</td>
-								<td>	
-										<select name="nvQuanLy" class="select2_combo" disabled="true" style="width:150px">
-										<option value="${um.id}">${um.ten}</option>
-										</select> 							
-								</td>
-							</tr>
-						</c:if>
-						
-						<tr>
-							<td align="right">Vai trò:
-							</td>
-							<td><form:select path="vaiTro" cssClass="select2_combo" disabled="true" style="width:150px" onchange="changeRole(this)">
-									<form:option value="">--- Chọn Vai trò ---</form:option>
-									<form:options items="${roleList}" itemValue="id"
-											itemLabel="name" />
-								</form:select> <form:errors path="vaiTro" cssClass="errorMessage" /></td>
-						</tr>
-					<c:if test="${user.vaiTro=='ROLE_LEADER' or user.vaiTro=='ROLE_SALESMAN'}">
-						<tr style="display:none">
-							<td style="text-align: right">
-								Tổ Trưởng:
-							</td>
-							<td>
-								<form:select path="nhanVienGiamSat" cssClass="select2_combo" style="width:150px">
-									<form:option value="0" label="--- Tổ Trưởng ---" />
-									<form:options items="${leaderList}" itemValue="id" itemLabel="name" />
-								</form:select>
-							</td>
-						</tr>
-						<tr>
-							<td align="right">Nhà Phân Phối (<label class="errorMessage">*</label>):
-							</td>
-							<td>
-								<form:select style="width:150px;" path="nppId"  cssClass="select2_combo">
-									<form:options items="${nppList}" itemValue="id" itemLabel="name" />
-								</form:select>
-								<form:errors path="nppId" cssClass="errorMessage" />
-							</td>
-						</tr>
-					</c:if>		
-				
-				<c:if test="${selectLevel!=null}">
-				<tr>
-					<td align="right" style="vertical-align:top">
-						Tỉnh/thành <c:if test="${selectLevel!=4}">quản lý </c:if> (<label class="errorMessage">*</label>):
-					</td>
-					<td>
-						<c:set var="editMode" scope="request">true</c:set>
-						<c:set var="select_province" scope="request">provinces</c:set>
-						<c:if test="${selectLevel==4}">
-							<c:set var="select_province" scope="request">tinhThanhPho</c:set>
-							<c:set var="selectedProvince" scope="request">${user.tinhThanhPho}</c:set>
-						</c:if>
-						<jsp:include page="../provinceSelector.jspx"></jsp:include>
-					</td>
-				</tr>
-				</c:if>
 				<tr>
 					<td>&#160;</td>
 				</tr>
 				<tr class="info">
 					<td align="right"><strong>Thông tin đăng nhập</strong></td>
 				</tr>
-				
 				<tr>
-					<td align="right">Họ tên: (<label class="errorMessage">*</label>):
+					<td align="right">Mã Đăng Nhập(<label class="errorMessage">*</label>):
 					</td>
-					<td><form:input path="ten" cssClass="textInput mediumWidth" />
-						<form:errors path="ten" cssClass="errorMessage" /></td>
-				</tr>
-				<tr>
-					<td align="right">Số thẻ: 
+					<td>
+						<form:input path="userName" cssClass="textInput"/> 
+						<form:errors path="userName" cssClass="errorMessage" />
 					</td>
-					<td><form:input path="soThe" cssClass="textInput" />
-						</td>
 				</tr>
-				<c:choose>
-					<c:when test="${fn:contains(userFormLink,'detail')}">
-						<tr>
-							<td align="right">Mã nhân viên(<label class="errorMessage">*</label>):
-							</td>
-							<td>
-									<form:input path="maNhanVien" cssClass="textInput" disabled="true"/> 
-									<form:errors path="maNhanVien" cssClass="errorMessage" />
-									<i id="codeMsg">(Mã Đăng Nhập)</i>
-							</td>
-						</tr>
-						
-					</c:when>
-					
-					
-					<c:when test="${fn:contains(userFormLink,'add')}">
-						<c:choose>
-							<c:when test="${user.phanLoai==1 or user.phanLoai==4}">
-							<tr>
-								<td align="right">Mã nhân viên (<label class="errorMessage">*</label>):
-								</td>
-								<td><form:input path="maNhanVien" cssClass="textInput" /> <i id="codeMsg">(Mã Đăng Nhập).</i><form:errors
-										path="maNhanVien" cssClass="errorMessage" /></td>
-							</tr>
-							</c:when>
-							
-							<c:otherwise>
-							<tr>
-								<td align="right">Mã nhân viên (<label class="errorMessage">*</label>):
-								</td>
-								<td><form:input path="maNhanVien" cssClass="textInput" disabled="true"/> <i id="codeMsg">(Mã Đăng Nhập) Hệ thống tự sinh ra.</i><form:errors
-										path="maNhanVien" cssClass="errorMessage" /></td>
-							</tr>
-							</c:otherwise>
-						</c:choose>
-					</c:when>
-				</c:choose>
 				<tr>
 					<td align="right">Mật khẩu đăng nhập (<label class="errorMessage">*</label>):
 					</td>
-					<td><form:password path="matKhau" cssClass="textInput"
+					<td><form:password path="password" cssClass="textInput"
 							showPassword="true" /> <form:errors
-							path="matKhau" cssClass="errorMessage" /></td>
+							path="password" cssClass="errorMessage" /></td>
 				</tr>
 				<tr>
 					<td align="right">Nhập lại mật khẩu(<label
@@ -327,48 +191,47 @@
 				<tr class="info">
 							<td align="right"><strong>Thông tin cá nhân</strong></td>
 				</tr>
+				
 				<tr>
-					<td align="right">Ngày sinh:</td>
-					<td><form:input path="birthday" cssClass="textInput tcal"
-							value="${user.birthday}" /> &#160;&#160;&#160;(dd/MM/yyyy) <form:errors
-							path="birthday" cssClass="errorMessage" /></td>
+					<td align="right">Họ tên: (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:input path="fullName" cssClass="textInput mediumWidth" />
+						<form:errors path="fullName" cssClass="errorMessage" /></td>
 				</tr>
 				<tr>
-					<td align="right">Giới :</td>
-					<td><form:select path="gioiTinh" cssClass="select2_combo" style="width:150px;">
-							<option value="">--- Giới Tính ---</option>
-							<form:option path="gioiTinh" value="M">Nam</form:option>
-							<form:option path="gioiTinh" value="F">Nữ</form:option>
-						</form:select></td>
+					<td align="right">Vai trò (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:select path="role" cssClass="select2_combo" style="width:150px">
+							<form:option value="">--- Chọn Vai trò ---</form:option>
+							<form:options items="${roleList}" itemValue="id"
+									itemLabel="name" />
+						</form:select> <form:errors path="role" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Ngày sinh:</td>
+					<td>
+					<fmt:formatDate value="${user.birthday}" pattern="dd/MM/yyyy" var="birthday"/>
+					<form:input path="birthdayString" cssClass="textInput tcal"
+							value="${birthday}" /> &#160;&#160;&#160;(dd/MM/yyyy) <form:errors
+							path="birthdayString" cssClass="errorMessage" /></td>
 				</tr>
 				<tr>
 					<td align="right">Email (<label class="errorMessage">*</label>):
 					</td>
-					<td><form:input path="email" cssClass="textInput mediumWidth" />
+					<td><form:input path="email" cssClass="textInput" />
 						<form:errors path="email" cssClass="errorMessage" /></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td align="right">Điện thoại di động:</td>
-					<td><form:input path="soDienThoai" cssClass="textInput" />
-					<form:errors path="soDienThoai" cssClass="errorMessage" /></td>
-				</tr>
-
-				<tr>
-					<td align="right">Địa chỉ:</td>
-					<td><form:input path="diaChi"
-							cssClass="textInput largestWidth" /></td>
-				</tr>
+					<td><form:input path="phoneNumber" cssClass="textInput" />
+					<form:errors path="phoneNumber" cssClass="errorMessage" /></td>
+				</tr> -->
 				
 				<tr>
 					<td align="right">Đang bị khóa:</td>
 					<td><form:checkbox path="locked" /></td>
 				</tr>
 				
-				<tr>
-					<td align="right">Đã nghỉ việc:</td>
-					<td><form:checkbox path="isInActive" /></td>
-				</tr>
-
 				<tr>
 					<td>&#160;</td>
 				</tr>
@@ -378,9 +241,8 @@
 					<td><a href="javascript:;"
 						onclick="javascript:updateUser();" class="btn-1"
 						title="Lưu thông tin nhân viên"><span><span>Lưu</span></span></a>
-						<a href="javascript:;"
-						onclick="javascript:document.forms[0].reset();" class="btn-1"
-						title="Làm lại"><span><span>Reset</span></span></a></td>
+						<a href="${userListURL}" class="btn-1"
+						title="Danh sách người dùng"><span><span>Trở về danh sách</span></span></a></td>
 				</tr>
 				
 				<tr>

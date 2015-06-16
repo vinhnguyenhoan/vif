@@ -7,7 +7,7 @@ import org.hibernate.criterion.Restrictions;
 
 import vn.vif.daos.Filter;
 import vn.vif.models.VIFUser;
-import vn.vif.utils.GPSUtils;
+import vn.vif.utils.VIFUtils;
 
 public class UserListFilter implements Filter {
 
@@ -28,7 +28,7 @@ public class UserListFilter implements Filter {
 			criteria.add(Restrictions.eq("locked", isLocked()));
 		}
 		
-		if (GPSUtils.isValid(searchText)) {
+		if (VIFUtils.isValid(searchText)) {
 			criteria.add(Restrictions.disjunction()
 					.add(Restrictions.ilike("fullName", "%" + searchText + "%"))
 					.add(Restrictions.ilike("userName", "%" + searchText + "%"))

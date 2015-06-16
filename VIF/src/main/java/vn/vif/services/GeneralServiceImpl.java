@@ -18,7 +18,7 @@ import org.springframework.context.MessageSource;
 import vn.vif.daos.Filter;
 import vn.vif.daos.GenericDAO;
 import vn.vif.daos.LazyLoader;
-import vn.vif.utils.GPSUtils;
+import vn.vif.utils.VIFUtils;
 import vn.vif.utils.converter.OptionItem;
 import vn.vif.utils.converter.OptionItemComparator;
 
@@ -114,7 +114,7 @@ public abstract class GeneralServiceImpl<T> implements GeneralService<T> {
 		List<OptionItem> items = new ArrayList<OptionItem>();
 		try {
 			session = factory.openSession();
-			String sql = String.format("select %s as id, " + GPSUtils.formatNameSQL("%s", "%s") + " as name %s order by %s asc",
+			String sql = String.format("select %s as id, " + VIFUtils.formatNameSQL("%s", "%s") + " as name %s order by %s asc",
 					optionKeyName, optionCodeName, optionValueName, hql, optionValueName);
 			Query query = session.createQuery(sql);
 			/*List<Object[]> queryresult = query.list();

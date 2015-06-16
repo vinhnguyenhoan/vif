@@ -20,7 +20,7 @@
 			</h2>
 		</div>
 		<div id="content">
-			<spring:url value="/user/add" var="userFormLink" scope="request">
+			<spring:url value="/admin/user/add" var="userFormLink" scope="request">
 				<spring:param name="new" />
 			</spring:url>
 			<jsp:include page="userForm.jspx" />

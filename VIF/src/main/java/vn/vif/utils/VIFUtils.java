@@ -24,7 +24,7 @@ import org.springframework.ui.Model;
 
 
 
-public class GPSUtils {
+public class VIFUtils {
 	
 	public final static String pathProperties = "webapps"+System.getProperty("file.separator")+"salesmgtwebapps"+System.getProperty("file.separator")+"WEB-INFwebapps"+System.getProperty("file.separator")+"system.properties";
 	/**
@@ -60,7 +60,7 @@ public class GPSUtils {
 	
 	public static String convertStringDateToStringDate(String strDate){
 		try {
-			Date date= GPSUtils.convertStringToDate(strDate,"yyyyMMddHHmmss");
+			Date date= VIFUtils.convertStringToDate(strDate,"yyyyMMddHHmmss");
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 			return df.format(date);
 		}
@@ -93,7 +93,7 @@ public class GPSUtils {
 		int days = 0;
 		
 		try {
-			Date date= GPSUtils.convertStringToDate(month,"MM-yyyy");
+			Date date= VIFUtils.convertStringToDate(month,"MM-yyyy");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
 			days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -200,7 +200,7 @@ public class GPSUtils {
 				hashedPass = "0" + hashedPass;
 			}
 		} catch (NoSuchAlgorithmException e) {
-			new FunctionException(GPSUtils.class, e);
+			new FunctionException(VIFUtils.class, e);
 		}
 
 		return hashedPass;

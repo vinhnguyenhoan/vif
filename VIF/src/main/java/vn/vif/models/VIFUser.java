@@ -6,6 +6,8 @@ import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,6 +43,7 @@ public class VIFUser implements java.io.Serializable {
 	}
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public long getId() {
 		return this.id;
@@ -97,7 +100,7 @@ public class VIFUser implements java.io.Serializable {
 	}
 
 	@Column(name = "LOCKED", precision = 1, scale = 0)
-	public Boolean isLocked() {
+	public Boolean getLocked() {
 		return this.locked;
 	}
 
@@ -181,6 +184,15 @@ public class VIFUser implements java.io.Serializable {
 
 	public void setBirthdayString(String birthdayString) {
 		this.birthdayString = birthdayString;
-	}	
+	}
+
+	@Transient
+	public String getRoleString() {
+		UserRole ur = UserRole.getById(role);
+		if (ur != null) {
+			return ur.name;
+		}
+		return "";
+	}
 	
 }

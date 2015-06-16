@@ -9,10 +9,7 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url var="scriptsFolder" value="/scripts" />
-	<spring:url var="userDetailURL" value="/user/detail" />
-	<spring:url var="branchDetailURL" value="/branch/detail" />
-	<spring:url var="agentDetailURL" value="/agent/detail" />
-	<spring:url var="userAddVasURL" value="/user/addvas" />
+	<spring:url var="userDetailURL" value="/admin/user/detail" />
 	<spring:url var="imagesFolder" value="/images" />
 
 	<![CDATA[
@@ -37,7 +34,7 @@
 				<input type="hidden" id="size" value="${size}" />
 				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
 					<tr>
-						<td rowspan="4" valign="top">
+						<td colspan="4" valign="top">
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('userList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
@@ -62,36 +59,21 @@
 										<td width="5%">STT</td>
 										<td width="10%">Mã Đăng Nhập</td>
 										<td>Tên Nhân Viên</td>										
-										<td width="10%">Số ĐT</td>
-										<td width="7%">Nghỉ việc</td>
-										<td width="7%">Trạng Thái</td>
-										<td width="10%">Hành động</td>
+										<td width="10%">Email</td>
+										<td width="15%">Vai trò</td>
+										<td width="10%">Trạng Thái</td>
+										<td width="15%">Hành động</td>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach items="${userList}" var="item" varStatus="status">
 										<tr>
 											<td align="center">${(page-1)*size+status.count}</td>
-											<td><a href="${userDetailURL}/${item.id}">${item.maNhanVien}</a></td>
-											<td><a href="${userDetailURL}/${item.id}">${item.soThe}</a></td>
-											<td><a href="${userDetailURL}/${item.id}">${item.ten}</a></td>
-											
-											<td align="right">${item.soDienThoai}</td>
-											
+											<td><a href="${userDetailURL}/${item.id}">${item.userName}</a></td>
+											<td><a href="${userDetailURL}/${item.id}">${item.fullName}</a></td>
+											<td><a href="${userDetailURL}/${item.id}">${item.email}</a></td>
 											<td>
-												${item.vaiTroString}
-											</td>
-											
-											<td>${item.tenTinh}</td>
-											<td align="center">
-												<c:choose>
-													<c:when test="${item.isActive}">
-													<input type="checkbox" disabled="disabled"/>
-													</c:when>
-													<c:otherwise>
-													<input type="checkbox" disabled="disabled" checked="checked"/>
-													</c:otherwise>
-												</c:choose>
+												${item.roleString}
 											</td>
 											<td id="locked${item.id}" align="center">
 												<c:choose>
@@ -101,7 +83,6 @@
 											</td>
 											
 											<td>
-												<c:if test="${item.maDangNhap!='admin'}">
 												<a href="${userDetailURL}/${item.id}"  class="redTxt"
 												title="Cập nhật thông tin">Chỉnh sửa</a>
 												<br/> 
@@ -115,7 +96,6 @@
 												<br/> 
 												<a href="javascript:" onclick="resetPassword('${item.id}');" class="redTxt"
 												title="Xóa mật khẩu">Đổi mật khẩu</a>
-												</c:if> 
 											</td>
 										</tr>
 									</c:forEach>

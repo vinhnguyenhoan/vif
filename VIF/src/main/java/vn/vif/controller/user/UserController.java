@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import vn.vif.models.UserRole;
 import vn.vif.models.VIFUser;
 import vn.vif.models.filter.UserListFilter;
 import vn.vif.services.UserService;
+import vn.vif.utils.VIFUtils;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
 import vn.vif.utils.Utility;
@@ -35,6 +37,7 @@ import vn.vif.utils.Utility;
 @RequestMapping("/admin")
 public class UserController {
 
+	@Autowired
 	private UserService userService;
 	@Autowired
 	private View jsonView_i;
@@ -77,11 +80,10 @@ public class UserController {
 			if (user == null) {
 				return "userError";
 			}
-			/*if (null != user.getBirthdayString()) {
-				user.setBirthday(Utility.parseParamaterDate(user.getBirthdayString()));
-			}*/
+			user.setRetypePassword(user.getPassword());
 			
 			uiModel.addAttribute("user", user);	
+			uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
 			
 			return "userDetail";
 		} catch (Exception e) {
@@ -121,13 +123,13 @@ public class UserController {
 			}
 			curUser.setFullName(user.getFullName());
 			curUser.setEmail(user.getEmail());
-			curUser.setLocked(user.isLocked());
+			curUser.setLocked(user.getLocked());
 			try {
 				
 				userService.update(curUser);
 				uiModel.addAttribute("success", true);
 				
-				return "redirect:/user/detail/" + curUser.getId();
+				return "redirect:/admin/user/detail/" + curUser.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
 				uiModel.addAttribute("success", false);
@@ -147,6 +149,7 @@ public class UserController {
 		user.setRetypePassword(user.getPassword());
 		
 		uiModel.addAttribute("user", user);	
+		uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
 		
 		return "userDetail";
 	}
@@ -160,6 +163,7 @@ public class UserController {
 		VIFUser user = new VIFUser();
 
 		uiModel.addAttribute("user", user);
+		uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
 		
 		return "userAdd";
 	}
@@ -204,12 +208,13 @@ public class UserController {
 				
 				uiModel.addAttribute("success", true);
 				
+				return "redirect:/user/detail/" + user.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
 				uiModel.addAttribute("success", false);
+				user.setPassword(nativePass);
 			}
 			
-			return "redirect:/user/detail/" + user.getId();
 		} else {
 			// restore native pass
 			user.setPassword(nativePass);
@@ -221,6 +226,9 @@ public class UserController {
 			
 			
 		}
+		
+		uiModel.addAttribute("user", user);
+		uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
 			
 		return "userAdd";
 
@@ -229,18 +237,29 @@ public class UserController {
 	private void validateInputData(VIFUser user,
 			BindingResult bindingResult, HttpServletRequest request,String update) {
 		
-		/*NguoiSuDung userLogin = userService.getLogin();*/
 		// Fullname
 		String name = user.getFullName();
-		if (name == null || name.trim().isEmpty()) {
-			bindingResult.rejectValue("ten", "invalid_user_fullname",
+		if (!VIFUtils.isValid(name)) {
+			bindingResult.rejectValue("fullName", "invalid_user_fullname",
+					"empty_error_code");
+		}
+		
+		// user name
+		String uname = user.getFullName();
+		if (!VIFUtils.isValid(uname)) {
+			bindingResult.rejectValue("userName", "app_field_empty",
+					new Object[]{"Username"}, "empty_error_code");
+		}
+		
+		if (!VIFUtils.isValid(user.getRole())) {
+			bindingResult.rejectValue("role", "app_field_empty", new Object[]{"Role"},
 					"empty_error_code");
 		}
 		
 		// Password
 		String password = user.getPassword();
 		if (password == null || password.trim().isEmpty()) {
-			bindingResult.rejectValue("matKhau", "invalid_user_pass",
+			bindingResult.rejectValue("password", "invalid_user_pass",
 					"empty_error_code");
 		}
 
@@ -292,7 +311,7 @@ public class UserController {
 		try {
 			VIFUser user = userService.find(userId);
 			if (user != null) {
-				user.setLocked(!user.isLocked());
+				user.setLocked(!user.getLocked());
 				userService.update(user);
 			} else {
 				status = "Not OK";
