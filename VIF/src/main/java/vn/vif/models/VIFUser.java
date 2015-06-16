@@ -23,7 +23,7 @@ public class VIFUser implements java.io.Serializable {
 	private String userName;
 	private String password;
 	private String fullName;
-	private Date birthDay;
+	private Date birthday;
 	private String email;
 	private String role;
 	private Boolean locked;
@@ -32,6 +32,10 @@ public class VIFUser implements java.io.Serializable {
 	private Date updatedDate;
 	private Long createdBy;
 	private Date createdDate;
+
+	private String retypePassword;
+
+	private String birthdayString;
 	
 	public VIFUser() {
 	}
@@ -76,11 +80,11 @@ public class VIFUser implements java.io.Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "BIRTHDAY", length = 7)
 	public Date getBirthday() {
-		return this.birthDay;
+		return this.birthday;
 	}
 
 	public void setBirthday(Date birthday) {
-		this.birthDay = birthday;
+		this.birthday = birthday;
 	}
 
 	@Column(name = "EMAIL", length = 512)
@@ -159,5 +163,24 @@ public class VIFUser implements java.io.Serializable {
 		role.setRoleName(this.getRole());
 		set.add(role);
 		return set;
+	}
+
+	@Transient
+	public String getRetypePassword() {
+		return retypePassword;
+	}
+
+	public void setRetypePassword(String retypePassword) {
+		this.retypePassword = retypePassword;
+	}
+
+	@Transient
+	public String getBirthdayString() {
+		return birthdayString;
+	}
+
+	public void setBirthdayString(String birthdayString) {
+		this.birthdayString = birthdayString;
 	}	
+	
 }

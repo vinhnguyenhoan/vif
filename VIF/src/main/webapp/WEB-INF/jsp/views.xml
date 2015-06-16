@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+  
+  <definition extends="public-web" name="web">
+    <!-- <put-attribute name="body" value="/WEB-INF/jsp/settings/changePassword.jspx"/> -->
+  </definition>
+  
+  <definition extends="default" name="changePasswordSuccess">
+    <put-attribute name="body" value="/WEB-INF/jsp/settings/changePasswordSuccess.jspx"/>
+  </definition>
+
+  <definition extends="default" name="deviceGPS">
+    <put-attribute name="body" value="/WEB-INF/jsp/settings/gpsSetting.jspx"/>
+  </definition>
+
+</tiles-definitions>

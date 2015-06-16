@@ -37,67 +37,12 @@
 				<input type="hidden" id="size" value="${size}" />
 				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
 					<tr>
-						<td align="right" colspan="3">
-							<table border="0" cellspacing="0" cellpadding="0" class="table-1">
-								<tr>
-									<td>
-									<div style="display: inline;padding-right:20px">
-										<form:select path="agent" style="width:150px;" cssClass="select2_combo"
-											onchange="changeRegionList($(this), $('#area'), [$('#provinceArea')]);">
-											<form:options items="${regionList}" itemValue="id"
-												itemLabel="name" />
-										</form:select>
-									</div>
-									</td>
-									<td>
-									<div style="padding-right:20px; display: inline;">
-										<form:select path="area" cssClass="select2_combo"
-											style="width:150px" onchange="changeAreaList($(this), $('#provinceArea'));">
-											<form:options items="${areaList}" itemValue="id"
-												itemLabel="name" />
-										</form:select>
-									</div>
-									</td>
-									<td>
-									<div style="padding-right:20px; display: inline;">
-										<form:select id="provinceArea" path="province" cssClass="select2_combo"
-											style="width:150px">
-											<form:options items="${provinceAreaList}" itemValue="id"
-												itemLabel="name" />
-										</form:select>
-									</div>
-									</td>
-									<td>
-									<div style="padding-right:20px; display: inline;">
-										<form:select id="role" path="role" style="width:150px" cssClass="select2_combo">
-											<option value="">--- Chọn vai trò ---</option>
-											<form:options items="${roleList}" itemValue="id" itemLabel="name"/>
-										</form:select>
-									</div>
-									</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>
-									<div style="padding-right:20px; display: inline;width:150px" align="left">
-										<form:checkbox path="locked"/> <label for="locked1">Đang bị khóa</label>
-									</div>
-									</td>
-									<td>
-									<div style="padding-right:20px; display: inline;width:150px" align="left">
-										<form:checkbox path="inActive"/> <label for="inActive1">Đã nghỉ việc</label>
-									</div>
-									</td>
-									<td>
-									<div style="padding-right:20px; display: inline;">
-										<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('userList', '');}"
-											value="${fn:escapeXml(searchText)}" style="width: 150px;" />
-									</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-						<td rowspan="2" valign="top"><a href="javascript:"
+						<td rowspan="4" valign="top">
+							<div style="padding-right:20px; display: inline;">
+								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('userList', '');}"
+									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
+							</div>
+							<a href="javascript:"
 							onclick="submitActionForm('userList', '')" class="btn-1"
 							title="Danh Sách NSD"><span><span style="width:90px">Xem Danh Sách</span></span></a>
 							
@@ -116,11 +61,8 @@
 									<tr>
 										<td width="5%">STT</td>
 										<td width="10%">Mã Đăng Nhập</td>
-										<td width="8%">Số Thẻ</td>
 										<td>Tên Nhân Viên</td>										
 										<td width="10%">Số ĐT</td>
-										<td width="12%">Vai trò</td>
-										<td width="10%">Tỉnh Thành</td>
 										<td width="7%">Nghỉ việc</td>
 										<td width="7%">Trạng Thái</td>
 										<td width="10%">Hành động</td>

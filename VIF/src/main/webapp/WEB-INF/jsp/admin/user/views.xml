@@ -3,23 +3,19 @@
 <tiles-definitions>
   
   <definition extends="default" name="userList">
-    <put-attribute name="body" value="/WEB-INF/jsp/user/list.jspx"/>
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/user/list.jspx"/>
   </definition>
   
   <definition extends="default" name="userDetail">
-    <put-attribute name="body" value="/WEB-INF/jsp/user/details.jspx"/>
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/user/details.jspx"/>
   </definition>
   
   <definition extends="default" name="userAdd">
-    <put-attribute name="body" value="/WEB-INF/jsp/user/add.jspx"/>
-  </definition>
-  
-  <definition extends="default" name="addVAS">
-    <put-attribute name="body" value="/WEB-INF/jsp/user/listVASAcc.jspx"/>
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/user/add.jspx"/>
   </definition>
   
   <definition extends="default" name="userError">
-    <put-attribute name="body" value="/WEB-INF/jsp/error/prohibited.jspx"/>
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/error/prohibited.jspx"/>
   </definition>
   
   
