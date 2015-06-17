@@ -1,0 +1,36 @@
+
+/* Styles to be dynamically generated */
+
+#site-logo { padding: 0 102px;height: 204px; }
+nav[role=navigation] {
+	display: block;
+	position: absolute;
+	right: 102px;
+	top: 4px;
+}
+nav[role=navigation-sup] {
+	display: block;
+	position: absolute;
+	right: 102px;
+	top: -80px;
+}
+#nav-wrap nav[role=navigation-sup] > ul > li > a {
+	font-size: 15px;
+    font-weight: bold;
+    line-height: 18px;
+    padding: 14px 0;
+}
+#nav-wrap nav[role=navigation-sup] > ul > li:last-child > a {
+    padding: 32px 0 14px;
+}
+#nav-wrap nav[role=navigation-sup] > ul > li {
+    background-color: #4fb948;
+}
+#nav-wrap nav[role=navigation-sup] > ul > li:first-child {
+    background-color: #92c83e;
+}
+#nav-wrap nav[role=navigation-sup] > ul > li:last-child {
+    background-color: #0a562c;
+}
+
+#home #quote { text-align: center; }
