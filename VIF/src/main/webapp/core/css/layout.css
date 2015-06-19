@@ -62,13 +62,31 @@ header[role=banner] {  border-bottom: solid 4px #7b143a; height: 204px;backgroun
 #site-logo #flower { 
 	position: absolute;
 	top: 0;
-	right:375px;	
+	right:450px;	
 }
-#site-logo a {
+#site-logo a#logo {
 	position: absolute;
 	top: 43px;
 }
-
+#site-logo #lang { 
+	position: absolute;
+	top: 39px;
+	right:263px;
+	text-align:right;
+	width:200px;
+	color: white;
+	font-size: 14px;	
+}
+#site-logo #lang a {
+	color: white;
+}
+#site-logo #lang a:hover {
+	color: #a7a9ad;
+}
+#site-logo #login-span {
+	background: url(../images/login.png) no-repeat;
+	padding-left: 30px;
+}
 /* NAVIGATION */
 #nav-wrap { position: relative; height: 0; z-index: 10;padding: 0 102px; }
 #nav-wrap div.bg { position: absolute; top: 0; left: -40px; width: 990px; padding: 0 57px; height: 49px; background: url(../images/common-bg.jpg) repeat;
@@ -154,13 +172,26 @@ box-shadow: 3px 3px 0 rgba(0,0,0,0.16); }
 
 #slider.default .workarea span.blind { position: absolute; display: block; top: 0; left: 0; width: 0px; height: 100%; overflow: hidden; }
 
-/* HOMEPAGE QUOTE */
+/* TIME NAVIGATOR */
 
-#home #quote { font-size: 20px; font-weight: 300; color: #7c7c7c; padding: 0 0; text-shadow: 0 0 1px rgba(255,255,255,0.01); }
-#home #quote p { margin: 30px 0; }
+#home #nav-time {
+	background: url(../images/nav-time.jpg) no-repeat;
+	height: 47px;
+	padding: 17px 102px 0;
+	font-size: 17px;
+    font-weight: bold;
+    color: #c31f5c;
+}
+#nav-time > ul { padding: 0; font-weight: 300; margin:0; display: inline;}
+#nav-time > ul > li { margin-left: 10px; display: inline-block; text-align: center; width: 35px;background:url(../images/day.png) no-repeat;}
+#nav-time > ul > li:first-child { margin-left: 40px; }
+#nav-time > ul > li > a { display: block; line-height: 35px; font-size: 14px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.91); }
+#nav-time > ul > li.current-menu-item > a, #nav-time > ul > li:hover > a { background:url(../images/day-active.png) no-repeat; }
+#nav-time > #search-span { float:right;}
+#nav-time > #search-span > input[type=button] { background:url(../images/search-button.png) no-repeat; width: 37px;height:31px;border:0}
+#nav-time > #search-span > span { background:url(../images/search-input.png) right center no-repeat;width: 178px;padding: 8px 9px;}
 
 /* MODULAR SECTIONS */
-
 #home section.modular { position: relative; padding: 38px 0 21px 0; }
 #home section.modular:before { position: absolute; display: block; content: "\020"; width: 100%; padding: 0 30px; height: 1px; top: 0; left: -30px; background: url(../images/dashed-border.png) repeat-x; }
 #home section.modular ul.common-scroller-controls { top: 43px; right: -6px; }
