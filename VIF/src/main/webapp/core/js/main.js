@@ -19,7 +19,15 @@ $(document).ready(function() {
 	ui_shortcodes();
 	ui_syntax_highlight();
 	Rising.load();
-
+	$('#search-span input[type=text]').focus(function() {
+		if (this.value.trim()=='Tìm kiếm nhanh') {
+			this.value = '';
+		}
+	}).blur(function() {
+		if (this.value.trim()=='') {
+			this.value = 'Tìm kiếm nhanh';
+		}
+	});
 });
 
 function ui_enhance() {
@@ -148,7 +156,7 @@ ul.sc-tabs > li.tab > *:last-child:not(a), \
 	}).hover(colorChange);
 
 	// Image Frame Animations
-	$('.frame:not(.transparent), .widget.widget_flickr .flickr_badge_image img').each(function() {
+	/*$('.frame:not(.transparent), .widget.widget_flickr .flickr_badge_image img').each(function() {
 		this.data = {};
 		this.data.self = $(this);
 		this.data.c = Rising.colors.frameHover;
@@ -181,7 +189,7 @@ ul.sc-tabs > li.tab > *:last-child:not(a), \
 			}
 		}
 
-	});
+	});*/
 
 	// Pagination Effect
 	$('section#pagination a').each(function() {

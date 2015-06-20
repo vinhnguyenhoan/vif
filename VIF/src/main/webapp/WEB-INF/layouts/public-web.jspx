@@ -106,6 +106,10 @@
 		img: '${core}/images/content/slide-2.jpg',
 		url: '#slide-2'
 	});
+	Rising.sliderData.push({
+		img: '${core}/images/content/slide-3.jpg',
+		url: '#slide-3'
+	});
 </script>
 
 		<div class="workarea">
@@ -156,293 +160,175 @@
 
 	<!-- + -->
 
-	<section class="modular scrollable" id="from-blog">
-			<h1 class="section-heading left">From the Blog</h1>
-
-			<ul class="common-scroller-controls"><!-- + --></ul>
+	<section class="modular scrollable" id="com-viet">
+			<h1 class="section-heading left"><img id="time" src="${core}/images/com-viet.png" /></h1>
 
 			<div class="scroller">
-			<div class="column-grid cols-3 clearfix">
 
-				<article class="post entry">
+				<article class="first">
 					<header>
 						<div class="frame">
-							<img alt="The Perfect Team" width="278" height="142" src="${core}/images/content/post-img.jpg" />
-							<span class="overlay"><!-- + --></span>
-							<a class="plus" data-lightbox="image" title="The Last Job" href="${core}/images/content/lightbox.jpg"><!-- + --></a>
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title"><a href="#permalink">The Last Job</a></h2>
-						<span><time datetime="2011-10-03" pubdate="">October 3rd, 2011</time>  <a href="#comments">10 Comments</a></span>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the <a href="#dummy">fundamental</a> geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
-					<a class="read-more" href="#permalink">Read Post </a>
 				</article>
 
 				<!-- + -->
 
-				<article class="post entry">
+				<article>
 					<header>
 						<div class="frame">
-							<img alt="The Perfect Team" width="278" height="142" src="${core}/images/content/post-img-2.jpg" />
-							<a class="plus" data-lightbox="image" title="The Perfect Team" href="${core}/images/content/lightbox.jpg"><!-- + --></a>
-							<span class="overlay"><!-- + --></span>
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title"><a href="#permalink">The Perfect Team</a></h2>
-						<span><time datetime="2011-10-03" pubdate="">October 1st, 2011</time>  <a href="#comments">2 Comments</a></span>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the fundamental geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
-					<a class="read-more" href="#permalink">Read Post </a>
 				</article>
 
 				<!-- + -->
 
-				<article class="post entry">
+				<article>
 					<header>
 						<div class="frame">
-							<img alt="The Perfect Team" width="278" height="142" src="${core}/images/content/post-img-3.jpg" />
-							<a class="plus" data-lightbox="image" title="Finally Got it!" href="${core}/images/content/lightbox.jpg"><!-- + --></a>
-							<span class="overlay"><!-- + --></span>
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title"><a href="#permalink">Finally Got it!</a></h2>
-						<span><time datetime="2011-10-03" pubdate="">September 24th, 2011</time>  <a href="#comments">5 Comments</a></span>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the fundamental geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
-					<a class="read-more" href="#permalink">Read Post </a>
 				</article>
 
 				<div class="clear"><!-- + --></div>
 
 				<!-- + -->
 
-				<article class="post entry">
+				<article class="first">
 					<header>
 						<div class="frame">
-							<img alt="The Perfect Team" width="278" height="142" src="${core}/images/content/post-img-4.jpg" />
-							<a class="plus" data-lightbox="image" title="And she Rises" href="${core}/images/content/lightbox.jpg"><!-- + --></a>
-							<span class="overlay"><!-- + --></span>
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title"><a href="#permalink">And she Rises</a></h2>
-						<span><time datetime="2011-10-03" pubdate="">October 3rd, 2011</time>  <a href="#comments">10 Comments</a></span>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the <a href="#dummy">fundamental</a> geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
-					<a class="read-more" href="#permalink">Read Post </a>
 				</article>
 
 				<!-- + -->
 
-				<article class="post entry">
+				<article>
 					<header>
 						<div class="frame">
-							<img alt="The Perfect Team" width="278" height="142" src="${core}/images/content/post-img-5.jpg" />
-							<a class="plus" data-lightbox="image" title="And she Rises" href="${core}/images/content/lightbox.jpg"><!-- + --></a>
-							<span class="overlay"><!-- + --></span>
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title"><a href="#permalink">Valkyrie</a></h2>
-						<span><time datetime="2011-10-03" pubdate="">September 26th, 2011</time>  <a href="#comments">No Comments</a></span>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the <a href="#dummy">fundamental</a> geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
-					<a class="read-more" href="#permalink">Read Post </a>
+				</article>
+				
+				<!-- + -->
+
+				<article>
+					<header>
+						<div class="frame">
+							<img src="${core}/images/content/product1.jpg" />
+						</div>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
+					</header>
 				</article>
 
-			</div><!-- .column-grid -->
 			</div><!-- .scroller -->
 	</section><!-- from-blog -->
 
 	<!-- + -->
 
-	<section class="modular scrollable" id="services">
-			<h1 class="section-heading left">Our Services</h1>
-
-			<ul class="common-scroller-controls"><!-- + --></ul>
+	<section class="modular scrollable" id="mon-ngon">
+			<h1 class="section-heading left"><img id="time" src="${core}/images/mon-ngon-viet.png" /></h1>
 
 			<div class="scroller">
-			<div class="column-grid cols-3 clearfix">
 
-				<article class="post entry">
+				<article class="first">
 					<header>
-						<div class="frame transparent">
-							<img alt="Ultra Fast Support" width="278" height="70" src="${core}/images/content/svc-1.png" />
+						<div class="frame">
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title centered">Ultra Fast Support</h2>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the fundamental geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
 				</article>
 
-				<article class="post entry">
+				<article>
 					<header>
-						<div class="frame transparent">
-							<img alt="Search Engine Optimization" width="278" height="70" src="${core}/images/content/svc-2.png" />
+						<div class="frame">
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title centered">Search Engine Optimization</h2>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the fundamental geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
 				</article>
 
-				<article class="post entry">
+				<article>
 					<header>
-						<div class="frame transparent">
-							<img alt="Satisfaction Guaranteed" width="278" height="70" src="${core}/images/content/svc-3.png" />
+						<div class="frame">
+							<img src="${core}/images/content/product1.jpg" />
 						</div>
-						<h2 class="post-title centered">Satisfaction Guaranteed</h2>
+						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
+						<span class="price">27.000đ</span>
+						<span class="price mini">Mini: 25.000đ</span>
 					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the fundamental geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
-				</article>
-
-				<div class="clear"><!-- + --></div>
-
-				<article class="post entry">
-					<header>
-						<div class="frame transparent">
-							<img alt="Built on a Solid Framework" width="278" height="70" src="${core}/images/content/svc-4.png" />
-						</div>
-						<h2 class="post-title centered">Built on a Solid Framework</h2>
-					</header>
-					<div class="content">
-						<p>Suprematism found its base in the application of the fundamental geometric forms,
-						particularly the square and the circle. It originated in 1915 in Russia, established by Kazimir Malevich</p>
-					</div>
 				</article>
 
 			</div><!-- .column-grid -->
-			</div><!-- .scroller -->
 	</section><!-- services -->
 
-	<!-- + -->
-
-	<section class="modular scrollable" id="testimonials">
-			<h1 class="section-heading left">Testimonials</h1>
-
-			<ul class="common-scroller-controls"><!-- + --></ul>
-
-			<div class="scroller">
-			<div class="column-grid cols-2 clearfix">
-
-				<article class="testimonial entry">
-					<div class="content">
-						<p>Rising is a great template, featuring a robust set of features that will
-						drive you crazy with all the awesomeness bundled with the theme.</p>
-					</div>
-					<span> <a href="#permalink" rel="author">john Doe</a></span>
-				</article>
-
-				<!-- + -->
-
-				<article class="testimonial entry">
-					<div class="content">
-						<p>We looked at literally hundreds of themes and my client was instantly drawn to this one.</p>
-					</div>
-					<span> <a href="#permalink" rel="author">Mary Jane</a></span>
-				</article>
-
-				<div class="clear"><!-- + --></div>
-
-				<article class="testimonial entry">
-					<div class="content">
-						<p>This theme is built using bleeding edge Web Technologies, such as HTML5 and CSS3. Coded using best practices and semantic markup.</p>
-					</div>
-					<span> <a href="#permalink" rel="author">Ernesto Mndez</a></span>
-				</article>
-
-			</div><!-- .column-grid -->
-			</div><!-- .scroller -->
-	</section><!-- .testimonials -->
-
-	
 </div><!-- content -->
 
 <!-- + -->
-
+<div class="ftr-bottom">
+	<ul class="social-icons">
+		<li><a title="Facebook" href="#facebook"><img alt="facebook" src="${core}/images/social/facebook.png" /><!-- + --></a></li>
+		<li><a title="Yahoo" href="#yahoo"><img alt="yahoo" src="${core}/images/social/yahoo.png" /><!-- + --></a></li>
+		<li><a title="Skype" href="#skype"><img alt="skype" src="${core}/images/social/skype.png" /><!-- + --></a></li>
+		<li><a title="Zalo" href="#zalo"><img alt="zalo" src="${core}/images/social/zalo.png" /><!-- + --></a></li>
+		<li><a title="Viber" href="#viber"><img alt="viber" src="${core}/images/social/viber.png" /><!-- + --></a></li>
+		<li><a title="Email" href="#email"><img alt="email" src="${core}/images/social/email.png" /><!-- + --></a></li>
+	</ul>
+</div>
 <footer role="contentinfo">
-	<div class="column-grid cols-4 clearfix">
+	<div class="column-grid cols-3 clearfix">
 		<div class="entry column">
 
-			<aside class="widget">
-				<h2 class="title"><span>About Rising</span></h2>
-				<p>Suprematism found its base in the application of the fundamental geometric forms, particularly the square and the circle.</p>
-				<p>It originated in 1915 in Russia, established by Kazimir Malevich.</p>
-			</aside><!-- .widget -->
+			<div id="location">
+				<span>Công ty Cổ phần Thực phẩm HƯNG GIA giữ bản quyền</span><br/>
+				B6 Cư xá Thời Báo Kinh Tế Sài Gòn, Lương Định Của Phường Bình Khánh, Quận 2, TP.HCM
+			</div>
 
 		</div><!-- .column -->
-
-		<div class="entry column">
-
-			<aside class="widget twitter_widget">
-				<h2 class="title"><span>Latest From Twitter</span></h2>
-				<ul class="nostyle">
-					<li><a href="#profile">@johndoe</a> The style developed as Russia was in a revolutionary state <small><a href="#status">3 minutes ago</a></small></li>
-					<li>The most identified work is part of  Malevich's White on White <small><a href="#status">2 hours ago</a></small></li>
-				</ul>
-				<a class="follow" href="#follow">Follow on Twitter</a>
-			</aside><!-- .widget -->
-
-		</div><!-- .column -->
-
-		<div class="clear" style="display: none;"><!-- + --></div><!-- mobile -->
 
 		<div class="entry column">
 
-			<aside class="widget widget_recent_entries">
-				<h2 class="title"><span>Recent Posts</span></h2>
-				<ul>
-					<li><a href="#">A Perfect Team</a></li>
-					<li><a href="#">Another Story Begins</a></li>
-					<li><a href="#">Up in the Sky</a></li>
-				</ul>
-			</aside><!-- .widget -->
-
-			<aside class="widget widget_recent_comments">
-				<h2 class="title"><span>Recent Comments</span></h2>
-				<ul>
-					<li><a href="#">Mary Jane</a> on <a href="#">A Perfect Team</a></li>
-					<li><a href="#">John Doe</a> on <a href="#">Another Story Begins</a></li>
-				</ul>
-			</aside><!-- .widget -->
+			<div id="phone">
+				(08) 6262 4484<br/>
+				6680 5042 -  6680 5043
+			</div>
 
 		</div><!-- .column -->
 
-		<div class="entry column last">
+		<div class="entry column">
 
-			<aside class="widget">
-				<div style="text-align: center;"><img alt="Rising" src="${core}/images/content/footer-logo.png" /><!-- + --></div>
-			</aside><!-- .widget -->
+			<div id="website">
+				<a href="www.vifood.com.vn">www.vifood.com.vn</a>
+			</div>
 
 		</div><!-- .column -->
-	</div>
-	<div class="ftr-bottom">
-		<small>
-			2011 <a href="#rising">Rising</a>. ; Powered by <a href="http://wordpress.org">WordPress</a>. ; An <abbr title="HyperText Markup Language">HTML5</abbr> 
-			<abbr title="Cascading Stylesheets">CSS3</abbr> theme by <a href="http://der-design.com">der</a>.
-		</small>
-		<ul class="social-icons">
-			<li><a title="Twitter" href="#twitter"><img alt="twitter" src="${core}/images/social/twitter.png" /><!-- + --></a></li>
-			<li><a title="Facebook" href="#facebook"><img alt="facebook" src="${core}/images/social/facebook.png" /><!-- + --></a></li>
-			<li><a title="Vimeo" href="#vimeo"><img alt="vimeo" src="${core}/images/social/vimeo.png" /><!-- + --></a></li>
-			<li><a title="Apple" href="#apple"><img alt="apple" src="${core}/images/social/apple.png" /><!-- + --></a></li>
-		</ul>
 	</div>
 </footer><!-- footer -->
 
