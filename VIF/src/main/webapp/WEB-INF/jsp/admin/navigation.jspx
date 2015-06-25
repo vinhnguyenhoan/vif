@@ -10,7 +10,12 @@
 	<spring:url var="addUserURL" value="/admin/user/add"  />
     <spring:url var="changePasswdURL" value="/admin/settings/changepasswd"  />
     <spring:url var="logoutURL" value="/resources/j_spring_security_logout" />	
+	<spring:url var="orderItemListURL" value="/admin/orderItem/list"  />
+	<spring:url var="addOrderItemURL" value="/admin/orderItem/add"  />
 	
+	
+	
+	<!-- TODO remove unused -->
 	<spring:url var="posListURL" value="/pos/list"  />
 	<spring:url var="newPosListURL" value="/newPos/list"  />
 	<spring:url var="nppListURL" value="/npp/list"  />
@@ -232,6 +237,25 @@
                  <li><a href="${logoutURL}" title="Thoát">Thoát</a></li>
                </ul>
            </div>
+           
+           
+           <div class="block-nav-left">
+               <p class="title-1">
+                   <a href="#" title="">
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-09" alt="" />
+                       <span>Danh mục</span>
+                       <img src="${imageFolder}/dummy.gif" class="ui-icon icon-03" alt="" />
+                   </a>
+               </p>
+               
+               <ul style="display:none">
+	            <sec:authorize ifAnyGranted="ADMIN,SUPERVIOR">
+                   <li><a href="${addOrderItemURL}" title="Thêm món ăn">Thêm món ăn</a></li>
+                   <li><a href="${orderItemListURL}" title="Danh sách món ăn">Danh sách món ăn</a></li>
+                 </sec:authorize>
+               </ul>
+           </div>
+           
     </div>
 
 </div>
