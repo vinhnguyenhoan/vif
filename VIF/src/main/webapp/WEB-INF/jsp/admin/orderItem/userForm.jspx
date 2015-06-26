@@ -1,0 +1,256 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="UserDetailForm" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8"
+		pageEncoding="UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	<spring:url var="userPOSURL" value="/pos/user" />
+	<spring:url var="userListURL" value="/admin/user/list"/>
+	
+	<![CDATA[
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajax.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/listAgent.js"></script>
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js"></script>
+	<script type="text/javascript" src="${scriptsFolder}/user.js"></script>
+	<script type="text/javascript" src="${jsFolder}/user.js"></script>
+	<link href="${pageContext.request.contextPath}/css/thickbox.css" rel="stylesheet" type="text/css" />
+	<script src="${scriptsFolder}/thickbox-compressed.js"></script>
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";
+		function changeUserEmployeeType(employeeType) {
+			var type = employeeType.value ;
+			$("#chooseAgent").text('N/A');
+			$("#choosePos").text('N/A');
+			$("#chooseUm").text('N/A');
+			$("#daiLy").val('');
+			$("#diemBanHang").val('');
+			$("#nvQuanLy").val('');
+			
+			if (employeeType.value == 1) {
+				$("#daiLy").attr('disabled', true);
+				$("#diemBanHang").attr('disabled', true);
+				$("#nvQuanLy").attr('disabled', true);
+				disabledEmployeeCode(false);
+			}
+			else if (employeeType.value == 2) {
+				$("#daiLy").attr('disabled', false);
+				$("#diemBanHang").attr('disabled', true);
+				$("#nvQuanLy").attr('disabled', true);
+				disabledEmployeeCode(true);
+			}else if (employeeType.value == 3) {
+				$("#daiLy").attr('disabled', true);
+				$("#diemBanHang").attr('disabled', false);
+				$("#nvQuanLy").attr('disabled', true);
+				disabledEmployeeCode(true);
+			}else if (employeeType.value == 4) {
+				$("#daiLy").attr('disabled', true);
+				$("#diemBanHang").attr('disabled', true);
+				$("#nvQuanLy").attr('disabled', true);
+				disabledEmployeeCode(false);
+			}else if (employeeType.value == 5) {
+				$("#daiLy").attr('disabled', true);
+				$("#diemBanHang").attr('disabled', true);
+				$("#nvQuanLy").attr('disabled', false);
+				disabledEmployeeCode(true);
+			}
+		selectPhanLoai(type);
+	}
+	function disabledEmployeeCode(en) {
+		var addNew = ${fn:contains(userFormLink,'add')};
+		if (addNew) {
+			$("#maNhanVien").attr('readonly', en);
+			$("#maNhanVien").attr('disabled', en);
+			if (en) {
+				$('#codeMsg').text('(Mã Đăng Nhập) Hệ thống tự sinh ra.');
+				$("#maNhanVien").val('');
+			} else {
+				$('#codeMsg').text('(Mã Đăng Nhập)');
+			}
+		}	
+	}
+	function updateUser() {
+		var lv = '${selectLevel}';
+		if (lv != '') {
+			if (lv=='4') {
+				if ($('#tinhThanhPho').val()==0) {
+					$('#tinhThanhPhoErr').text('Chưa chọn Tỉnh/Thành.');
+					return;
+				} else {
+					$('#tinhThanhPhoErr').text('');
+				}
+			} else {
+				if ($('#provinces').length==0) {
+					$('#provincesErr').text('Phải chọn ít nhất 1 Tỉnh/Thành.');
+					return;
+				} else {
+					$('#provincesErr').text('');
+				}
+			}
+		}		
+		document.forms[0].submit();
+	}
+	$(document).ready(function(){
+		var role = $('#vaiTro');
+		if (role.val()=='ROLE_LEADER' || role.val()=='ROLE_SALESMAN') {
+			role.removeAttr('disabled');
+			role.find('option').each(function(i, item){
+				if (item.value!='ROLE_LEADER' && item.value!='ROLE_SALESMAN') {
+					$(item).remove();
+				}
+			});
+			changeRole(role);
+		}
+	});
+	function changeRole(el) {
+		var lc = $('#nhanVienGiamSat');
+		if (lc.length==0) return;
+		if ($(el).val()=='ROLE_SALESMAN') {
+			lc.parent().parent().show()
+			// check and enable leader
+			lc.removeAttr('disabled');
+		} else {
+			lc.parent().parent().hide()
+			lc.attr('disabled', true);
+		}
+	}
+	</script>
+]]>
+
+
+	<form:form action="${requestScope.userFormLink}" method="POST"
+		commandName="user">
+		<form:hidden path="id" />
+
+		<div class="formContent">
+			<table width="100%" cellpadding="0" cellspacing="5"
+				class="TableThongTinTram">
+				<col width="20%" />
+				<col width="80%" />
+				<tr>
+					<td></td>
+					<td><c:if test="${not empty success or not empty param.success}">
+							<c:choose>
+								<c:when test="${success or param.success}">
+									<div class="infoMessage" id="messageArea">
+										<p>Cập nhật thành công.</p>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="errorMessage" id="messageArea">
+										<p>Xảy ra lỗi khi lưu dữ liệu</p>
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr class="info">
+					<td align="right"><strong>Thông tin đăng nhập</strong></td>
+				</tr>
+				<tr>
+					<td align="right">Mã Đăng Nhập(<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<form:input path="userName" cssClass="textInput"/> 
+						<form:errors path="userName" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Mật khẩu đăng nhập (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:password path="password" cssClass="textInput"
+							showPassword="true" /> <form:errors
+							path="password" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Nhập lại mật khẩu(<label
+						class="errorMessage">*</label>):
+					</td>
+					<td><form:password path="retypePassword"
+							cssClass="textInput" showPassword="true" /> <form:errors
+							path="retypePassword" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr class="info">
+							<td align="right"><strong>Thông tin cá nhân</strong></td>
+				</tr>
+				
+				<tr>
+					<td align="right">Họ tên: (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:input path="fullName" cssClass="textInput mediumWidth" />
+						<form:errors path="fullName" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Vai trò (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:select path="role" cssClass="select2_combo" style="width:150px">
+							<form:option value="">--- Chọn Vai trò ---</form:option>
+							<form:options items="${roleList}" itemValue="id"
+									itemLabel="name" />
+						</form:select> <form:errors path="role" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Ngày sinh:</td>
+					<td>
+					<fmt:formatDate value="${user.birthday}" pattern="dd/MM/yyyy" var="birthday"/>
+					<form:input path="birthdayString" cssClass="textInput tcal"
+							value="${birthday}" /> &#160;&#160;&#160;(dd/MM/yyyy) <form:errors
+							path="birthdayString" cssClass="errorMessage" /></td>
+				</tr>
+				<tr>
+					<td align="right">Email (<label class="errorMessage">*</label>):
+					</td>
+					<td><form:input path="email" cssClass="textInput" />
+						<form:errors path="email" cssClass="errorMessage" /></td>
+				</tr>
+				<!-- <tr>
+					<td align="right">Điện thoại di động:</td>
+					<td><form:input path="phoneNumber" cssClass="textInput" />
+					<form:errors path="phoneNumber" cssClass="errorMessage" /></td>
+				</tr> -->
+				
+				<tr>
+					<td align="right">Đang bị khóa:</td>
+					<td><form:checkbox path="locked" /></td>
+				</tr>
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr>
+					<td><label> <!-- Empty -->
+					</label></td>
+					<td><a href="javascript:;"
+						onclick="javascript:updateUser();" class="btn-1"
+						title="Lưu thông tin nhân viên"><span><span>Lưu</span></span></a>
+						<a href="${userListURL}" class="btn-1"
+						title="Danh sách người dùng"><span><span>Trở về danh sách</span></span></a></td>
+				</tr>
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+			</table>
+		</div>
+	</form:form>
+	<!--- <jsp:include page="searchDaiLyForm.jspx"></jsp:include> -->
+
+</div>

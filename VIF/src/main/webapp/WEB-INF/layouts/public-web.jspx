@@ -41,7 +41,15 @@
 		<a href="./" id="logo"><img alt="VIF" src="${core}/images/logo.png" /></a>
 		<img id="flower" src="${core}/images/flower.png" />
 		<div id="lang"> 
-			Ngôn ngữ: <a href="#">Tiếng Việt</a> | <a href="#">English</a> 
+			Ngôn ngữ:  
+			<ul>
+				<li class="current-menu-item">
+					<a href="#" title="Tiếng Việt"><img src="${core}/images/vi.jpg" /></a>
+				</li>
+				<li>
+					<a href="#" title="English"><img src="${core}/images/en.jpg" /></a>
+				</li>
+			</ul>
 			<br/>
 			<a href="#"><span id="login-span">Đăng nhập</span></a>
 		</div>
@@ -131,7 +139,7 @@
 	<!-- + -->
 
 	<section id="nav-time">
-		THỰC ĐƠN HÔM NAY
+		<span>THỰC ĐƠN HÔM NAY</span>
 		<span style="padding-left:20px;">20/5/2015</span>
 		<ul>
 			<li class="current-menu-item">
@@ -259,8 +267,7 @@
 							<img src="${core}/images/content/product1.jpg" />
 						</div>
 						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
+						<span class="price spec">27.000đ</span>
 					</header>
 				</article>
 
@@ -270,8 +277,7 @@
 							<img src="${core}/images/content/product1.jpg" />
 						</div>
 						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
+						<span class="price spec">27.000đ</span>
 					</header>
 				</article>
 
@@ -281,8 +287,7 @@
 							<img src="${core}/images/content/product1.jpg" />
 						</div>
 						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
+						<span class="price spec">27.000đ</span>
 					</header>
 				</article>
 
