@@ -87,6 +87,14 @@ header[role=banner] {  border-bottom: solid 4px #7b143a; height: 204px;backgroun
 	background: url(../images/login.png) no-repeat;
 	padding-left: 30px;
 }
+
+/* Language */
+
+#lang > ul { margin: 0; padding: 0; text-align: center;width: 70px;display: inline;}
+#lang > ul > li { display: inline-block; list-style: outside none none;padding-left: 10px;}
+#lang > ul > li > a { display: block; opacity: 0.61; }
+#lang > ul > li.current-menu-item > a, #lang > ul > li:hover > a { opacity: 1; }
+
 /* NAVIGATION */
 #nav-wrap { position: relative; height: 0; z-index: 10;padding: 0 102px; }
 #nav-wrap div.bg { position: absolute; top: 0; left: -40px; width: 990px; padding: 0 57px; height: 49px; background: url(../images/common-bg.jpg) repeat;
@@ -207,6 +215,7 @@ box-shadow: 3px 3px 0 rgba(0,0,0,0.16); }
 }
 #home section.modular article > header .price { color:#c31f5c; }
 #home section.modular article > header .mini { float:right; }
+#home section.modular article > header .spec { margin: 90px; }
 
 /* COMMON POST STYLES */
 
