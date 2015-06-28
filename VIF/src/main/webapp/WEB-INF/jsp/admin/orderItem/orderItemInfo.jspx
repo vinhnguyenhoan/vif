@@ -14,14 +14,14 @@
 			alt="" /></span>
 		<div class="content-title">
 			<h2>
-				<span>THÔNG TIN NGƯỜI SỬ DỤNG</span>
+				<span>THÔNG TIN MÓN ĂN</span>
 			</h2>
 		</div>
 		<div id="content">
 			<spring:url value="/user/info" var="userFormLink" scope="request">
 				<spring:param name="update" />
 			</spring:url>
-			<jsp:include page="userInfoForm.jspx" />
+			<jsp:include page="orderItemInfoForm.jspx" />
 		</div>
 	</div>
 </div>
