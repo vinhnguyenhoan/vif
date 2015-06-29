@@ -9,30 +9,28 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ORDER_ITEM")
-public class OrderItem {
+public class OrderItem implements java.io.Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
+	private static final long serialVersionUID = -7473088239616243125L;
+
 	private long id;
 	
-	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "DESC")
 	private String desc;
 
-	@Column(name = "PRICE")
-	private Double price;
+	private Integer price;
 
-	@Column(name = "MINI_PRICE")
-	private Double miniPrice;
+	private Integer miniPrice;
 	
 	// TODO field for image
 	
 	public OrderItem() {
 	}
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public long getId() {
 		return this.id;
 	}
@@ -41,6 +39,7 @@ public class OrderItem {
 		this.id = id;
 	}
 
+	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -49,6 +48,7 @@ public class OrderItem {
 		this.name = name;
 	}
 
+	@Column(name = "DESC")
 	public String getDesc() {
 		return desc;
 	}
@@ -57,19 +57,21 @@ public class OrderItem {
 		this.desc = desc;
 	}
 
-	public Double getPrice() {
+	@Column(name = "PRICE")
+	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
-	public Double getMiniPrice() {
+	@Column(name = "MINI_PRICE")
+	public Integer getMiniPrice() {
 		return miniPrice;
 	}
 
-	public void setMiniPrice(Double miniPrice) {
+	public void setMiniPrice(Integer miniPrice) {
 		this.miniPrice = miniPrice;
 	}
 	

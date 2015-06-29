@@ -64,10 +64,21 @@ public class OrderItemController {
 		}
 	}
 	
-	@RequestMapping(value = "/orderItem/detail")
+	@RequestMapping(value = "/orderItem/detail", params = { "update" })
 	public String updateOrderItem(@ModelAttribute("orderItem") @Valid OrderItem orderItem,
 			HttpServletRequest request, Model uiModel,
 			BindingResult bindingResult) {
+		return addUpdateOrderItem(orderItem, uiModel, bindingResult);
+	}
+
+	@RequestMapping(value = "/orderItem/add", params = { "new" })
+	public String addNewOrderItem(@ModelAttribute("orderItem") @Valid OrderItem orderItem,
+			HttpServletRequest request, Model uiModel,
+			BindingResult bindingResult) {
+		return addUpdateOrderItem(orderItem, uiModel, bindingResult);
+	}
+	
+	private String addUpdateOrderItem(OrderItem orderItem, Model uiModel, BindingResult bindingResult) {
 		validateInputData(orderItem, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
@@ -99,21 +110,14 @@ public class OrderItemController {
 		uiModel.addAttribute("orderItem", orderItem);	
 		return "orderItemDetail";
 	}
-
-	/*@RequestMapping(value = "/user/add")
-	public String addUser(@RequestParam(value="registerId",required=false) Long registerId,
-			HttpServletRequest request, Model uiModel) {
-		VIFUser me = userService.getLogin();
-		if (me == null)
-			return "login";
-		VIFUser user = new VIFUser();
-
-		uiModel.addAttribute("user", user);
-		uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
-		
-		return "userAdd";
-	}*/
 	
+	@RequestMapping(value = "/orderItem/add")
+	public String addOrderItem(HttpServletRequest request, Model uiModel) {
+		OrderItem orderItem = new OrderItem();
+		uiModel.addAttribute("orderItem", orderItem);
+		return "orderItemAdd";
+	}
+
 	/*@RequestMapping(value = "/user/add", params = { "new" })
 	public String addNewUser(@ModelAttribute("user") @Valid VIFUser user,
 			BindingResult bindingResult, HttpServletRequest request,
