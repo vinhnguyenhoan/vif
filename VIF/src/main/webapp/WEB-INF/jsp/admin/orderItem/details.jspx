@@ -19,10 +19,10 @@
 			</h2>
 		</div>
 		<div id="content">
-			<spring:url value="/admin/user/detail" var="userFormLink" scope="request">
+			<spring:url value="/admin/orderItem/detail" var="orderItemFormLink" scope="request">
 				<spring:param name="update" />
 			</spring:url>
-			<jsp:include page="userForm.jspx" />
+			<jsp:include page="orderItemForm.jspx" />
 		</div>
 	</div>
 </div>

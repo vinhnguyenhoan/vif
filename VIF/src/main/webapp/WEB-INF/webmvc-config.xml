@@ -67,4 +67,5 @@
 	</bean>
 <!-- <bean id="planValidator" class="vn.vif.customercare.validation.PlanValidation"/>
 <bean id="agentValidator" class="vn.vif.customercare.validation.AgentValidation"/> -->
+	<mvc:view-controller path="/" view-name="web"/>
 </beans>

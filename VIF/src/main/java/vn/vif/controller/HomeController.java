@@ -67,4 +67,12 @@ public class HomeController {
 		return "web";
 	}
 
+
+	@RequestMapping(value = "/web", method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public String homeWeb(HttpServletRequest request, Model uiModel) {
+		
+		
+		return home(request, uiModel);
+	}
 }
