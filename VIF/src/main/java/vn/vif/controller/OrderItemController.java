@@ -82,7 +82,7 @@ public class OrderItemController {
 		validateInputData(orderItem, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
-				if (orderItem.getId() > 0) {
+				if (orderItem.getId() != null) {
 					OrderItem oI = orderItemService.find(orderItem.getId());
 					oI.setDesc(orderItem.getDesc());
 					oI.setName(orderItem.getName());

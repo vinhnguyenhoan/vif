@@ -21,7 +21,7 @@ import vn.vif.daos.LoginRole;
 public class VIFUser implements java.io.Serializable {
 	private static final long serialVersionUID = 3293675195247547203L;
 
-	private long id;
+	private Long id;
 	private String userName;
 	private String password;
 	private String fullName;
@@ -45,11 +45,11 @@ public class VIFUser implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

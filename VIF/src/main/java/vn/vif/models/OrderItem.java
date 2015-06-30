@@ -13,7 +13,7 @@ public class OrderItem implements java.io.Serializable {
 
 	private static final long serialVersionUID = -7473088239616243125L;
 
-	private long id;
+	private Long id;
 	
 	private String name;
 
@@ -31,11 +31,11 @@ public class OrderItem implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
