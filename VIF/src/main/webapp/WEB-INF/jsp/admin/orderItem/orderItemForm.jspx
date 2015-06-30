@@ -16,16 +16,6 @@
 	<spring:url var="userListURL" value="/admin/user/list"/>
 	
 	<![CDATA[
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.1.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajax.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/listAgent.js"></script>
-	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js"></script>
-	<script type="text/javascript" src="${scriptsFolder}/user.js"></script>
-	<script type="text/javascript" src="${jsFolder}/user.js"></script>
-	<link href="${pageContext.request.contextPath}/css/thickbox.css" rel="stylesheet" type="text/css" />
-	<script src="${scriptsFolder}/thickbox-compressed.js"></script>
-	
 	<script type="text/javascript">
 		function updateOrderItem() {
 			document.forms[0].submit();
@@ -36,7 +26,7 @@
 
 
 	<form:form action="${requestScope.orderItemFormLink}" method="POST"
-		commandName="orderItem">
+		commandName="orderItem" name="orderItem">
 		<form:hidden path="id" />
 
 		<div class="formContent">

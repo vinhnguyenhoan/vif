@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "ORDER_ITEM")
@@ -23,13 +26,17 @@ public class OrderItem implements java.io.Serializable {
 
 	private Integer miniPrice;
 	
-	// TODO field for image
+	private String image;
+
+	private MultipartFile logoFile;
 	
 	public OrderItem() {
 	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@GenericGenerator(name="gen",strategy="increment")
+//	@GeneratedValue(generator="gen")
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public Long getId() {
 		return this.id;
@@ -73,6 +80,24 @@ public class OrderItem implements java.io.Serializable {
 
 	public void setMiniPrice(Integer miniPrice) {
 		this.miniPrice = miniPrice;
+	}
+
+	@Column(name = "IMAGE")
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	@Transient
+	public MultipartFile getLogoFile() {
+		return logoFile;
+	}
+
+	public void setLogoFile(MultipartFile logoFile) {
+		this.logoFile = logoFile;
 	}
 	
 }

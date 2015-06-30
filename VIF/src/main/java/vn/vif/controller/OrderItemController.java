@@ -1,7 +1,11 @@
 package vn.vif.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -34,6 +38,9 @@ public class OrderItemController {
 	@Autowired
 	private View jsonView_i;
 	
+	@Autowired
+	private ServletContext context;
+	
 	@RequestMapping(value = "/orderItem/list", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public String listOrderItems(
@@ -55,7 +62,9 @@ public class OrderItemController {
 			HttpServletRequest request, Model uiModel) {
 		try {
 			OrderItem orderItem = orderItemService.find(orderItemId);
-			// TODO check orderItem null
+			if (orderItem == null) {
+				return "notFoundError";
+			}
 			uiModel.addAttribute("orderItem", orderItem);	
 			return "orderItemDetail";
 		} catch (Exception e) {
@@ -89,9 +98,14 @@ public class OrderItemController {
 					oI.setPrice(orderItem.getPrice());
 					oI.setMiniPrice(orderItem.getMiniPrice());
 					
+					uploadLogo(oI);
+					
 					orderItemService.update(oI);
 				} else {
 					orderItemService.add(orderItem);
+					if (uploadLogo(orderItem)) {
+						orderItemService.update(orderItem);
+					}
 				}
 				uiModel.addAttribute("success", true);
 				return "redirect:/admin/orderItem/detail/" + orderItem.getId();
@@ -109,6 +123,32 @@ public class OrderItemController {
 		}
 		uiModel.addAttribute("orderItem", orderItem);	
 		return "orderItemDetail";
+	}
+	
+	public boolean uploadLogo(OrderItem or) {
+		if (or.getLogoFile()!=null && or.getLogoFile().getSize()!=0 && or.getLogoFile().getSize()/1024 < 1000) { // < 500 Kb
+			String filename = or.getLogoFile().getOriginalFilename();
+			String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length()).toLowerCase();
+			if (extension.equals("png") || extension.equals("jpg") || extension.equals("gif")) {
+				String logo = "logo_" + or.getId() + "." + extension;
+				logo = File.separator + "images" + File.separator+ "pruducts" + File.separator + logo;
+				String path = context.getRealPath("") + logo;
+				File folder = new File(path);
+				if (!folder.getParentFile().exists()) {
+					folder.getParentFile().mkdirs();
+				}
+				try {
+					InputStream is = or.getLogoFile().getInputStream();
+					ImageUtil.writeImage(path, is);
+					is.close();
+					or.setImage(logo);
+					return true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return false;
 	}
 	
 	@RequestMapping(value = "/orderItem/add")
