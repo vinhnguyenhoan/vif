@@ -35,8 +35,10 @@ public class OrderItemController {
 
 	@Autowired
 	private OrderItemService orderItemService;
+	
 	@Autowired
 	private View jsonView_i;
+	
 	@Autowired
 	private ServletContext context;
 	
@@ -90,7 +92,7 @@ public class OrderItemController {
 		validateInputData(orderItem, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
-				if (orderItem.getId() > 0) {
+				if (orderItem.getId() != 0) {
 					OrderItem oI = orderItemService.find(orderItem.getId());
 					oI.setDesc(orderItem.getDesc());
 					oI.setName(orderItem.getName());
@@ -100,12 +102,8 @@ public class OrderItemController {
 					uploadLogo(oI);
 					
 					orderItemService.update(oI);
-					
 				} else {
-					
-					
 					orderItemService.add(orderItem);
-					
 					if (uploadLogo(orderItem)) {
 						orderItemService.update(orderItem);
 					}
@@ -232,6 +230,5 @@ public class OrderItemController {
 			bindingResult.rejectValue("price", "app_field_empty",
 					new Object[]{"Giá"}, "empty_error_code");
 		}
-		//TODO check image type and size
 	}
 }
