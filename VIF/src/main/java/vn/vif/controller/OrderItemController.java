@@ -55,6 +55,8 @@ public class OrderItemController {
 		List<OrderItem> orderItemList = orderItemService.list(orderItemListFilter, paginationInfo.getStart(), paginationInfo.getSize());
 		
 		uiModel.addAttribute("orderItemList", orderItemList);
+		uiModel.addAttribute("dateList", OrderItem.getDataList());
+
 		return "orderItemList";
 	}
 

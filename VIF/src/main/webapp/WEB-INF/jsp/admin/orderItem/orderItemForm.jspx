@@ -12,8 +12,7 @@
 
 	<spring:url var="scriptsFolder" value="/scripts" />
 	<spring:url var="jsFolder" value="/resources/js" />
-	<spring:url var="userPOSURL" value="/pos/user" />
-	<spring:url var="userListURL" value="/admin/user/list"/>
+	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
 	
 	<![CDATA[
 	<script type="text/javascript">
@@ -102,7 +101,7 @@
 					<td><a href="javascript:;"
 						onclick="javascript:updateOrderItem();" class="btn-1"
 						title="Lưu thông tin món ăn"><span><span>Lưu</span></span></a>
-						<a href="${userListURL}" class="btn-1"
+						<a href="${orderItemListURL}" class="btn-1"
 						title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
 					</td>
 				</tr>

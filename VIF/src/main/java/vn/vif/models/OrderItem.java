@@ -1,5 +1,11 @@
 package vn.vif.models;
 
+import static java.util.Calendar.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -16,28 +23,80 @@ public class OrderItem implements java.io.Serializable {
 
 	private static final long serialVersionUID = -7473088239616243125L;
 
-	private Long id;
-	
-	private String name;
-
-	private String desc;
-
-	private Integer price;
-
-	private Integer miniPrice;
-	
-	private String image;
-
-	private MultipartFile logoFile;
-	
-	public OrderItem() {
-	}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 //	@GenericGenerator(name="gen",strategy="increment")
 //	@GeneratedValue(generator="gen")
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
+	private Long id;
+	
+	@Column(name = "NAME")
+	private String name;
+
+	@Column(name = "DESC")
+	private String desc;
+
+	@Column(name = "PRICE")
+	private Integer price;
+
+	@Column(name = "MINI_PRICE")
+	private Integer miniPrice;
+	
+	@Column(name = "IMAGE")
+	private String image;
+
+	@Transient
+	private MultipartFile logoFile;
+	
+	@Column(name = "MO")
+	private Integer mo;
+	@Column(name = "TU")
+	private Integer tu;
+	@Column(name = "WE")
+	private Integer we;
+	@Column(name = "TH")
+	private Integer th;
+	@Column(name = "FR")
+	private Integer fr;
+	@Column(name = "SA")
+	private Integer sa;
+	@Column(name = "SU")
+	private Integer su;
+	
+	@Transient
+	private static final Map<Integer, OptionData> dateList = new TreeMap<>();
+	private static final Map<Integer, String> columnDateMap = new TreeMap<>();
+	
+	static {
+		addDataData(-1, "Tất cả", null);
+		addDataData(MONDAY, "T2", "mo");
+		addDataData(TUESDAY, "T3", "tu");
+		addDataData(WEDNESDAY, "T4", "we");
+		addDataData(THURSDAY, "T5", "th");
+		addDataData(FRIDAY, "T6", "fr");
+		addDataData(SATURDAY, "T7", "sa");
+		addDataData(SUNDAY, "CN", "su");
+	}
+	
+	private static final void addDataData(int date, String text, String columnName) {
+		OptionData dateData = new OptionData();
+		dateData.setId(date);
+		dateData.setName(text);
+		dateList.put(date, dateData);
+		columnDateMap.put(date, columnName);
+	}
+	
+	public static final List<OptionData> getDataList() {
+		return new LinkedList<>(dateList.values());
+	}
+	
+	public static final String getDateColName(int date) {
+		return columnDateMap.get(date);
+	}
+	
+	public OrderItem() {
+	}
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -46,7 +105,6 @@ public class OrderItem implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -55,7 +113,6 @@ public class OrderItem implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "DESC")
 	public String getDesc() {
 		return desc;
 	}
@@ -64,7 +121,6 @@ public class OrderItem implements java.io.Serializable {
 		this.desc = desc;
 	}
 
-	@Column(name = "PRICE")
 	public Integer getPrice() {
 		return price;
 	}
@@ -73,7 +129,6 @@ public class OrderItem implements java.io.Serializable {
 		this.price = price;
 	}
 
-	@Column(name = "MINI_PRICE")
 	public Integer getMiniPrice() {
 		return miniPrice;
 	}
@@ -82,7 +137,6 @@ public class OrderItem implements java.io.Serializable {
 		this.miniPrice = miniPrice;
 	}
 
-	@Column(name = "IMAGE")
 	public String getImage() {
 		return image;
 	}
@@ -91,7 +145,6 @@ public class OrderItem implements java.io.Serializable {
 		this.image = image;
 	}
 
-	@Transient
 	public MultipartFile getLogoFile() {
 		return logoFile;
 	}
@@ -99,5 +152,99 @@ public class OrderItem implements java.io.Serializable {
 	public void setLogoFile(MultipartFile logoFile) {
 		this.logoFile = logoFile;
 	}
+
+	public Integer getMo() {
+		return mo;
+	}
+
+	public void setMo(Integer mo) {
+		this.mo = mo;
+	}
+
+	public Integer getTu() {
+		return tu;
+	}
+
+	public void setTu(Integer tu) {
+		this.tu = tu;
+	}
+
+	public Integer getWe() {
+		return we;
+	}
+
+	public void setWe(Integer we) {
+		this.we = we;
+	}
+
+	public Integer getTh() {
+		return th;
+	}
+
+	public void setTh(Integer th) {
+		this.th = th;
+	}
+
+	public Integer getFr() {
+		return fr;
+	}
+
+	public void setFr(Integer fr) {
+		this.fr = fr;
+	}
+
+	public Integer getSa() {
+		return sa;
+	}
+
+	public void setSa(Integer sa) {
+		this.sa = sa;
+	}
+
+	public Integer getSu() {
+		return su;
+	}
+
+	public void setSu(Integer su) {
+		this.su = su;
+	}
 	
+	public String getDateText() {
+		String result = "";
+		final String delimeter = ", ";
+		if (MONDAY == mo) {
+			result = getChanningText(result, dateList.get(MONDAY).getName());
+		}
+		if (TUESDAY == tu) {
+			result = getChanningText(result, dateList.get(TUESDAY).getName());
+		}
+		if (WEDNESDAY == we) {
+			result = getChanningText(result, dateList.get(WEDNESDAY).getName());
+		}
+		if (THURSDAY == th) {
+			result = getChanningText(result, dateList.get(THURSDAY).getName());
+		}
+		if (FRIDAY == fr) {
+			result = getChanningText(result, dateList.get(FRIDAY).getName());
+		}
+		if (SATURDAY == sa) {
+			result = getChanningText(result, dateList.get(SATURDAY).getName());
+		}
+		if (SUNDAY == su) {
+			result = getChanningText(result, dateList.get(SUNDAY).getName());
+		}
+		if (result.isEmpty()) {
+			return dateList.get(-1).getName();
+		} else if (result.contains(delimeter)) {
+			return result.substring(0, result.length() - delimeter.length() - 1);
+		}
+		return result;
+	}
+
+	private static final String getChanningText(String result, String text) {
+		if (StringUtils.isEmpty(result)) {
+			return text;
+		}
+		return result + ", " + text;
+	}
 }

@@ -38,6 +38,11 @@
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderItemList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
+									
+								<form:select path="searchDate" cssClass="select2_combo" style="width:150px">
+									<form:option value="">--- Chọn ngày bán ---</form:option>
+									<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+								</form:select>
 							</div>
 							<a href="javascript:"
 							onclick="submitActionForm('orderItemList', '')" class="btn-1"
@@ -51,12 +56,13 @@
 								formSubmit="orderItemList" id="orderItemTopPagination" /></td>
 					</tr>
 					<tr>
-						<td colspan="4">
+						<td colspan="5">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0"
 								class="table-2">
 								<thead>
 									<tr>
 										<td>Tên</td>
+										<td>Ngày bán</td>
 										<td>Mô tả</td>
 										<td>Giá</td>
 										<td>Giá mini</td>
@@ -67,6 +73,7 @@
 									<c:forEach items="${orderItemList}" var="item" varStatus="status">
 										<tr>
 											<td><a href="${orderItemDetailURL}/${item.id}">${item.name}</a></td>
+											<td><a href="${orderItemDetailURL}/${item.id}">${item.dateText}</a></td>
 											<td><a href="${orderItemDetailURL}/${item.id}">${item.desc}</a></td>
 											<td>
 												${item.price}
@@ -92,9 +99,6 @@
 				</table>
 			</form:form>
 			
-			<form id="editOrderItem" action="${pageContext.request.contextPath}/orderItem/detail" method="post" hidden="true">
-				<input type="text" id="orderItemId" name="orderItemId" />
-			</form>
 		</div>
 	</div>
 </div>
