@@ -55,6 +55,8 @@ public class OrderItemController {
 		List<OrderItem> orderItemList = orderItemService.list(orderItemListFilter, paginationInfo.getStart(), paginationInfo.getSize());
 		
 		uiModel.addAttribute("orderItemList", orderItemList);
+		uiModel.addAttribute("dateList", OrderItem.getDataList());
+
 		return "orderItemList";
 	}
 
@@ -92,7 +94,7 @@ public class OrderItemController {
 		validateInputData(orderItem, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
-				if (orderItem.getId() != 0) {
+				if (orderItem.getId() != null) {
 					OrderItem oI = orderItemService.find(orderItem.getId());
 					oI.setDesc(orderItem.getDesc());
 					oI.setName(orderItem.getName());
