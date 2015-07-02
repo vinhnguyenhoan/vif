@@ -80,6 +80,27 @@
 						<input type="file" name="logoFile" id="logoFile" accept="image/*"/>
 					</td>
 				</tr>
+				<tr class="info">
+					<td style="text-align: right;vertical-align:top"><label for="">Hình ảnh (219 x 163):
+							</label></td>
+					<td colspan="3">
+						<c:choose>
+							<c:when test="${orderItem.image!=null}">
+								<%-- <fmt:formatDate value="${orderItem.ngayCapNhat}" type="both"
+									dateStyle="medium" timeStyle="medium" var="ver"
+									pattern="ddMMyyyyHHmmss"  --%>/>
+								<spring:url value="/" var="path" />
+								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">
+									<img src="${path}images/products/${orderItem.image}?v=${ver}"/></div>
+							</c:when>
+							<c:otherwise>
+								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">219 x 163</div>
+							</c:otherwise>
+						</c:choose>
+						<br/>
+						<input type="file" name="logoFile" id="logoFile" accept="image/*"/>
+					</td>
+				</tr>
 				<tr>
 					<td align="right">Tên(<label class="errorMessage">*</label>):
 					</td>
