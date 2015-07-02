@@ -211,32 +211,29 @@ public class OrderItem implements java.io.Serializable {
 	
 	public String getDateText() {
 		String result = "";
-		final String delimeter = ", ";
-		if (MONDAY == mo) {
+		if (mo != null && MONDAY == mo) {
 			result = getChanningText(result, dateList.get(MONDAY).getName());
 		}
-		if (TUESDAY == tu) {
+		if (tu != null && TUESDAY == tu) {
 			result = getChanningText(result, dateList.get(TUESDAY).getName());
 		}
-		if (WEDNESDAY == we) {
+		if (we != null && WEDNESDAY == we) {
 			result = getChanningText(result, dateList.get(WEDNESDAY).getName());
 		}
-		if (THURSDAY == th) {
+		if (th != null && THURSDAY == th) {
 			result = getChanningText(result, dateList.get(THURSDAY).getName());
 		}
-		if (FRIDAY == fr) {
+		if (fr != null && FRIDAY == fr) {
 			result = getChanningText(result, dateList.get(FRIDAY).getName());
 		}
-		if (SATURDAY == sa) {
+		if (sa != null && SATURDAY == sa) {
 			result = getChanningText(result, dateList.get(SATURDAY).getName());
 		}
-		if (SUNDAY == su) {
+		if (su != null && SUNDAY == su) {
 			result = getChanningText(result, dateList.get(SUNDAY).getName());
 		}
 		if (result.isEmpty()) {
 			return dateList.get(-1).getName();
-		} else if (result.contains(delimeter)) {
-			return result.substring(0, result.length() - delimeter.length() - 1);
 		}
 		return result;
 	}
