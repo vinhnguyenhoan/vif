@@ -1,6 +1,13 @@
 package vn.vif.models;
 
-import static java.util.Calendar.*;
+import static java.util.Calendar.FRIDAY;
+import static java.util.Calendar.MONDAY;
+import static java.util.Calendar.SATURDAY;
+import static java.util.Calendar.SUNDAY;
+import static java.util.Calendar.THURSDAY;
+import static java.util.Calendar.TUESDAY;
+import static java.util.Calendar.WEDNESDAY;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class OrderItem implements java.io.Serializable {
 
 	private static final long serialVersionUID = -7473088239616243125L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 //	@GenericGenerator(name="gen",strategy="increment")
