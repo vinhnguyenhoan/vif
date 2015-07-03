@@ -68,11 +68,14 @@ public class OrderItem implements java.io.Serializable {
 	private Integer sa;
 	@Column(name = "SU")
 	private Integer su;
+
+	@Transient
+	private List<Integer> moveToDate;
 	
 	@Transient
 	private static final Map<Integer, OptionData> dateList = new TreeMap<>();
+	@Transient
 	private static final Map<Integer, String> columnDateMap = new TreeMap<>();
-	
 	static {
 		addDataData(-1, "Tất cả", null);
 		addDataData(MONDAY, "T2", "mo");
@@ -250,4 +253,13 @@ public class OrderItem implements java.io.Serializable {
 		}
 		return result + ", " + text;
 	}
+
+	public List<Integer> getMoveToDate() {
+		return moveToDate;
+	}
+
+	public void setMoveToDate(List<Integer> moveToDate) {
+		this.moveToDate = moveToDate;
+	}
+	
 }

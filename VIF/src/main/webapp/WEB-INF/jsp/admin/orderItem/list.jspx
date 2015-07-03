@@ -97,6 +97,13 @@
 								size="${size}" id="orderItemBottomPagination" /></td>
 					</tr>
 				</table>
+				
+				<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
+					<form:option value="">--- Chọn ngày bán ---</form:option>
+					<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+				</form:select>
+				
+				
 			</form:form>
 			
 		</div>

@@ -16,7 +16,16 @@ public class OrderItemListFilter implements Filter {
 
 	private String searchText;
 	private List<Integer> searchDate;
+	private List<Integer> moveToDate;
 	
+	public List<Integer> getMoveToDate() {
+		return moveToDate;
+	}
+
+	public void setMoveToDate(List<Integer> moveToDate) {
+		this.moveToDate = moveToDate;
+	}
+
 	public String getSearchText() {
 		return searchText;
 	}
