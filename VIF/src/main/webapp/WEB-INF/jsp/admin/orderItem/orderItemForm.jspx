@@ -116,7 +116,7 @@
 					<td>
 						<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
 							<form:option value="">--- Chọn ngày bán ---</form:option>
-							<form:options items="${moveToDate}" itemValue="id" itemLabel="name" />
+							<form:options items="${dateList}" itemValue="id" itemLabel="name" />
 						</form:select>
 						
 						<form:errors path="moveToDate" cssClass="errorMessage" />

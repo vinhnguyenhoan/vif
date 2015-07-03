@@ -68,6 +68,7 @@ public class OrderItemController {
 			if (orderItem == null) {
 				return "notFoundError";
 			}
+			uiModel.addAttribute("dateList", OrderItem.getDataList());
 			uiModel.addAttribute("orderItem", orderItem);	
 			return "orderItemDetail";
 		} catch (Exception e) {
@@ -111,6 +112,7 @@ public class OrderItemController {
 					}
 				}
 				uiModel.addAttribute("success", true);
+				uiModel.addAttribute("dateList", OrderItem.getDataList());
 				return "redirect:/admin/orderItem/detail/" + orderItem.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -124,6 +126,7 @@ public class OrderItemController {
 			}
 			
 		}
+		// Handle for exception
 		uiModel.addAttribute("orderItem", orderItem);	
 		return "orderItemDetail";
 	}

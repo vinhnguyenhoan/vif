@@ -255,10 +255,56 @@ public class OrderItem implements java.io.Serializable {
 	}
 
 	public List<Integer> getMoveToDate() {
+		moveToDate = new LinkedList<>();
+		if (mo != null && MONDAY == mo) {
+			moveToDate.add(mo);
+		}
+		if (tu != null && TUESDAY == tu) {
+			moveToDate.add(tu);
+		}
+		if (we != null && WEDNESDAY == we) {
+			moveToDate.add(we);
+		}
+		if (th != null && THURSDAY == th) {
+			moveToDate.add(th);
+		}
+		if (fr != null && FRIDAY == fr) {
+			moveToDate.add(fr);
+		}
+		if (sa != null && SATURDAY == sa) {
+			moveToDate.add(sa);
+		}
+		if (su != null && SUNDAY == su) {
+			moveToDate.add(su);
+		}
+		if (moveToDate.isEmpty()) {
+			moveToDate.add(-1);
+		}
 		return moveToDate;
 	}
 
 	public void setMoveToDate(List<Integer> moveToDate) {
+		for (Integer date : moveToDate) {
+			if (-1 == date) {
+				mo = tu = we = th = fr = sa = su = null;
+				this.moveToDate = new LinkedList<>();
+				return;
+			} else if (MONDAY == date) {
+				mo = date;
+			} else if (TUESDAY == date) {
+				tu = date;
+			} else if (WEDNESDAY == date) {
+				we = date;
+			} else if (THURSDAY == date) {
+				th = date;
+			} else if (FRIDAY == date) {
+				fr = date;
+			} else if (SATURDAY == date) {
+				sa = date;
+			} else if (SUNDAY == date) {
+				su = date;
+			}
+		}
 		this.moveToDate = moveToDate;
 	}
 	
