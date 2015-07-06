@@ -3,6 +3,7 @@ package vn.vif.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -44,16 +45,46 @@ public class OrderItemController {
 	
 	@RequestMapping(value = "/orderItem/list", method = { RequestMethod.GET,
 			RequestMethod.POST })
-	public String listOrderItems(
+	public String viewListOrderItems(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
 			Model uiModel) {
+		return orderItemsList(page, size, orderItemListFilter, uiModel, false);
+	}
+	
+	@RequestMapping(value = "/orderItem/list/saveDate", method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public String moveOrderItemsList(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
+			Model uiModel) {
+		return orderItemsList(page, size, orderItemListFilter, uiModel, true);
+	}
+	
+	private String orderItemsList(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
+			Model uiModel, boolean isSaveDate) {
+		// Save before view
+		if (isSaveDate) {
+			List<OrderItem> itemsToSave = new LinkedList<>();
+			List<OrderItem> allItem = orderItemListFilter.getItemSelected();
+			for (OrderItem orderItem : allItem) {
+				if (orderItem.isSelectedToMoveSellDate()) {
+					itemsToSave.add(orderItem);
+				}
+			}
+			// TODO save itemsToSave
+		}
+		
 		long count = orderItemService.count(orderItemListFilter);
 		PaginationInfo paginationInfo = PaginationUtil.calculatePage(count,
 				page, size, uiModel);
 		List<OrderItem> orderItemList = orderItemService.list(orderItemListFilter, paginationInfo.getStart(), paginationInfo.getSize());
 		
+		orderItemListFilter.setItemSelected(orderItemList);
 		uiModel.addAttribute("orderItemList", orderItemList);
 		uiModel.addAttribute("dateList", OrderItem.getDataList());
 

@@ -73,6 +73,9 @@ public class OrderItem implements java.io.Serializable {
 	private List<Integer> moveToDate;
 	
 	@Transient
+	private boolean selectedToMoveSellDate;
+	
+	@Transient
 	private static final Map<Integer, OptionData> dateList = new TreeMap<>();
 	@Transient
 	private static final Map<Integer, String> columnDateMap = new TreeMap<>();
@@ -306,6 +309,14 @@ public class OrderItem implements java.io.Serializable {
 			}
 		}
 		this.moveToDate = moveToDate;
+	}
+
+	public boolean isSelectedToMoveSellDate() {
+		return selectedToMoveSellDate;
+	}
+
+	public void setSelectedToMoveSellDate(boolean selectedToMoveSellDate) {
+		this.selectedToMoveSellDate = selectedToMoveSellDate;
 	}
 	
 }

@@ -16,6 +16,7 @@ public class OrderItemListFilter implements Filter {
 
 	private String searchText;
 	private List<Integer> searchDate;
+	private List<OrderItem> itemSelected;
 	private List<Integer> moveToDate;
 	
 	public List<Integer> getMoveToDate() {
@@ -24,6 +25,14 @@ public class OrderItemListFilter implements Filter {
 
 	public void setMoveToDate(List<Integer> moveToDate) {
 		this.moveToDate = moveToDate;
+	}
+
+	public List<OrderItem> getItemSelected() {
+		return itemSelected;
+	}
+
+	public void setItemSelected(List<OrderItem> itemSelected) {
+		this.itemSelected = itemSelected;
 	}
 
 	public String getSearchText() {
