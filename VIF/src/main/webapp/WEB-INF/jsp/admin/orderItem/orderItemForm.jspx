@@ -13,8 +13,7 @@
 
 	<spring:url var="scriptsFolder" value="/scripts" />
 	<spring:url var="jsFolder" value="/resources/js" />
-	<spring:url var="userPOSURL" value="/pos/user" />
-	<spring:url var="userListURL" value="/admin/user/list"/>
+	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
 	
 	<![CDATA[
 	<script type="text/javascript">
@@ -66,9 +65,7 @@
 					<td colspan="3">
 						<c:choose>
 							<c:when test="${orderItem.image!=null}">
-								<%-- <fmt:formatDate value="${orderItem.ngayCapNhat}" type="both"
-									dateStyle="medium" timeStyle="medium" var="ver"
-									pattern="ddMMyyyyHHmmss"  --%>/>
+<!-- <fmt:formatDate value="${orderItem.ngayCapNhat}" type="both" dateStyle="medium" timeStyle="medium" var="ver" pattern="ddMMyyyyHHmmss"  /> -->
 								<spring:url value="/" var="path" />
 								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">
 									<img src="${path}images/products/${orderItem.image}?v=${ver}"/></div>
@@ -90,7 +87,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Mô tả (<label class="errorMessage">*</label>):
+					<td align="right">Mô tả (<label class="errorMessage"></label>):
 					</td>
 					<td>
 						<form:input path="desc" class="textInput numberField"/> 
@@ -106,14 +103,26 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Giá mini(<label class="errorMessage">*</label>):
+					<td align="right">Giá mini(<label class="errorMessage"></label>):
 					</td>
 					<td>
 						<form:input path="miniPrice" class="textInput numberField"/>
 						<form:errors path="miniPrice" cssClass="errorMessage" />
 					</td>
 				</tr>
-
+				<tr>
+					<td align="right">Ngày bán(<label class="errorMessage"></label>):
+					</td>
+					<td>
+						<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
+							<form:option value="">--- Chọn ngày bán ---</form:option>
+							<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+						</form:select>
+						
+						<form:errors path="moveToDate" cssClass="errorMessage" />
+					</td>
+				</tr>
+				
 				<tr>
 					<td>&#160;</td>
 				</tr>
@@ -123,7 +132,7 @@
 					<td><a href="javascript:;"
 						onclick="javascript:updateOrderItem();" class="btn-1"
 						title="Lưu thông tin món ăn"><span><span>Lưu</span></span></a>
-						<a href="${userListURL}" class="btn-1"
+						<a href="${orderItemListURL}" class="btn-1"
 						title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
 					</td>
 				</tr>

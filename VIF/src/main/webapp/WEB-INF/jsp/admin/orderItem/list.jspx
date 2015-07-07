@@ -29,7 +29,7 @@
 			</h2>
 		</div>
 		<div id="content">
-			<form:form method="POST" id="orderItemList" commandName="frmOrderItemList">
+<form:form method="POST" id="orderItemList" commandName="frmOrderItemList" modelAttribute="frmOrderItemList">
 				<input type="hidden" id="page" value="${page}" />
 				<input type="hidden" id="size" value="${size}" />
 				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
@@ -38,7 +38,6 @@
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderItemList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
-									
 								<form:select path="searchDate" cssClass="select2_combo" style="width:150px">
 									<form:option value="">--- Chọn ngày bán ---</form:option>
 									<form:options items="${dateList}" itemValue="id" itemLabel="name" />
@@ -55,12 +54,15 @@
 								page="${page}" size="${size}" submitMethod="POST"
 								formSubmit="orderItemList" id="orderItemTopPagination" /></td>
 					</tr>
+					
 					<tr>
 						<td colspan="5">
+						
 							<table width="100%" border="0" cellspacing="0" cellpadding="0"
 								class="table-2">
 								<thead>
 									<tr>
+										<td></td>
 										<td>Tên</td>
 										<td>Ngày bán</td>
 										<td>Mô tả</td>
@@ -70,19 +72,31 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${orderItemList}" var="item" varStatus="status">
+									<c:forEach items="${frmOrderItemList.itemSelected}" var="itemIndex" varStatus="status">
 										<tr>
-											<td><a href="${orderItemDetailURL}/${item.id}">${item.name}</a></td>
-											<td><a href="${orderItemDetailURL}/${item.id}">${item.dateText}</a></td>
-											<td><a href="${orderItemDetailURL}/${item.id}">${item.desc}</a></td>
 											<td>
-												${item.price}
+												 <form:checkbox path="itemSelected[${status.index}].selectedToMoveSellDate"/>
+												 <form:hidden path="itemSelected[${status.index}].id"/>
 											</td>
 											<td>
-												${item.miniPrice}
+												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.name}</a>
+												<form:hidden path="itemSelected[${status.index}].name"/>
 											</td>
 											<td>
-												<a href="${orderItemDetailURL}/${item.id}"  class="redTxt"
+												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.dateText}</a>
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.desc}</a>
+												<form:hidden path="itemSelected[${status.index}].desc"/>
+											</td>
+											<td>
+												${itemIndex.price} <form:hidden path="itemSelected[${status.index}].price"/>
+											</td>
+											<td>
+												${itemIndex.miniPrice} <form:hidden path="itemSelected[${status.index}].miniPrice"/>
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${itemIndex.id}"  class="redTxt"
 												title="Cập nhật thông tin">Chỉnh sửa</a>
 											</td>
 										</tr>
@@ -97,8 +111,18 @@
 								size="${size}" id="orderItemBottomPagination" /></td>
 					</tr>
 				</table>
-			</form:form>
-			
+				
+				
+				<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
+					<form:option value=""> Chọn ngày bán </form:option>
+					<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+				</form:select>
+
+				<a href="javascript:"
+					onclick="submitActionForm('orderItemList', '/admin/orderItem/list/saveDate')" class="btn-1"
+					title="Chuyển ngày bán"><span><span style="width:90px">Chuyển ngày bán</span></span></a>
+				
+</form:form>
 		</div>
 	</div>
 </div>

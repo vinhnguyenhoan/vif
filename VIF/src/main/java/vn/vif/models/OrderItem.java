@@ -36,8 +36,10 @@ public class OrderItem implements java.io.Serializable {
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	private Long id;
 	
+	@Column(name = "NAME")
 	private String name;
 
+	@Column(name = "DESC")
 	private String desc;
 
 	@Column(name = "PRICE")
@@ -66,11 +68,17 @@ public class OrderItem implements java.io.Serializable {
 	private Integer sa;
 	@Column(name = "SU")
 	private Integer su;
+
+	@Transient
+	private List<Integer> moveToDate;
+	
+	@Transient
+	private boolean selectedToMoveSellDate;
 	
 	@Transient
 	private static final Map<Integer, OptionData> dateList = new TreeMap<Integer, OptionData>();
+	@Transient
 	private static final Map<Integer, String> columnDateMap = new TreeMap<Integer, String>();
-	
 	static {
 		addDataData(-1, "Tất cả", null);
 		addDataData(MONDAY, "T2", "mo");
@@ -109,7 +117,6 @@ public class OrderItem implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -118,7 +125,6 @@ public class OrderItem implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "DESC")
 	public String getDesc() {
 		return desc;
 	}
@@ -217,32 +223,29 @@ public class OrderItem implements java.io.Serializable {
 	
 	public String getDateText() {
 		String result = "";
-		final String delimeter = ", ";
-		if (MONDAY == mo) {
+		if (mo != null && MONDAY == mo) {
 			result = getChanningText(result, dateList.get(MONDAY).getName());
 		}
-		if (TUESDAY == tu) {
+		if (tu != null && TUESDAY == tu) {
 			result = getChanningText(result, dateList.get(TUESDAY).getName());
 		}
-		if (WEDNESDAY == we) {
+		if (we != null && WEDNESDAY == we) {
 			result = getChanningText(result, dateList.get(WEDNESDAY).getName());
 		}
-		if (THURSDAY == th) {
+		if (th != null && THURSDAY == th) {
 			result = getChanningText(result, dateList.get(THURSDAY).getName());
 		}
-		if (FRIDAY == fr) {
+		if (fr != null && FRIDAY == fr) {
 			result = getChanningText(result, dateList.get(FRIDAY).getName());
 		}
-		if (SATURDAY == sa) {
+		if (sa != null && SATURDAY == sa) {
 			result = getChanningText(result, dateList.get(SATURDAY).getName());
 		}
-		if (SUNDAY == su) {
+		if (su != null && SUNDAY == su) {
 			result = getChanningText(result, dateList.get(SUNDAY).getName());
 		}
 		if (result.isEmpty()) {
 			return dateList.get(-1).getName();
-		} else if (result.contains(delimeter)) {
-			return result.substring(0, result.length() - delimeter.length() - 1);
 		}
 		return result;
 	}
@@ -253,4 +256,71 @@ public class OrderItem implements java.io.Serializable {
 		}
 		return result + ", " + text;
 	}
+
+	public List<Integer> getMoveToDate() {
+		moveToDate = new LinkedList<Integer>();
+		if (mo != null && MONDAY == mo) {
+			moveToDate.add(mo);
+		}
+		if (tu != null && TUESDAY == tu) {
+			moveToDate.add(tu);
+		}
+		if (we != null && WEDNESDAY == we) {
+			moveToDate.add(we);
+		}
+		if (th != null && THURSDAY == th) {
+			moveToDate.add(th);
+		}
+		if (fr != null && FRIDAY == fr) {
+			moveToDate.add(fr);
+		}
+		if (sa != null && SATURDAY == sa) {
+			moveToDate.add(sa);
+		}
+		if (su != null && SUNDAY == su) {
+			moveToDate.add(su);
+		}
+		if (moveToDate.isEmpty()) {
+			moveToDate.add(-1);
+		}
+		return moveToDate;
+	}
+
+	public void setMoveToDate(List<Integer> moveToDate) {
+		this.moveToDate = moveToDate;
+		if (moveToDate == null || moveToDate.isEmpty()) {
+			mo = tu = we = th = fr = sa = su = null;
+			return;
+		}
+		for (Integer date : moveToDate) {
+			if (-1 == date) {
+				mo = tu = we = th = fr = sa = su = null;
+				this.moveToDate = new LinkedList<Integer>();
+				return;
+			} else if (MONDAY == date) {
+				mo = date;
+			} else if (TUESDAY == date) {
+				tu = date;
+			} else if (WEDNESDAY == date) {
+				we = date;
+			} else if (THURSDAY == date) {
+				th = date;
+			} else if (FRIDAY == date) {
+				fr = date;
+			} else if (SATURDAY == date) {
+				sa = date;
+			} else if (SUNDAY == date) {
+				su = date;
+			}
+		}
+	}
+
+	public boolean isSelectedToMoveSellDate() {
+		return selectedToMoveSellDate;
+	}
+
+	public void setSelectedToMoveSellDate(boolean selectedToMoveSellDate) {
+		this.selectedToMoveSellDate = selectedToMoveSellDate;
+	}
+	
 }
