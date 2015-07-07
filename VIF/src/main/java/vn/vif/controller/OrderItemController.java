@@ -131,7 +131,7 @@ public class OrderItemController {
 					oI.setName(orderItem.getName());
 					oI.setPrice(orderItem.getPrice());
 					oI.setMiniPrice(orderItem.getMiniPrice());
-					
+					oI.setMoveToDate(orderItem.getMoveToDate());
 					uploadLogo(oI);
 					
 					orderItemService.update(oI);
@@ -191,6 +191,7 @@ public class OrderItemController {
 	public String addOrderItem(HttpServletRequest request, Model uiModel) {
 		OrderItem orderItem = new OrderItem();
 		uiModel.addAttribute("orderItem", orderItem);
+		uiModel.addAttribute("dateList", OrderItem.getDataList());
 		return "orderItemAdd";
 	}
 
