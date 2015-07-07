@@ -3,7 +3,6 @@ package vn.vif.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -68,15 +67,15 @@ public class OrderItemController {
 			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
 			Model uiModel, boolean isSaveDate) {
 		// Save before view
-		if (isSaveDate) {
-			List<OrderItem> itemsToSave = new LinkedList<>();
-			List<OrderItem> allItem = orderItemListFilter.getItemSelected();
+		List<Integer> moveToDates = orderItemListFilter.getMoveToDate();
+		List<OrderItem> allItem = orderItemListFilter.getItemSelected();
+		if (isSaveDate && allItem != null) {
 			for (OrderItem orderItem : allItem) {
 				if (orderItem.isSelectedToMoveSellDate()) {
-					itemsToSave.add(orderItem);
+					orderItem.setMoveToDate(moveToDates);
+					orderItemService.update(orderItem);
 				}
 			}
-			// TODO save itemsToSave
 		}
 		
 		long count = orderItemService.count(orderItemListFilter);
@@ -194,68 +193,6 @@ public class OrderItemController {
 		uiModel.addAttribute("orderItem", orderItem);
 		return "orderItemAdd";
 	}
-
-	/*@RequestMapping(value = "/user/add", params = { "new" })
-	public String addNewUser(@ModelAttribute("user") @Valid VIFUser user,
-			BindingResult bindingResult, HttpServletRequest request,
-			Model uiModel) {
-		VIFUser me = userService.getLogin();
-		if (me == null)
-			return "login";
-		
-		validateInputData(user, bindingResult, request,"new");
-
-		String nativePass = user.getPassword();
-		if (!bindingResult.hasErrors()) {
-			// before saving to DB, encrypt the password
-			try {
-				user.setPassword(encryptPassword(user.getPassword()));
-			} catch (NoSuchAlgorithmException nsae) {
-				logger.error(nsae.getMessage(), nsae);
-				nsae.printStackTrace();
-			}
-			if (null != user.getBirthdayString() && !user.getBirthdayString().isEmpty()) {
-				user.setBirthday(Utility.parseLocalDate(user.getBirthdayString()));
-			}
-//				if(user.getSendEmail()){
-//					user.setActiveCode(GPSUtils.generalCode(user.getId()));
-//					user.setIsActive(false);
-//				} else {
-//					user.setActiveCode("");
-//					user.setIsActive(true);
-//				}
-			user.setCreatedBy(me.getId());
-			user.setCreatedDate(new Date());
-			try {
-				
-				userService.add(user);
-				
-				uiModel.addAttribute("success", true);
-				
-				return "redirect:/admin/user/detail/" + user.getId();
-			} catch (Exception e) {
-				e.printStackTrace();
-				uiModel.addAttribute("success", false);
-				user.setPassword(nativePass);
-			}
-			
-		} else {
-			// restore native pass
-			user.setPassword(nativePass);
-			List<FieldError> errors = bindingResult.getFieldErrors();
-			for (FieldError fieldError : errors) {
-				bindingResult.rejectValue(fieldError.getField(),
-						fieldError.getDefaultMessage());
-			}
-			
-			
-		}
-		
-		uiModel.addAttribute("user", user);
-		uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
-			
-		return "userAdd";
-	}*/
 
 	private void validateInputData(OrderItem orderItem, BindingResult bindingResult) {
 		if (StringUtils.isEmpty(orderItem.getName())) {

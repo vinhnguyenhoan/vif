@@ -287,6 +287,11 @@ public class OrderItem implements java.io.Serializable {
 	}
 
 	public void setMoveToDate(List<Integer> moveToDate) {
+		this.moveToDate = moveToDate;
+		if (moveToDate == null || moveToDate.isEmpty()) {
+			mo = tu = we = th = fr = sa = su = null;
+			return;
+		}
 		for (Integer date : moveToDate) {
 			if (-1 == date) {
 				mo = tu = we = th = fr = sa = su = null;
@@ -308,7 +313,6 @@ public class OrderItem implements java.io.Serializable {
 				su = date;
 			}
 		}
-		this.moveToDate = moveToDate;
 	}
 
 	public boolean isSelectedToMoveSellDate() {

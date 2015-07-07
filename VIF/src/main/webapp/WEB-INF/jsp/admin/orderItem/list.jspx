@@ -72,19 +72,28 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${orderItemList}" var="itemIndex" varStatus="status">
+									<c:forEach items="${frmOrderItemList.itemSelected}" var="itemIndex" varStatus="status">
 										<tr>
 											<td>
 												 <form:checkbox path="itemSelected[${status.index}].selectedToMoveSellDate"/>
-											</td>
-											<td><a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.name}</a></td>
-											<td><a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.dateText}</a></td>
-											<td><a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.desc}</a></td>
-											<td>
-												${itemIndex.price}
+												 <form:hidden path="itemSelected[${status.index}].id"/>
 											</td>
 											<td>
-												${itemIndex.miniPrice}
+												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.name}</a>
+												<form:hidden path="itemSelected[${status.index}].name"/>
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.dateText}</a>
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.desc}</a>
+												<form:hidden path="itemSelected[${status.index}].desc"/>
+											</td>
+											<td>
+												${itemIndex.price} <form:hidden path="itemSelected[${status.index}].price"/>
+											</td>
+											<td>
+												${itemIndex.miniPrice} <form:hidden path="itemSelected[${status.index}].miniPrice"/>
 											</td>
 											<td>
 												<a href="${orderItemDetailURL}/${itemIndex.id}"  class="redTxt"
