@@ -25,7 +25,7 @@
 ]]>
 
 	<form:form action="${requestScope.orderItemFormLink}" method="POST"
-		commandName="orderItem" name="orderItem" enctype="multipart/form-data">
+		commandName="orderItem" name="orderItem" enctype="multipart/form-data;charset=UTF-8">
 		<form:hidden path="id" />
 
 		<div class="formContent">
