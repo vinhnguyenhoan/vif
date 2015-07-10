@@ -68,7 +68,7 @@
 <!-- <fmt:formatDate value="${orderItem.ngayCapNhat}" type="both" dateStyle="medium" timeStyle="medium" var="ver" pattern="ddMMyyyyHHmmss"  /> -->
 								<spring:url value="/" var="path" />
 								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">
-									<img src="${path}images/products/${orderItem.image}?v=${ver}"/></div>
+									<img width="219px" src="${path}${orderItem.image}?v=${ver}"/></div>
 							</c:when>
 							<c:otherwise>
 								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">219 x 163</div>
@@ -87,7 +87,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Mô tả (<label class="errorMessage"></label>):
+					<td align="right">Mô tả:
 					</td>
 					<td>
 						<form:input path="desc" class="textInput numberField"/> 
@@ -103,7 +103,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Giá mini(<label class="errorMessage"></label>):
+					<td align="right">Giá mini:
 					</td>
 					<td>
 						<form:input path="miniPrice" class="textInput numberField"/>
@@ -111,7 +111,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Ngày bán(<label class="errorMessage"></label>):
+					<td align="right">Ngày bán:
 					</td>
 					<td>
 						<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">

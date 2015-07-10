@@ -21,6 +21,7 @@ nav[role=navigation-order] {
 	top: 120px;
 	text-align: center;
 }
+nav[role=navigation-order] > a:hover { opacity: 0.9; }
 nav[role=navigation-order] #time {
 	padding-top:10px;
 }

@@ -4,7 +4,7 @@
 
 @import url(./core/css/boilerplate.css);
 @import url(./core/css/typography.css);
-@import url(./core/css/layout.css);
+@import url(./core/css/layout.css?v=1);
 @import url(./core/css/widgets.css);
 @import url(./core/css/shortcodes.css);
 @import url(./core/js/fancybox/jquery.fancybox.css);

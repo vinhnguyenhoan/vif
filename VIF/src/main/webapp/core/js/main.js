@@ -28,6 +28,13 @@ $(document).ready(function() {
 			this.value = 'Tìm kiếm nhanh';
 		}
 	});
+	$('#nav-time ul li a').click(function() {
+		$(this).parent().parent().children().removeClass('current-menu-item');
+		$(this).parent().addClass('current-menu-item');
+		$('#date-name').text($(this).attr('title'));
+		$('#date').text($(this).attr('date'));
+		return false;
+	})
 });
 
 function ui_enhance() {

@@ -65,7 +65,8 @@ header[role=banner] {  border-bottom: solid 4px #7b143a; height: 204px;backgroun
 	margin-left: 300px;	
 }
 #site-logo a#logo {
-	position: absolute;
+	left: -30px;
+    position: relative;
 	top: 43px;
 }
 #site-logo #lang { 
@@ -196,7 +197,7 @@ box-shadow: 3px 3px 0 rgba(0,0,0,0.16); }
 #nav-time > ul > li > a { display: block; line-height: 35px; font-size: 14px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.91); }
 #nav-time > ul > li.current-menu-item > a, #nav-time > ul > li:hover > a { background:url(../images/day-active.png) no-repeat; }
 #nav-time > #search-span { float:right;}
-#nav-time > #search-span > input[type=button] { background:url(../images/search-button.png) no-repeat; width: 37px;height:31px;border:0}
+#nav-time > #search-span > span.button { background:url(../images/search-button.png) no-repeat; width: 37px;height:31px;padding: 6px 18px;}
 #nav-time > #search-span > span { background:url(../images/search-input.png) right center no-repeat;width: 178px;padding: 8px 9px;}
 
 /* MODULAR SECTIONS */
