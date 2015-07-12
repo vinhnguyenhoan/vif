@@ -71,7 +71,7 @@ public class OrderItemController {
 		List<OrderItem> allItem = orderItemListFilter.getItemSelected();
 		if (isSaveDate && allItem != null) {
 			for (OrderItem orderItem : allItem) {
-				if (orderItem.isSelectedToMoveSellDate()) {
+				if (orderItem.getSelectedToMoveSellDate()) {
 					orderItem.setMoveToDate(moveToDates);
 					orderItemService.update(orderItem);
 				}
@@ -88,6 +88,7 @@ public class OrderItemController {
 		uiModel.addAttribute("dateList", OrderItem.getDataList());
 
 		return "orderItemList";
+		// return "redirect:/admin/orderItem/list";
 	}
 
 	@RequestMapping(value = "/orderItem/detail/{id}")
@@ -132,6 +133,7 @@ public class OrderItemController {
 					oI.setPrice(orderItem.getPrice());
 					oI.setMiniPrice(orderItem.getMiniPrice());
 					oI.setMoveToDate(orderItem.getMoveToDate());
+					oI.setLogoFile(orderItem.getLogoFile());
 					uploadLogo(oI);
 					
 					orderItemService.update(oI);
@@ -166,7 +168,8 @@ public class OrderItemController {
 			String filename = or.getLogoFile().getOriginalFilename();
 			String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length()).toLowerCase();
 			if (extension.equals("png") || extension.equals("jpg") || extension.equals("gif")) {
-				String logo = "logo_" + or.getId() + "." + extension;
+				String logo = "order_item_" + or.getId() + "." + extension;
+				String image = "images/pruducts/" + logo;
 				logo = File.separator + "images" + File.separator+ "pruducts" + File.separator + logo;
 				String path = context.getRealPath("") + logo;
 				File folder = new File(path);
@@ -177,7 +180,7 @@ public class OrderItemController {
 					InputStream is = or.getLogoFile().getInputStream();
 					ImageUtil.writeImage(path, is);
 					is.close();
-					or.setImage(logo);
+					or.setImage(image);
 					return true;
 				} catch (IOException e) {
 					e.printStackTrace();

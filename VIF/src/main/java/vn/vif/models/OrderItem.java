@@ -29,56 +29,33 @@ import org.springframework.web.multipart.MultipartFile;
 public class OrderItem implements java.io.Serializable {
 
 	private static final long serialVersionUID = -7473088239616243125L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-//	@GenericGenerator(name="gen",strategy="increment")
-//	@GeneratedValue(generator="gen")
-	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	private Long id;
 	
-	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "DESC")
 	private String desc;
 
-	@Column(name = "PRICE")
 	private Integer price;
 
-	@Column(name = "MINI_PRICE")
 	private Integer miniPrice;
 	
-	@Column(name = "IMAGE")
 	private String image;
 
-	@Transient
 	private MultipartFile logoFile;
 	
-	@Column(name = "MO")
 	private Integer mo;
-	@Column(name = "TU")
 	private Integer tu;
-	@Column(name = "WE")
 	private Integer we;
-	@Column(name = "TH")
 	private Integer th;
-	@Column(name = "FR")
 	private Integer fr;
-	@Column(name = "SA")
 	private Integer sa;
-	@Column(name = "SU")
 	private Integer su;
 
-	@Transient
 	private List<Integer> moveToDate;
-	
-	@Transient
 	private boolean selectedToMoveSellDate;
 	
-	@Transient
-	private static final Map<Integer, OptionData> dateList = new TreeMap<>();
-	@Transient
-	private static final Map<Integer, String> columnDateMap = new TreeMap<>();
+	private static final Map<Integer, OptionData> dateList = new TreeMap<Integer, OptionData>();
+	private static final Map<Integer, String> columnDateMap = new TreeMap<Integer, String>();
 	static {
 		addDataData(-1, "Tất cả", null);
 		addDataData(MONDAY, "T2", "mo");
@@ -99,7 +76,7 @@ public class OrderItem implements java.io.Serializable {
 	}
 	
 	public static final List<OptionData> getDataList() {
-		return new LinkedList<>(dateList.values());
+		return new LinkedList<OptionData>(dateList.values());
 	}
 	
 	public static final String getDateColName(int date) {
@@ -109,6 +86,9 @@ public class OrderItem implements java.io.Serializable {
 	public OrderItem() {
 	}
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public Long getId() {
 		return this.id;
 	}
@@ -117,6 +97,7 @@ public class OrderItem implements java.io.Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "NAME", length = 100)
 	public String getName() {
 		return name;
 	}
@@ -125,6 +106,7 @@ public class OrderItem implements java.io.Serializable {
 		this.name = name;
 	}
 
+	@Column(name = "DESCRIPTION", length = 200)
 	public String getDesc() {
 		return desc;
 	}
@@ -133,6 +115,7 @@ public class OrderItem implements java.io.Serializable {
 		this.desc = desc;
 	}
 
+	@Column(name = "PRICE", precision = 9)
 	public Integer getPrice() {
 		return price;
 	}
@@ -141,6 +124,7 @@ public class OrderItem implements java.io.Serializable {
 		this.price = price;
 	}
 
+	@Column(name = "MINI_PRICE", precision = 9)
 	public Integer getMiniPrice() {
 		return miniPrice;
 	}
@@ -149,6 +133,7 @@ public class OrderItem implements java.io.Serializable {
 		this.miniPrice = miniPrice;
 	}
 
+	@Column(name = "IMAGE", precision = 200)
 	public String getImage() {
 		return image;
 	}
@@ -157,6 +142,7 @@ public class OrderItem implements java.io.Serializable {
 		this.image = image;
 	}
 
+	@Transient
 	public MultipartFile getLogoFile() {
 		return logoFile;
 	}
@@ -165,6 +151,7 @@ public class OrderItem implements java.io.Serializable {
 		this.logoFile = logoFile;
 	}
 
+	@Column(name = "MO", precision = 2)
 	public Integer getMo() {
 		return mo;
 	}
@@ -173,6 +160,7 @@ public class OrderItem implements java.io.Serializable {
 		this.mo = mo;
 	}
 
+	@Column(name = "TU", precision = 2)
 	public Integer getTu() {
 		return tu;
 	}
@@ -181,6 +169,7 @@ public class OrderItem implements java.io.Serializable {
 		this.tu = tu;
 	}
 
+	@Column(name = "WE", precision = 2)
 	public Integer getWe() {
 		return we;
 	}
@@ -189,6 +178,7 @@ public class OrderItem implements java.io.Serializable {
 		this.we = we;
 	}
 
+	@Column(name = "TH", precision = 2)
 	public Integer getTh() {
 		return th;
 	}
@@ -197,6 +187,7 @@ public class OrderItem implements java.io.Serializable {
 		this.th = th;
 	}
 
+	@Column(name = "FR", precision = 2)
 	public Integer getFr() {
 		return fr;
 	}
@@ -205,6 +196,7 @@ public class OrderItem implements java.io.Serializable {
 		this.fr = fr;
 	}
 
+	@Column(name = "SA", precision = 2)
 	public Integer getSa() {
 		return sa;
 	}
@@ -213,6 +205,7 @@ public class OrderItem implements java.io.Serializable {
 		this.sa = sa;
 	}
 
+	@Column(name = "SU", precision = 2)
 	public Integer getSu() {
 		return su;
 	}
@@ -221,6 +214,7 @@ public class OrderItem implements java.io.Serializable {
 		this.su = su;
 	}
 	
+	@Transient
 	public String getDateText() {
 		String result = "";
 		if (mo != null && MONDAY == mo) {
@@ -257,8 +251,9 @@ public class OrderItem implements java.io.Serializable {
 		return result + ", " + text;
 	}
 
+	@Transient
 	public List<Integer> getMoveToDate() {
-		moveToDate = new LinkedList<>();
+		moveToDate = new LinkedList<Integer>();
 		if (mo != null && MONDAY == mo) {
 			moveToDate.add(mo);
 		}
@@ -295,7 +290,7 @@ public class OrderItem implements java.io.Serializable {
 		for (Integer date : moveToDate) {
 			if (-1 == date) {
 				mo = tu = we = th = fr = sa = su = null;
-				this.moveToDate = new LinkedList<>();
+				this.moveToDate = new LinkedList<Integer>();
 				return;
 			} else if (MONDAY == date) {
 				mo = date;
@@ -315,7 +310,8 @@ public class OrderItem implements java.io.Serializable {
 		}
 	}
 
-	public boolean isSelectedToMoveSellDate() {
+	@Transient
+	public boolean getSelectedToMoveSellDate() {
 		return selectedToMoveSellDate;
 	}
 

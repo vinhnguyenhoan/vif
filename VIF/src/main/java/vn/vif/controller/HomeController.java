@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import vn.vif.utils.VIFUtils;
 @Controller
 public class HomeController {
 
@@ -63,6 +65,7 @@ public class HomeController {
 			RequestMethod.POST })
 	public String home(HttpServletRequest request, Model uiModel) {
 		
+		VIFUtils.fillDate(uiModel);
 		
 		return "web";
 	}
