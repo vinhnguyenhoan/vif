@@ -59,4 +59,6 @@ public interface GeneralService<T> {
 	public List<T> list(Filter filter);
 	
 	public long count(Filter filter);
+	public Session openSession();
+	public void closeSession(Session session);
 }
