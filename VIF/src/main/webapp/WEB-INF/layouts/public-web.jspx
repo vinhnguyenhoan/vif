@@ -96,22 +96,6 @@
 	<section id="slider" class="default" style="height: 349px;">
 
 <script>
-	Rising.sliderConfig = {
-		autoplay: true,
-		transitionTime: 1000,
-		pauseTime: 2000,
-		//effect: 'fade',
-		easing: 'easeOutBack',
-		height: 349,
-		width: 1024 
-			/* effect: 'fade',
-			slices: 15,
-			boxCols: 8,
-			boxRows: 4,
-			manualAdvance: true,
-			animSpeed: 350,
-			pauseTime: 2000 */
-	}
 
 	Rising.sliderData = [];
 	Rising.sliderData.push({
@@ -134,6 +118,30 @@
 		img: '${core}/images/content/slide5.jpg',
 		url: '#slide5'
 	});
+	
+	Rising.sliderConfig = {
+		autoplay: true,
+		transitionTime: 1500,
+		animSpeed: 1000,
+		pauseTime: 2000,
+		easing: 'easeOutBack',
+		height: 349,
+		width: 1024 
+	}
+	
+	/* Rising.sliderConfig = {
+		autoplay: true,	
+		effect: 'fade',
+		slices: 15,
+		boxCols: 8,
+		boxRows: 4,
+		manualAdvance: true,
+		animSpeed: 350,
+		pauseTime: 2000,
+		height: 349,
+		width: 1024
+	} */
+
 </script>
 
 		<div class="workarea">

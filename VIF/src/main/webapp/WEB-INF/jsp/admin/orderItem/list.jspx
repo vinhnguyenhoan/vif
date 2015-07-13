@@ -62,12 +62,12 @@
 								class="table-2">
 								<thead>
 									<tr>
-										<td></td>
-										<td>Tên</td>
-										<td>Ngày bán</td>
+										<td width="4%"></td>
+										<td width="26%">Tên</td>
+										<td width="14%">Ngày bán</td>
 										<td>Mô tả</td>
-										<td>Giá</td>
-										<td>Giá mini</td>
+										<td width="14%">Giá</td>
+										<td width="14%">Giá mini</td>
 										<td width="10%">Hành động</td>
 									</tr>
 								</thead>
