@@ -256,5 +256,12 @@ public abstract class GeneralServiceImpl<T> implements GeneralService<T> {
 	protected boolean isValid(String s) {
 		return s != null && !s.isEmpty();
 	}
-
+	
+	public Session openSession() {
+		return genericDAO.getSessionFactory().openSession();
+	}
+	
+	public void closeSession(Session session) {
+		genericDAO.close(session);
+	}
 }
