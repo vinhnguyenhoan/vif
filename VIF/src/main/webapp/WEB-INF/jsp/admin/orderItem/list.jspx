@@ -62,12 +62,12 @@
 								class="table-2">
 								<thead>
 									<tr>
-										<td></td>
-										<td>Tên</td>
-										<td>Ngày bán</td>
+										<td width="4%"></td>
+										<td width="16%">Tên</td>
+										<td width="14%">Ngày bán</td>
 										<td>Mô tả</td>
-										<td>Giá</td>
-										<td>Giá mini</td>
+										<td width="14%">Giá</td>
+										<td width="14%">Giá mini</td>
 										<td width="10%">Hành động</td>
 									</tr>
 								</thead>
@@ -121,8 +121,13 @@
 				<a href="javascript:"
 					onclick="submitActionForm('orderItemList', '/admin/orderItem/list/saveDate')" class="btn-1"
 					title="Chuyển ngày bán"><span><span style="width:90px">Chuyển ngày bán</span></span></a>
+					
+					<a href="javascript:"
+					onclick="openDialog()" class="btn-1"
+					title="Chuyển ngày bán"><span><span style="width:90px">Mở dialog ví dụ</span></span></a>
 				
 </form:form>
 		</div>
 	</div>
+	<jsp:include page="example.jspx"/>
 </div>

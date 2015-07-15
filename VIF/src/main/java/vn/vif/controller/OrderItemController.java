@@ -3,6 +3,7 @@ package vn.vif.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 
 import vn.vif.models.OrderItem;
@@ -28,6 +30,8 @@ import vn.vif.services.OrderItemService;
 import vn.vif.utils.ImageUtil;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
+import vn.vif.utils.VIFUtils;
+import vn.vif.utils.converter.OptionItem;
 
 @Controller
 @RequestMapping("/admin")
@@ -207,5 +211,16 @@ public class OrderItemController {
 			bindingResult.rejectValue("price", "app_field_empty",
 					new Object[]{"Giá"}, "empty_error_code");
 		}
+	}
+	
+	@ResponseBody // add to return JSON
+	@RequestMapping(value = "/orderItem/getWard")
+	public List<OptionItem> getWard(@RequestParam(value = "dist", required = false) Integer dist) {
+		if (!VIFUtils.isValid(dist)) {
+			return new LinkedList<OptionItem>();
+		}
+		List<OptionItem> l = OptionItem.NoOptionList(1, "ward 1 of " + dist);
+		l.add(new OptionItem(2, "ward 2 of " + dist));
+		return l;
 	}
 }

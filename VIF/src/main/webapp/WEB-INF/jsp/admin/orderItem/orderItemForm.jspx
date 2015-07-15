@@ -98,7 +98,7 @@
 					<td align="right">Giá(<label class="errorMessage">*</label>):
 					</td>
 					<td>
-						<form:input path="price" class="textInput numberField"/>
+						<form:input path="price" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 						<form:errors path="price" cssClass="errorMessage" />
 					</td>
 				</tr>
@@ -106,7 +106,7 @@
 					<td align="right">Giá mini:
 					</td>
 					<td>
-						<form:input path="miniPrice" class="textInput numberField"/>
+						<form:input path="miniPrice" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 						<form:errors path="miniPrice" cssClass="errorMessage" />
 					</td>
 				</tr>
