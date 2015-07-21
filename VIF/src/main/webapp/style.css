@@ -2,6 +2,7 @@
 
 /* Copyright (c) 2011 Ernesto Mendez <der-design.com> */
 
+@import url(./core/css/jquery.cleanple.css);
 @import url(./core/css/boilerplate.css);
 @import url(./core/css/typography.css);
 @import url(./core/css/layout.css?v=1);
@@ -10,4 +11,4 @@
 @import url(./core/js/fancybox/jquery.fancybox.css);
 @import url(./core/js/nivo-slider/nivo-slider.css);
 @import url(./core/css/dynamic.css);
-@import url(./core/css/mobile.css);
+@import url(./core/css/mobile.css?v=1);

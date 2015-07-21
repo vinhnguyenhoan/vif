@@ -18,7 +18,7 @@ $(document).ready(function() {
 	ui_lightbox();
 	ui_shortcodes();
 	ui_syntax_highlight();
-	Rising.load();
+//	Rising.load();
 	$('#search-span input[type=text]').focus(function() {
 		if (this.value.trim()=='Tìm kiếm nhanh') {
 			this.value = '';
