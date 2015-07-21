@@ -92,6 +92,7 @@ public class OrderItemController {
 		uiModel.addAttribute("dateList", OrderItem.getDataList());
 
 		return "orderItemList";
+		// return "redirect:/admin/orderItem/list";
 	}
 
 	@RequestMapping(value = "/orderItem/detail/{id}")

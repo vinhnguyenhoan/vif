@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="${core}/js/mylibs/rising.js"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/main.js?v=1"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/mylibs/responsive.js"><!-- Fix for FF & Opera --></script>
+	<script src="${core}/js/jquery.cleanple.js" type="text/javascript"><!-- Fix for FF & Opera --></script>
 	<meta charset="UTF-8"/>
 </head>
 
@@ -94,41 +95,67 @@
 <div id="content" role="main">
 
 	<section id="slider" class="default" style="height: 349px;">
-
+		<ul id="architectSlider" class="architectSlider" style="margin:0;padding:0;">
+			<li>
+				<img src="${core}/images/content/slide-1.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide-1.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide2.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide2.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide3.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide3.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide4.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide4.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide5.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide5.jpg" alt="" class="slide-thumbnail" />						</li>
+		</ul>
 <script>
 
-	Rising.sliderData = [];
+	/* Rising.sliderConfig = {
+		effect : 'fade',
+		slices : 15,
+		boxCols : 8,
+		boxRows : 4,
+		manualAdvance : false,
+		animSpeed : 550,
+		pauseTime : 1750,
+		sliderHeight : 349
+	} */
+	/* Rising.sliderData = [];
 	Rising.sliderData.push({
-		img: '${core}/images/content/slide-1.jpg',
-		url: '#slide-1'
+		img : '${core}/images/content/slide-1.jpg',
+		url : '#slide-1'
 	});
 	Rising.sliderData.push({
-		img: '${core}/images/content/slide2.jpg',
-		url: '#slide2'
+		img : '${core}/images/content/slide2.jpg',
+		url : '#slide2'
 	});
 	Rising.sliderData.push({
-		img: '${core}/images/content/slide3.jpg',
-		url: '#slide3'
+		img : '${core}/images/content/slide3.jpg',
+		url : '#slide3'
 	});
 	Rising.sliderData.push({
-		img: '${core}/images/content/slide4.jpg',
-		url: '#slide4'
+		img : '${core}/images/content/slide4.jpg',
+		url : '#slide4'
 	});
 	Rising.sliderData.push({
-		img: '${core}/images/content/slide5.jpg',
-		url: '#slide5'
+		img : '${core}/images/content/slide5.jpg',
+		url : '#slide5'
 	});
-	
+
 	Rising.sliderConfig = {
-		autoplay: true,
-		transitionTime: 1500,
-		animSpeed: 1000,
-		pauseTime: 2000,
-		easing: 'easeOutBack',
-		height: 349,
-		width: 1024 
-	}
-	
+		autoplay : true,
+		transitionTime : 1500,
+		animSpeed : 1000,
+		pauseTime : 2000,
+		easing : 'easeOutBack',
+		height : 349,
+		width : 1024
+	} */
+
 	/* Rising.sliderConfig = {
 		autoplay: true,	
 		effect: 'fade',
@@ -141,22 +168,8 @@
 		height: 349,
 		width: 1024
 	} */
-
 </script>
 
-		<div class="workarea">
-			<span class="blind"><!-- + --></span>
-			<img class="slide" alt="" width="1024" height="349" src="${core}/images/content/slide-1.jpg" />
-		</div><!-- .workarea -->
-
-		<a class="title-desc" style="top: 131px;display: none" href="#slide-1">
-			<hgroup>
-				<h1>Đặt Món Trực Tuyến</h1>
-				<h2>Giao món buổi trưa miễn phí.</h2>
-			</hgroup>
-		</a><!-- .title -->
-
-		<ul class="common-slide-controls" style="display: none"><!-- + --></ul>
 		
 	</section><!-- slider -->
 
@@ -382,7 +395,42 @@ Rising.colors = {
 	sourceCodeBg: '#FCFCFC'
 };
 </script>
-
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		setTimeout(function(){
+			jQuery('#architectSlider').architectSlider({
+				sliderWidth:1024,
+				sliderHeight:349,
+				pauseTime:7000,
+				animationSpeed:500,
+				effect:'stripeFadeVer',// slider animation effect (cubeInLinearHor / cubeInLinearVer / cubeInDiagonal / cubeInRandom / stripeMoveHor / stripeMoveVer / stripeFadeHor / stripeFadeVer / stripeChangeHor / stripeChangeVer / stripeHalfHor / stripeHalfVer / stripeHalfOtherHor / stripeHalfOtherVer / slideFade)						easing:'',
+				descriptionOpacity:1,
+				numberNav:false,
+				numberNavThumb:true,
+				numberNavHide:false,
+				thumbnailWidth:80,
+				thumbnailHeight:34,
+				timeLine:false,
+				customblocksize:{
+					cubeinlinearhor:{height:80, width:94},
+					cubeinlinearver:{height:80, width:94},
+					cubeindiagonal:{height:80, width:94},
+					cubeinrandom:{height:80, width:94},
+					stripemovehor:{width:47},
+					stripemovever:{height:20},
+					stripefadehor:{width:47},
+					stripefadever:{height:20},
+					stripechangehor:{width:47},
+					stripechangever:{height:20},
+					stripehalfhor:{width:47},
+					stripehalfver:{height:20},
+					stripehalfotherhor:{width:47},
+					stripehalfotherver:{height:20}
+				}
+			});
+		}, 2000);
+	});
+</script>
 <!-- Analytics -->
 </body>
 </html>
