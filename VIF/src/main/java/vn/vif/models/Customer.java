@@ -24,6 +24,9 @@ public class Customer implements java.io.Serializable {
 	@Embedded
 	private AddressNote addressNote;
 	
+	@Transient
+	private Long districtId;
+	
 	private String address;
 	
 	private String name;
@@ -127,6 +130,14 @@ public class Customer implements java.io.Serializable {
 
 	public void setAddressNote(AddressNote addressNote) {
 		this.addressNote = addressNote;
+	}
+
+	public Long getDistrictItem() {
+		return districtId;
+	}
+
+	public void setDistrictItem(Long districtId) {
+		this.districtId = districtId;
 	}
 	
 }

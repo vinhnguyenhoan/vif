@@ -127,6 +127,7 @@ public class CustomerController {
 //	}
 //
 //	private void validateInputData(AddressNote addressNote, BindingResult bindingResult) {
+	// validate format phone, email. Not empty name, phone, address
 //		if (addressNote.getDistrictId() == null || addressNote.getDistrictId() <= 0) {
 //			bindingResult.rejectValue("districtId", "app_field_empty", new String[]{"Quận"},
 //					"empty_error_code");

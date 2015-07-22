@@ -2,7 +2,7 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
-	class="OrderItemDetailForm" 
+	class="CustomerDetailForm" 
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
 	xmlns:form="http://www.springframework.org/tags/form">
@@ -13,21 +13,19 @@
 
 	<spring:url var="scriptsFolder" value="/scripts" />
 	<spring:url var="jsFolder" value="/resources/js" />
-	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
+	<spring:url var="customerListURL" value="/admin/customer/list"/>
 	
 	<![CDATA[
 	<script type="text/javascript">
-		function updateOrderItem() {
+		function updateCustomer() {
 			document.forms[0].submit();
 		}
 	</script>
 	
 ]]>
 
-	<form:form action="${requestScope.orderItemFormLink}" method="POST"
-		commandName="orderItem" name="orderItem" enctype="multipart/form-data;charset=UTF-8">
+	<form:form action="${requestScope.customerFormLink}" method="POST" commandName="customer" name="customer">
 		<form:hidden path="id" />
-
 		<div class="formContent">
 			<table width="100%" cellpadding="0" cellspacing="5"
 				class="TableThongTinTram">
@@ -57,26 +55,7 @@
 					<td>&#160;</td>
 				</tr>
 				<tr class="info">
-					<td align="right"><strong>Thông tin món ăn</strong></td>
-				</tr>
-				<tr class="info">
-					<td style="text-align: right;vertical-align:top"><label for="">Hình ảnh (219 x 163):
-							</label></td>
-					<td colspan="3">
-						<c:choose>
-							<c:when test="${orderItem.image!=null}">
-<!-- <fmt:formatDate value="${orderItem.ngayCapNhat}" type="both" dateStyle="medium" timeStyle="medium" var="ver" pattern="ddMMyyyyHHmmss"  /> -->
-								<spring:url value="/" var="path" />
-								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">
-									<img width="219px" src="${path}${orderItem.image}?v=${ver}"/></div>
-							</c:when>
-							<c:otherwise>
-								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">219 x 163</div>
-							</c:otherwise>
-						</c:choose>
-						<br/>
-						<input type="file" name="logoFile" id="logoFile" accept="image/*"/>
-					</td>
+					<td align="right"><strong>Thông tin khách hàng</strong></td>
 				</tr>
 				<tr>
 					<td align="right">Tên(<label class="errorMessage">*</label>):
@@ -87,39 +66,95 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Mô tả:
+					<td align="right">Trạng thái
+					</td>
+					<td>${statusText}</td>
+				</tr>
+				<tr>
+					<td align="right">Phone(<label class="errorMessage">*</label>):
 					</td>
 					<td>
-						<form:input path="desc" class="textInput numberField"/> 
-						<form:errors path="desc" cssClass="errorMessage" />
+						<form:input path="phone" class="textInput"/> 
+						<form:errors path="phone" cssClass="errorMessage" />
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Giá(<label class="errorMessage">*</label>):
+					<td align="right">Email:
 					</td>
 					<td>
-						<form:input path="price" class="textInput numberField"/>
-						<form:errors path="price" cssClass="errorMessage" />
+						<form:input path="email" class="textInput"/>
+						<form:errors path="email" cssClass="errorMessage" />
+					</td>
+				</tr>
+				
+				<!-- Thong tin dia chi -->
+				<tr>
+					<td align="right">Địa chỉ khách hàng nhập:
+					</td>
+					<td>
+						<form:input path="email" class="textInput"/>
+						<form:errors path="email" cssClass="errorMessage" />
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Giá mini:
+					<td align="right">Quận:
 					</td>
 					<td>
-						<form:input path="miniPrice" class="textInput numberField"/>
-						<form:errors path="miniPrice" cssClass="errorMessage" />
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Ngày bán:
-					</td>
-					<td>
-						<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
-							<form:option value="">--- Chọn ngày bán ---</form:option>
-							<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+						<form:select path="districtId" cssClass="select2_combo" style="width:150px">
+							<form:option value="">--- Chọn Quận ---</form:option>
+							<form:options items="${districtList}" itemValue="id" itemLabel="name" />
 						</form:select>
 						
-						<form:errors path="moveToDate" cssClass="errorMessage" />
+						<form:errors path="districtId" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Địa chỉ đã lưu:
+					</td>
+					<td>
+						<form:select path="addressFromProvince" cssClass="select2_combo" style="width:150px">
+							<form:option value="">--- Chọn Địa chỉ ---</form:option>
+							<form:options items="${addressListFromProvince}" itemValue="id" itemLabel="name" />
+						</form:select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td align="right">Tên đường:
+					</td>
+					<td>
+						<!-- from addressnote -->
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Địa chỉ:
+					</td>
+					<td>
+						<!-- from addressnote -->
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Tòa nhà/công ty:
+					</td>
+					<td>
+						<!-- from addressnote -->
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Tầng:
+					</td>
+					<td>
+						<!-- from addressnote -->
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td align="right">Ghi chú:
+					</td>
+					<td>
+						<form:input path="email" class="textInput"/>
+						<form:errors path="email" cssClass="errorMessage" />
 					</td>
 				</tr>
 				
@@ -130,9 +165,9 @@
 				<tr>
 					<td><label> <!-- Empty --> </label></td>
 					<td><a href="javascript:;"
-						onclick="javascript:updateOrderItem();" class="btn-1"
-						title="Lưu thông tin món ăn"><span><span>Lưu</span></span></a>
-						<a href="${orderItemListURL}" class="btn-1"
+						onclick="javascript:updateCustomer();" class="btn-1"
+						title="Lưu thông tin khách hàng"><span><span>Lưu</span></span></a>
+						<a href="${customerListURL}" class="btn-1"
 						title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
 					</td>
 				</tr>

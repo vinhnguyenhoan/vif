@@ -50,7 +50,11 @@ public class AddressNoteListFilter implements Filter {
 			criteria.add(districtDis);
 		}
 		
-		criteria.addOrder(Order.desc("street"));
+		criteria.addOrder(Order.desc("districtId"))
+				.addOrder(Order.asc("street"))
+				.addOrder(Order.asc("address"))
+				.addOrder(Order.asc("officeName"))
+				.addOrder(Order.asc("officeLevel"));
 		return criteria;
 	}
 }
