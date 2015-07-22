@@ -1,0 +1,148 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="OrderItemDetailForm" 
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8"
+		pageEncoding="UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
+	
+	<![CDATA[
+	<script type="text/javascript">
+		function updateOrderItem() {
+			document.forms[0].submit();
+		}
+	</script>
+	
+]]>
+
+	<form:form action="${requestScope.orderItemFormLink}" method="POST"
+		commandName="orderItem" name="orderItem" enctype="multipart/form-data;charset=UTF-8">
+		<form:hidden path="id" />
+
+		<div class="formContent">
+			<table width="100%" cellpadding="0" cellspacing="5"
+				class="TableThongTinTram">
+				<col width="20%" />
+				<col width="80%" />
+				<tr>
+					<td></td>
+					<td><c:if test="${not empty success or not empty param.success}">
+							<c:choose>
+								<c:when test="${success or param.success}">
+									<div class="infoMessage" id="messageArea">
+										<p>Cập nhật thành công.</p>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="errorMessage" id="messageArea">
+										<p>Xảy ra lỗi khi lưu dữ liệu</p>
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr class="info">
+					<td align="right"><strong>Thông tin món ăn</strong></td>
+				</tr>
+				<tr class="info">
+					<td style="text-align: right;vertical-align:top"><label for="">Hình ảnh (219 x 163):
+							</label></td>
+					<td colspan="3">
+						<c:choose>
+							<c:when test="${orderItem.image!=null}">
+<!-- <fmt:formatDate value="${orderItem.ngayCapNhat}" type="both" dateStyle="medium" timeStyle="medium" var="ver" pattern="ddMMyyyyHHmmss"  /> -->
+								<spring:url value="/" var="path" />
+								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">
+									<img width="219px" src="${path}${orderItem.image}?v=${ver}"/></div>
+							</c:when>
+							<c:otherwise>
+								<div onclick="$('#logoFile').click();" style="cursor:pointer;display:table-cell;text-align:center;vertical-align:middle;width:219px;height:163px;border:solid 1px gray;">219 x 163</div>
+							</c:otherwise>
+						</c:choose>
+						<br/>
+						<input type="file" name="logoFile" id="logoFile" accept="image/*"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Tên(<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<form:input path="name" cssClass="textInput"/> 
+						<form:errors path="name" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Mô tả:
+					</td>
+					<td>
+						<form:input path="desc" class="textInput numberField"/> 
+						<form:errors path="desc" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Giá(<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<form:input path="price" class="textInput numberField"/>
+						<form:errors path="price" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Giá mini:
+					</td>
+					<td>
+						<form:input path="miniPrice" class="textInput numberField"/>
+						<form:errors path="miniPrice" cssClass="errorMessage" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Ngày bán:
+					</td>
+					<td>
+						<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
+							<form:option value="">--- Chọn ngày bán ---</form:option>
+							<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+						</form:select>
+						
+						<form:errors path="moveToDate" cssClass="errorMessage" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+
+				<tr>
+					<td><label> <!-- Empty --> </label></td>
+					<td><a href="javascript:;"
+						onclick="javascript:updateOrderItem();" class="btn-1"
+						title="Lưu thông tin món ăn"><span><span>Lưu</span></span></a>
+						<a href="${orderItemListURL}" class="btn-1"
+						title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+			</table>
+		</div>
+	</form:form>
+	<!--- TODO Search Order Item ? <jsp:include page="searchDaiLyForm.jspx"></jsp:include> -->
+
+</div>

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -25,6 +26,8 @@ public class Customer implements java.io.Serializable {
 	
 	private String note;
 
+	private boolean isActive;
+	
 	public Customer() {
 	}
 
@@ -91,5 +94,22 @@ public class Customer implements java.io.Serializable {
 
 	public void setAddress(String addressNote) {
 		this.address = addressNote;
+	}
+
+	@Column(name = "ACTIVE")
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
+	@Transient
+	public String getStatusText() {
+		if (isActive) {
+			return "Đã kích hoạt";
+		}
+		return "Chưa kích hoạt";
 	}
 }

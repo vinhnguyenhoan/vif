@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "ADDRESS_NOTE")
@@ -15,7 +16,7 @@ public class AddressNote implements java.io.Serializable {
 
 	private Long id;
 	
-	private Long provinceId;
+	private Long districtId;
 	private String street;
 	private String address;
 	private String officeName;
@@ -35,13 +36,13 @@ public class AddressNote implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "PROVINCE_ID", precision = 2, scale = 0)
-	public Long getProvinceId() {
-		return provinceId;
+	@Column(name = "DISTRICT_ID", precision = 2, scale = 0)
+	public Long getDistrictId() {
+		return districtId;
 	}
 
-	public void setProvinceId(Long provinceId) {
-		this.provinceId = provinceId;
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 
 	@Column(name = "STREET", length = 50)
@@ -78,5 +79,10 @@ public class AddressNote implements java.io.Serializable {
 
 	public void setLevel(String level) {
 		this.officeLevel = level;
+	}
+	
+	@Transient
+	public String getDistrict() {
+		return District.getById(this.districtId).fullName;
 	}
 }
