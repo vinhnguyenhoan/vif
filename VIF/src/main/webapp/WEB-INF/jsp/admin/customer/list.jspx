@@ -75,7 +75,7 @@
 												<a href="${customerDetailURL}/${itemIndex.id}">${itemIndex.name}</a>
 											</td>
 											<td>
-												<a href="${customerDetailURL}/${itemIndex.id}">${itemIndex.address}</a>
+												<a href="${customerDetailURL}/${itemIndex.id}">${itemIndex.addressFull}</a>
 											</td>
 											<td>
 												<a href="${customerDetailURL}/${itemIndex.id}">${itemIndex.phone}</a>

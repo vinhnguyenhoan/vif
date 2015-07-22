@@ -1,10 +1,15 @@
 package vn.vif.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -16,8 +21,9 @@ public class Customer implements java.io.Serializable {
 	
 	private Long id;
 	
-	private Long addressNoteId;
-
+	@Embedded
+	private AddressNote addressNote;
+	
 	private String address;
 	
 	private String name;
@@ -26,7 +32,7 @@ public class Customer implements java.io.Serializable {
 	
 	private String note;
 
-	private boolean isActive;
+	private Boolean isActive;
 	
 	public Customer() {
 	}
@@ -42,16 +48,7 @@ public class Customer implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "ADDRESS_NOTE_ID", precision = 5, scale = 0)
-	public Long getAddressNoteId() {
-		return addressNoteId;
-	}
-
-	public void setAddressNoteId(Long addressNoteId) {
-		this.addressNoteId = addressNoteId;
-	}
-	
-	@Column(name = "NAME", length = 100)
+	@Column(name = "NAME", length = 100, nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -92,24 +89,44 @@ public class Customer implements java.io.Serializable {
 		return address;
 	}
 
+	@Transient
+	public String getAddressFull() {
+		String result = address;
+		if (addressNote != null) {
+			result = address + " ( " + addressNote + " )"; 
+		}
+		return result;
+	}
+	
 	public void setAddress(String addressNote) {
 		this.address = addressNote;
 	}
 
 	@Column(name = "ACTIVE")
-	public boolean isActive() {
+	public Boolean isActive() {
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
 	
 	@Transient
 	public String getStatusText() {
-		if (isActive) {
-			return "Đã kích hoạt";
+		if (isActive == null || !isActive) {
+			return "Chưa kích hoạt";
 		}
-		return "Chưa kích hoạt";
+		return "Đã kích hoạt";
 	}
+	
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH })
+	@JoinColumn(name = "ADDRESS_NOTE_ID")
+	public AddressNote getAddressNote() {
+		return this.addressNote;
+	}
+
+	public void setAddressNote(AddressNote addressNote) {
+		this.addressNote = addressNote;
+	}
+	
 }

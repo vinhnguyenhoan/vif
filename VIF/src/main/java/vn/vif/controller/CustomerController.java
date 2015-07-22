@@ -39,7 +39,7 @@ public class CustomerController {
 	public String viewListCustomers(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
-			@ModelAttribute("frmAddressNoteList") @Valid CustomerListFilter customerFilter,
+			@ModelAttribute("frmCustomerList") @Valid CustomerListFilter customerFilter,
 			Model uiModel) {
 		long count = customerService.count(customerFilter);
 		PaginationInfo paginationInfo = PaginationUtil.calculatePage(count, page, size, uiModel);
