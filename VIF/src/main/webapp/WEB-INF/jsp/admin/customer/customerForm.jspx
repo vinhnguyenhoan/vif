@@ -12,14 +12,41 @@
 	<jsp:output omit-xml-declaration="yes" />
 
 	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="cssFolder" value="/css" />
+	
 	<spring:url var="jsFolder" value="/resources/js" />
 	<spring:url var="customerListURL" value="/admin/customer/list"/>
+	<spring:url var="url" value="/admin/addressNote/getAddressNoteListFromDistinctId" />
 	
 	<![CDATA[
+	<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
+	<script src="/scripts/thickbox-compressed.js"></script>
+		<script src="/js/agent.js"></script>
+	
 	<script type="text/javascript">
 		function updateCustomer() {
 			document.forms[0].submit();
 		}
+		
+		function changeDist(el) {
+			var $el = $(el),
+			$addressNoteId = $('#addressNoteId');// jquery
+			
+			var data = "dist=" + $el.val();
+			
+			var url = "${url}";
+			$.ajax({
+				type: 'POST', 
+				dataType:'json', 
+				url: url, 
+				data : data,
+				success: function(dataRes) {
+				alert(dataRes)
+					renderComboBox($addressNoteId, dataRes, $addressNoteId[0].firstChild.text);
+				}
+			});
+		}
+		
 	</script>
 	
 ]]>
@@ -66,9 +93,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Trạng thái
-					</td>
-					<td>${statusText}</td>
+					<td align="right">Đã kích hoạt:</td>
+					<td><form:checkbox path="active" /></td>
 				</tr>
 				<tr>
 					<td align="right">Phone(<label class="errorMessage">*</label>):
@@ -100,7 +126,7 @@
 					<td align="right">Quận:
 					</td>
 					<td>
-						<form:select path="districtId" cssClass="select2_combo" style="width:150px">
+						<form:select path="districtId" id="districtId" cssClass="select2_combo" style="width:150px" onchange="changeDist(this)">
 							<form:option value="">--- Chọn Quận ---</form:option>
 							<form:options items="${districtList}" itemValue="id" itemLabel="name" />
 						</form:select>
@@ -112,9 +138,9 @@
 					<td align="right">Địa chỉ đã lưu:
 					</td>
 					<td>
-						<form:select path="addressFromProvince" cssClass="select2_combo" style="width:150px">
+						<form:select path="addressNoteId" id="addressNoteId" cssClass="select2_combo" style="width:150px">
 							<form:option value="">--- Chọn Địa chỉ ---</form:option>
-							<form:options items="${addressListFromProvince}" itemValue="id" itemLabel="name" />
+							<form:options items="${addressNoteListSameDistrictId}" itemValue="id" itemLabel="name" />
 						</form:select>
 					</td>
 				</tr>
@@ -124,6 +150,9 @@
 					</td>
 					<td>
 						<!-- from addressnote -->
+						<c:if test="${not empty addressNote}">
+							${addressNote.street}
+						</c:if>
 					</td>
 				</tr>
 				<tr>
@@ -131,6 +160,9 @@
 					</td>
 					<td>
 						<!-- from addressnote -->
+						<c:if test="${not empty addressNote}">
+							${addressNote.address}
+						</c:if>
 					</td>
 				</tr>
 				<tr>
@@ -138,6 +170,9 @@
 					</td>
 					<td>
 						<!-- from addressnote -->
+						<c:if test="${not empty addressNote}">
+							${addressNote.officeName}
+						</c:if>
 					</td>
 				</tr>
 				<tr>
@@ -145,6 +180,9 @@
 					</td>
 					<td>
 						<!-- from addressnote -->
+						<c:if test="${not empty addressNote}">
+							${addressNote.level}
+						</c:if>
 					</td>
 				</tr>
 				
@@ -153,8 +191,8 @@
 					<td align="right">Ghi chú:
 					</td>
 					<td>
-						<form:input path="email" class="textInput"/>
-						<form:errors path="email" cssClass="errorMessage" />
+						<form:textarea path="note" class="textInput" cssStyle="width:35%" rows="5"/>
+						<form:errors path="note" cssClass="errorMessage" />
 					</td>
 				</tr>
 				

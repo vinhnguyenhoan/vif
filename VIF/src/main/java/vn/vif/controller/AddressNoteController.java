@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,14 +23,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 
+import vn.vif.daos.Filter;
 import vn.vif.models.AddressNote;
 import vn.vif.models.District;
 import vn.vif.models.filter.AddressNoteListFilter;
 import vn.vif.services.AddressNoteService;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
+import vn.vif.utils.VIFUtils;
 import vn.vif.utils.converter.OptionItem;
 
 @Controller
@@ -147,6 +155,21 @@ public class AddressNoteController {
 		List<OptionItem> result = new LinkedList<>();
 		for (District dis : District.values()) {
 			result.add(new OptionItem(dis.id, dis.fullName, dis.name));
+		}
+		return result;
+	}
+	
+	@ResponseBody // add to return JSON
+	@RequestMapping(value = "/addressNote/getAddressNoteListFromDistinctId")
+	public List<OptionItem> getWard(@RequestParam(value = "dist", required = false) Long distId) {
+		if (!VIFUtils.isValid(distId)) {
+			return new LinkedList<OptionItem>();
+		}
+		List<AddressNote> addressNoteList = addressNoteService.listByDistrictId(distId);
+		
+		List<OptionItem> result = new LinkedList<>();
+		for (AddressNote aN : addressNoteList) {
+			result.add(new OptionItem(aN.getId(), aN.toString()));
 		}
 		return result;
 	}
