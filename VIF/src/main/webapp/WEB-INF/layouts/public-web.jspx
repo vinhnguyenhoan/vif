@@ -14,7 +14,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<link rel="shortcut icon" href="${core}/images/logo.png" />
 	<link rel="apple-touch-icon" href="${core}/images/logo.png" />
-	<link rel="stylesheet" href="./style.css" />
+	<link rel="stylesheet" href="./style.css?v=1" />
 	<link rel="stylesheet" href="${core}/styles/default/default.css" />
 	<script type="text/javascript" src="${core}/js/libs/modernizr-2.0.6.min.js"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/libs/jquery-1.6.2.min.js"><!-- Fix for FF & Opera --></script>
@@ -59,13 +59,15 @@
 		<nav role="navigation-sup">
 			<ul>
 				<li>
-					<a href="#">Cơm Trưa<br/>&#38; Món Ngon<br/>Việt Nam</a>
+					<a href="#">
+						<img src="${core}/images/tab1.png" />
+					</a>
 				</li>
 				<li>
-					<a href="#">Thầu Nhà Ăn<br/>&#38; Cung Cấp<br/>Suất Ăn</a>
+					<a href="#"><img src="${core}/images/tab2.png" /></a>
 				</li>
 				<li>
-					<a href="#">Thực Phẩm<br/>Giao Đi<br/>&#160;</a>
+					<a href="#"><img src="${core}/images/tab3.png" /></a>
 				</li>
 			</ul>
 		</nav>
@@ -176,8 +178,10 @@
 	<!-- + -->
 	
 	<section id="nav-time">
-		<span>THỰC ĐƠN <span id="date-name">${todayName}</span></span>
-		<span style="padding-left:20px;" id="date">${todayDate}</span>
+		<div>
+			<span>THỰC ĐƠN <span id="date-name">${todayName}</span></span>
+			<span style="padding-left:20px;" id="date">${todayDate}</span>
+		</div>
 		<ul>
 			<c:forEach items="${dates}" var="d" varStatus="status">
 				<c:set var="cl" value=""/>
@@ -215,7 +219,10 @@
 	<!-- + -->
 
 	<section class="modular scrollable" id="com-viet">
-			<h1 class="section-heading left"><img id="time" src="${core}/images/com-viet.png" /></h1>
+			<h1 class="section-heading left">
+				<img id="time" src="${core}/images/com-viet.png" />
+				<span style="font-size: 14px;color: #969696;"><i>Kèm cơm, canh, rau &amp; trái cây tráng miệng</i></span>
+			</h1>
 
 			<div class="scroller">
 
