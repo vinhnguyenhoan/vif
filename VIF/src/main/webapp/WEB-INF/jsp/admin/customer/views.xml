@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+  
+  <definition extends="default" name="customerList">
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/customer/list.jspx"/>
+  </definition>
+  
+  <definition extends="default" name="customerDetail">
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/customer/details.jspx"/>
+  </definition>
+  
+  <definition extends="default" name="customerAdd">
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/customer/add.jspx"/>
+  </definition>
+  
+  <definition extends="default" name="customerError">
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/error/prohibited.jspx"/>
+  </definition>
+  
+  
+</tiles-definitions>

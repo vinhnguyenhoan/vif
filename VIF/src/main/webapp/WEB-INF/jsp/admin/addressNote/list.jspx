@@ -1,0 +1,112 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:form="http://www.springframework.org/tags/form">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="addressNoteDetailURL" value="/admin/addressNote/detail" />
+	<spring:url var="imagesFolder" value="/images" />
+
+	<![CDATA[
+	<script type="text/javascript" src="${scriptsFolder}/user.js?v=2"></script>
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js?v=2"></script>
+	<script type="text/javascript">
+		
+	</script>
+	]]>
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>DANH SÁCH ĐỊA ĐIỂM</span>
+			</h2>
+		</div>
+		<div id="content">
+<form:form method="POST" id="addressNoteList" commandName="frmAddressNoteList" modelAttribute="frmAddressNoteList">
+				<input type="hidden" id="page" value="${page}" />
+				<input type="hidden" id="size" value="${size}" />
+				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
+					<tr>
+						<td colspan="4" valign="top">
+							<div style="padding-right:20px; display: inline;">
+								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('addressNoteList', '');}"
+									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
+								<form:select path="searchDistrict" cssClass="select2_combo" style="width:150px">
+									<form:option value="">--- Chọn quận ---</form:option>
+									<form:options items="${districtList}" itemValue="id" itemLabel="name" />
+								</form:select>
+							</div>
+							<a href="javascript:"
+							onclick="submitActionForm('addressNoteList', '')" class="btn-1"
+							title="Danh Sách Địa Điểm"><span><span style="width:90px">Xem Danh Sách</span></span></a>
+							
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" submitMethod="POST"
+								formSubmit="addressNoteList" id="addressNoteTopPagination" /></td>
+					</tr>
+					
+					<tr>
+						<td colspan="5">
+						
+							<table width="100%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td>Quận</td>
+										<td>Tên địa điểm</td>
+										<td>Đường</td>
+										<td>Địa điểm</td>
+										<td>Lầu</td>
+										<td width="10%">Hành động</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${addressNoteList}" var="itemIndex" varStatus="status">
+										<tr>
+											<td>
+												<a href="${addressNoteDetailURL}/${itemIndex.id}">${itemIndex.district}</a>
+											</td>
+											<td>
+												<a href="${addressNoteDetailURL}/${itemIndex.id}">${itemIndex.address}</a>
+											</td>
+											<td>
+												<a href="${addressNoteDetailURL}/${itemIndex.id}">${itemIndex.street}</a>
+											</td>
+											<td>
+												<a href="${addressNoteDetailURL}/${itemIndex.id}">${itemIndex.officeName}</a>
+											</td>
+											<td>
+												<a href="${addressNoteDetailURL}/${itemIndex.id}">${itemIndex.level}</a>
+											</td>
+											<td>
+												<a href="${addressNoteDetailURL}/${itemIndex.id}"  class="redTxt"
+												title="Cập nhật thông tin">Chỉnh sửa</a>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								submitMethod="POST" formSubmit="orderItemList" page="${page}"
+								size="${size}" id="orderItemBottomPagination" /></td>
+					</tr>
+				</table>
+				
+</form:form>
+		</div>
+	</div>
+</div>
