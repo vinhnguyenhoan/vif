@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
+import vn.vif.models.AddressNote;
 import vn.vif.models.Customer;
 import vn.vif.models.District;
 import vn.vif.models.filter.CustomerListFilter;
+import vn.vif.services.AddressNoteService;
 import vn.vif.services.CustomerService;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
@@ -33,6 +36,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private AddressNoteService addressNoteService;
 	
 	@Autowired
 	private View jsonView_i;
@@ -66,6 +72,8 @@ public class CustomerController {
 				return "notFoundError";
 			}
 			uiModel.addAttribute("districtList", convertDistricyListToOptionItem());
+			List<OptionItem> listOI = addressNoteService.listByDistrictIdAsOptionItems(customer.getDistrictId());
+			uiModel.addAttribute("addressNoteListSameDistrictId", listOI);
 			uiModel.addAttribute("customer", customer);	
 			return "customerDetail";
 		} catch (Exception e) {
@@ -92,19 +100,27 @@ public class CustomerController {
 		validateInputData(customer, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
+				AddressNote aN = null;
+				if (customer.getAddressNoteId() != null) {
+					aN = addressNoteService.find(customer.getAddressNoteId());
+				}
+				customer.setAddressNote(aN);
 				if (customer.getId() != null) {
 					Customer customerFromDB = customerService.find(customer.getId());
-//					customerFromDB.setAddress(customer.getAddress());
-//					customerFromDB.setDistrictId(customer.getDistrictId());
-//					customerFromDB.setLevel(customer.getLevel());
-//					customerFromDB.setOfficeName(customer.getOfficeName());
-//					customerFromDB.setStreet(customer.getStreet());
+					customerFromDB.setActive(customer.getActive());
+					customerFromDB.setAddress(customer.getAddress());
+					customerFromDB.setAddressNote(aN);
+					customerFromDB.setAddressNoteId(customer.getAddressNoteId());
+					customerFromDB.setDistrictId(customer.getDistrictId());
+					customerFromDB.setEmail(customer.getEmail());
+					customerFromDB.setName(customer.getName());
+					customerFromDB.setNote(customer.getNote());
+					customerFromDB.setPhone(customer.getPhone());
 					customerService.update(customerFromDB);
 				} else {
 					customerService.add(customer);
 				}
 				uiModel.addAttribute("success", true);
-				uiModel.addAttribute("districtList", convertDistricyListToOptionItem());
 				return "redirect:/admin/customer/detail/" + customer.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -132,15 +148,23 @@ public class CustomerController {
 	}
 
 	private void validateInputData(Customer customer, BindingResult bindingResult) {
-		// validate format phone, email. Not empty name, phone, address
-//		if (addressNote.getDistrictId() == null || addressNote.getDistrictId() <= 0) {
-//			bindingResult.rejectValue("districtId", "app_field_empty", new String[]{"Quận"},
-//					"empty_error_code");
-//		}
-//		if (StringUtils.isEmpty(addressNote.getStreet())) {
-//			bindingResult.rejectValue("street", "app_field_empty",
-//					new Object[]{"Đường"}, "empty_error_code");
-//		}
+		if (StringUtils.isEmpty(customer.getName())) {
+			bindingResult.rejectValue("name", "app_field_empty",
+					new Object[]{"Tên"}, "empty_error_code");
+		}
+		if (StringUtils.isEmpty(customer.getPhone())) {
+			bindingResult.rejectValue("phone", "app_field_empty",
+					new Object[]{"Số điện thoại"}, "empty_error_code");
+			// TODO check format phone
+		}
+		// TODO check format email
+		if (StringUtils.isEmpty(customer.getAddress()) && (customer.getAddressNoteId() == null || customer.getAddressNoteId() <= 0)) {
+			bindingResult.rejectValue("address", "app_field_empty",
+					new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
+			bindingResult.rejectValue("addressNoteId", "app_field_empty",
+					new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
+		}
+		// TODO check unique name ?
 	}
 	
 	private static final List<OptionItem> convertDistricyListToOptionItem() {

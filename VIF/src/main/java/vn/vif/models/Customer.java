@@ -148,7 +148,7 @@ public class Customer implements java.io.Serializable {
 		if (addressNote != null) {
 			return addressNote.getId();
 		}
-		return -1l;
+		return addressNoteId;
 	}
 
 	public void setAddressNoteId(Long addressNoteId) {

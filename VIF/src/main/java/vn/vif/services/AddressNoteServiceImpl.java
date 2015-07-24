@@ -1,5 +1,6 @@
 package vn.vif.services;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import vn.vif.daos.Filter;
 import vn.vif.models.AddressNote;
+import vn.vif.utils.VIFUtils;
+import vn.vif.utils.converter.OptionItem;
 
 @Service
 public class AddressNoteServiceImpl extends GeneralServiceImpl<AddressNote> implements AddressNoteService {
@@ -47,8 +50,21 @@ public class AddressNoteServiceImpl extends GeneralServiceImpl<AddressNote> impl
 
 	@Override
 	public List<AddressNote> listByDistrictId(Long distId) {
+		if (!VIFUtils.isValid(distId)) {
+			return new LinkedList<>();
+		}
 		addressNoteFilterByDistId.searchDistrictId = distId;
 		return list(addressNoteFilterByDistId);
+	}
+
+	@Override
+	public List<OptionItem> listByDistrictIdAsOptionItems(Long districtId) {
+		List<AddressNote> listANFromDis = listByDistrictId(districtId);
+		List<OptionItem> listOI = new LinkedList<>();
+		for (AddressNote aN : listANFromDis) {
+			listOI.add(new OptionItem(aN.getId(), aN.toString()));
+		}
+		return listOI;
 	}
 
 }
