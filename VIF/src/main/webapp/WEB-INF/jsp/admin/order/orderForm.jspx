@@ -52,6 +52,7 @@
 	<form:form action="${requestScope.orderFormLink}" method="POST" name="orderList" modelAttribute="orderList">
 	
 		<form:hidden path="id" />
+		<form:hidden path="customerEditing.id" />
 
 		<div class="formContent">
 			<table width="100%" cellpadding="0" cellspacing="5"

@@ -90,6 +90,7 @@ public class OrderList implements java.io.Serializable {
 		this.details = details;
 	}
 
+	@Transient
 	public Customer getCustomerEditing() {
 		if (customerEditing == null) {
 			customerEditing = new Customer();

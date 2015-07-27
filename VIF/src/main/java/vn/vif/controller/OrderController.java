@@ -28,10 +28,12 @@ import vn.vif.models.OrderLineDetail;
 import vn.vif.models.OrderList;
 import vn.vif.models.filter.OrderListFilter;
 import vn.vif.services.CustomerService;
+import vn.vif.services.OrderDetailService;
 import vn.vif.services.OrderItemService;
 import vn.vif.services.OrderService;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
+import vn.vif.utils.VIFUtils;
 import vn.vif.utils.converter.OptionItem;
 
 @Controller
@@ -40,6 +42,9 @@ public class OrderController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private OrderDetailService orderDetailService;
 	
 	@Autowired
 	private OrderItemService orderItemService;
@@ -115,6 +120,7 @@ public class OrderController {
 						return "orderDetail";
 					}
 					OrderDetail detail = new OrderDetail();
+					detail.setOrderItemId(itemId);
 					detail.setMiniNumber(order.getListMiniNumber().get(index));
 					detail.setNumber(order.getListNumber().get(index));
 					details.add(detail);
@@ -132,13 +138,23 @@ public class OrderController {
 						return "orderDetail";
 					}
 					OrderDetail detail = new OrderDetail();
+					detail.setOrderItemId(itemId);
 					detail.setNumber(order.getListAllDayNumber().get(index));
 					details.add(detail);
 					index++;
 				}
 				order.setDetails(details);
-				order.setCustomer(order.getCustomerEditing());
+				if (!details.isEmpty()) {
+					for (OrderDetail detail : details) {
+						orderDetailService.add(detail);
+					}
+				}
 				
+				
+				order.setCustomer(order.getCustomerEditing());
+				if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
+					customerService.add(order.getCustomer());
+				}
 				if (order.getId() != null) {
 					OrderList aN = orderService.find(order.getId());
 					aN.setDetails(order.getDetails());
