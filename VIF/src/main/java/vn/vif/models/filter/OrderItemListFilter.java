@@ -18,7 +18,16 @@ public class OrderItemListFilter implements Filter {
 	private List<Integer> searchDate;
 	private List<OrderItem> itemSelected;
 	private List<Integer> moveToDate;
+	private Boolean specItem;
 	
+	public Boolean getSpecItem() {
+		return specItem;
+	}
+
+	public void setSpecItem(Boolean specItem) {
+		this.specItem = specItem;
+	}
+
 	public List<Integer> getMoveToDate() {
 		return moveToDate;
 	}
@@ -71,6 +80,18 @@ public class OrderItemListFilter implements Filter {
 				}
 			}
 			criteria.add(dateDis);
+		}
+		
+		if (specItem != null) {
+			Disjunction specItemDis = Restrictions.disjunction();
+			if (specItem) {
+				specItemDis.add(Restrictions.eq("specItem", specItem));
+			} else {
+				specItemDis.add(Restrictions.or(
+						Restrictions.eq("specItem", false),
+						Restrictions.isNull("specItem")));
+			}
+			criteria.add(specItemDis);
 		}
 		criteria.addOrder(Order.desc("name"));
 		return criteria;

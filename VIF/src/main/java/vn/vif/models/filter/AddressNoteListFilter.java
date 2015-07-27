@@ -54,7 +54,7 @@ public class AddressNoteListFilter implements Filter {
 				.addOrder(Order.asc("street"))
 				.addOrder(Order.asc("address"))
 				.addOrder(Order.asc("officeName"))
-				.addOrder(Order.asc("officeLevel"));
+				.addOrder(Order.asc("level"));
 		return criteria;
 	}
 }

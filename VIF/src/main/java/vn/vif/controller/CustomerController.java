@@ -58,8 +58,6 @@ public class CustomerController {
 				paginationInfo.getStart(), paginationInfo.getSize());
 		
 		uiModel.addAttribute("customerList", customerList);
-		//uiModel.addAttribute("districtList", convertDistricyListToOptionItem());
-
 		return "customerList";
 		// return "redirect:/admin/orderItem/list";
 	}

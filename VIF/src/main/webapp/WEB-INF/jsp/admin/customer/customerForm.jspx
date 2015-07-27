@@ -16,7 +16,7 @@
 	
 	<spring:url var="jsFolder" value="/resources/js" />
 	<spring:url var="customerListURL" value="/admin/customer/list"/>
-	<spring:url var="orderURL" value="/admin/order/detail"/>
+	<spring:url var="orderURL" value="/admin/order/detailFromCustomer"/>
 	<spring:url var="url" value="/admin/addressNote/getAddressNoteListFromDistinctId" />
 	
 	<![CDATA[
@@ -144,48 +144,6 @@
 						<form:errors path="addressNoteId" cssClass="errorMessage" />
 					</td>
 				</tr>
-				
-				<tr>
-					<td align="right">Tên đường:
-					</td>
-					<td>
-						<!-- from addressnote -->
-						<c:if test="${not empty addressNote}">
-							${addressNote.street}
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Địa chỉ:
-					</td>
-					<td>
-						<!-- from addressnote -->
-						<c:if test="${not empty addressNote}">
-							${addressNote.address}
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Tòa nhà/công ty:
-					</td>
-					<td>
-						<!-- from addressnote -->
-						<c:if test="${not empty addressNote}">
-							${addressNote.officeName}
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Tầng:
-					</td>
-					<td>
-						<!-- from addressnote -->
-						<c:if test="${not empty addressNote}">
-							${addressNote.level}
-						</c:if>
-					</td>
-				</tr>
-				
 				
 				<tr>
 					<td align="right">Ghi chú:
