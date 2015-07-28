@@ -161,6 +161,12 @@
 				</tr>
 				
 				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr class="info">
+					<td align="right"><strong>Danh sách món ăn menu</strong></td>
+				</tr>
+				<tr>
 					<td colspan="2">
 						<!-- List OrderDetaiLine -->
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table-2">
@@ -194,7 +200,7 @@
 											 <input name="listMiniNumber" value="${itemIndex.orderDetail.miniNumber}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 										</td>
 										<td>
-											 <!-- <input name="listNote" value="${itemIndex.orderDetail.note}" class="textInput"/>  -->
+											 <input name="listNote" value="${itemIndex.orderDetail.note}" class="textInput"/>
 										</td>
 									</tr>
 								</c:forEach>
@@ -205,6 +211,9 @@
 				
 				<tr>
 					<td>&#160;</td>
+				</tr>
+				<tr class="info">
+					<td align="right"><strong>Danh sách món ngon</strong></td>
 				</tr>
 				
 				<tr>
@@ -233,7 +242,7 @@
 											 <input name="listAllDayNumber" value="${itemIndex.orderDetail.number}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 										</td>
 										<td>
-											 <!-- <input name="listNote" value="${itemIndex.orderDetail.note}" class="textInput"/>  -->
+											 <input name="listNoteSpec" value="${itemIndex.orderDetail.note}" class="textInput"/>
 										</td>
 									</tr>
 								</c:forEach>
@@ -249,9 +258,23 @@
 				<tr>
 					<td><label> <!-- Empty --> </label></td>
 					<td>
+						<!-- 
+						<c:choose>
+							<c:when test="${orderList.id == null}">
+								<a href="javascript:void(0)" class="btn-1" title="Lưu thông tin đơn hàng">
+									<span><span style="color:gray">Lưu</span></span></a>
+							</c:when>
+							<c:otherwise>
+								<a href="javascript:;"
+									onclick="javascript:updateOrder();" class="btn-1"
+									title="Lưu thông tin đơn hàng"><span><span>Lưu</span></span></a>
+							</c:otherwise>
+						</c:choose>
+						 -->
+						 
 						<a href="javascript:;"
-							onclick="javascript:updateOrder();" class="btn-1"
-							title="Lưu thông tin đơn hàng"><span><span>Lưu</span></span></a>
+									onclick="javascript:updateOrder();" class="btn-1"
+									title="Lưu thông tin đơn hàng"><span><span>Lưu</span></span></a>
 						
 						<a href="${orderListURL}" class="btn-1"
 							title="Danh sách đơn hàng"><span><span>Trở về danh sách</span></span></a>

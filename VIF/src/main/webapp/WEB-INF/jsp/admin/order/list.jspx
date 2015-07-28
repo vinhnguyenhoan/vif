@@ -9,7 +9,7 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url var="scriptsFolder" value="/scripts" />
-	<spring:url var="orderItemDetailURL" value="/admin/orderItem/detail" />
+	<spring:url var="orderDetailURL" value="/admin/order/detail" />
 	<spring:url var="imagesFolder" value="/images" />
 
 	<![CDATA[
@@ -25,34 +25,30 @@
 			alt="" /></span>
 		<div class="content-title">
 			<h2>
-				<span>DANH SÁCH MÓN ĂN</span>
+				<span>DANH SÁCH ĐƠN HÀNG</span>
 			</h2>
 		</div>
 		<div id="content">
-<form:form method="POST" id="orderItemList" commandName="frmOrderItemList" modelAttribute="frmOrderItemList">
+<form:form method="POST" id="orderList" commandName="frmOrderList" modelAttribute="frmOrderList">
 				<input type="hidden" id="page" value="${page}" />
 				<input type="hidden" id="size" value="${size}" />
 				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
 					<tr>
 						<td colspan="4" valign="top">
 							<div style="padding-right:20px; display: inline;">
-								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderItemList', '');}"
+								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
-								<form:select path="searchDate" cssClass="select2_combo" style="width:150px">
-									<form:option value="">--- Chọn ngày bán ---</form:option>
-									<form:options items="${dateList}" itemValue="id" itemLabel="name" />
-								</form:select>
 							</div>
 							<a href="javascript:"
-							onclick="submitActionForm('orderItemList', '')" class="btn-1"
-							title="Danh Sách Món Ăn"><span><span style="width:90px">Xem Danh Sách</span></span></a>
+							onclick="submitActionForm('orderList', '')" class="btn-1"
+							title="Danh Sách Đơn Hàng"><span><span style="width:90px">Xem Danh Sách</span></span></a>
 							
 						</td>
 					</tr>
 					<tr>
 						<td colspan="4"><util:pagination maxPages="${maxPages}"
 								page="${page}" size="${size}" submitMethod="POST"
-								formSubmit="orderItemList" id="orderItemTopPagination" /></td>
+								formSubmit="orderList" id="orderTopPagination" /></td>
 					</tr>
 					
 					<tr>
@@ -63,40 +59,18 @@
 								<thead>
 									<tr>
 										<td></td>
-										<td>Tên</td>
-										<td>Ngày bán</td>
-										<td>Mô tả</td>
-										<td>Giá</td>
-										<td>Giá mini</td>
+										<td>Tên khách hàng</td>
 										<td width="10%">Hành động</td>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${frmOrderItemList.itemSelected}" var="itemIndex" varStatus="status">
+									<c:forEach items="${orderList}" var="itemIndex" varStatus="status">
 										<tr>
 											<td>
-												 <form:checkbox path="itemSelected[${status.index}].selectedToMoveSellDate"/>
-												 <form:hidden path="itemSelected[${status.index}].id"/>
+												<a href="${orderDetailURL}/${itemIndex.id}">${itemIndex.customer.name}</a>
 											</td>
 											<td>
-												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.name}</a>
-												<form:hidden path="itemSelected[${status.index}].name"/>
-											</td>
-											<td>
-												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.dateText}</a>
-											</td>
-											<td>
-												<a href="${orderItemDetailURL}/${itemIndex.id}">${itemIndex.desc}</a>
-												<form:hidden path="itemSelected[${status.index}].desc"/>
-											</td>
-											<td>
-												${itemIndex.price} <form:hidden path="itemSelected[${status.index}].price"/>
-											</td>
-											<td>
-												${itemIndex.miniPrice} <form:hidden path="itemSelected[${status.index}].miniPrice"/>
-											</td>
-											<td>
-												<a href="${orderItemDetailURL}/${itemIndex.id}"  class="redTxt"
+												<a href="${orderDetailURL}/${itemIndex.id}"  class="redTxt"
 												title="Cập nhật thông tin">Chỉnh sửa</a>
 											</td>
 										</tr>
@@ -107,20 +81,10 @@
 					</tr>
 					<tr>
 						<td colspan="4"><util:pagination maxPages="${maxPages}"
-								submitMethod="POST" formSubmit="orderItemList" page="${page}"
-								size="${size}" id="orderItemBottomPagination" /></td>
+								submitMethod="POST" formSubmit="orderList" page="${page}"
+								size="${size}" id="orderBottomPagination" /></td>
 					</tr>
 				</table>
-				
-				
-				<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
-					<form:option value=""> Chọn ngày bán </form:option>
-					<form:options items="${dateList}" itemValue="id" itemLabel="name" />
-				</form:select>
-
-				<a href="javascript:"
-					onclick="submitActionForm('orderItemList', '/admin/orderItem/list/saveDate')" class="btn-1"
-					title="Chuyển ngày bán"><span><span style="width:90px">Chuyển ngày bán</span></span></a>
 				
 </form:form>
 		</div>

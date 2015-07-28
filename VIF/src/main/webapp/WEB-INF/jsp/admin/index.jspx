@@ -24,56 +24,6 @@
             <h2><span>TRANG CHỦ</span></h2>
         </div>
         <div id="content">
-        	<ul class="lst-home">
-            	<li>
-                	<a href="${createPlanURL}" title="Lập kế hoạch Mới">
-                    	<img src="${imageFolder}/upload/img_1.png" width="180" height="100" alt="Lập kế hoạch mới" />
-                        <span>Lập kế hoạch mới</span>
-                    </a>
-                </li>
-                <li>
-                	<a href="${ccDiaryURL}" title="Nhật ký chăm sóc điểm bán hàng">
-                    	<img src="${imageFolder}/upload/img_6.jpg" width="180" height="100" alt="Nhật ký chăm sóc điểm khách hàng" />
-                        <span>Nhật ký chăm sóc ĐBH</span>
-                    </a>
-                </li>
-                <!--<li>
-                	<a href="${performanceURL}" title="Đánh giá hiệu quả công việc">
-                    	<img src="${imageFolder}/upload/img_2.png" width="180" height="100" alt="Đánh giá hiệu quả công việc" />
-                        <span>Đánh giá hiệu quả công việc</span>
-                    </a>
-                </li>
-                <li>
-                	<a href="${addUserURL}" title="Thêm người sử dụng">
-                    	<img src="${imageFolder}/upload/img_3.png" width="180" height="100" alt="Thêm người sử dụng" />
-                        <span>Thêm người sử dụng</span>
-                    </a>
-                </li>
-                <li>
-                	<a href="${exportURL}" title="Xuất Hàng">
-                    	<img src="${imageFolder}/upload/img_4.png" width="180" height="100" alt="Xuất Hàng" />
-                        <span>Xuất Hàng</span>
-                    </a>
-                </li>-->
-                <li>
-                	<a href="${createTargetURL}" title="Chỉ tiêu bán hàng">
-                    	<img src="${imageFolder}/upload/img_5.png" width="180" height="100" alt="Chỉ tiêu bán hàng" />
-                        <span>Giao chỉ tiêu bán hàng</span>
-                    </a>
-                </li>
-                <li>
-                	<a href="${trackingURL}" title="Xem lộ trình chăm sóc ĐBH">
-                    	<img src="${imageFolder}/upload/img_7.png" width="180" height="100" alt="Lộ trình chăm sóc ĐBH" />
-                        <span>Lộ trình chăm sóc ĐBH</span>
-                    </a>
-                </li>
-                <li>
-                	<a href="${addDeviceURL}" title="Thêm thiết bị">
-                    	<img src="${imageFolder}/upload/img_8.png" width="180" height="100" alt="Thêm thiết bị" />
-                        <span>Thêm thiết bị</span>
-                    </a>
-                </li>
-            </ul>
         </div>	
     </div>
 

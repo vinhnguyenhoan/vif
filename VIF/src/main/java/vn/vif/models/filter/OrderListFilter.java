@@ -33,11 +33,11 @@ public class OrderListFilter implements Filter {
 	public Criteria getCriteria(Session session) {
 		Criteria criteria = session.createCriteria(OrderList.class);
 		
-		if (StringUtils.isNotEmpty(searchText)) {
-			criteria.add(Restrictions.disjunction()
-					.add(Restrictions.ilike("name", "%" + searchText + "%"))
-					);
-		}
+//		if (StringUtils.isNotEmpty(searchText)) {
+//			criteria.add(Restrictions.disjunction()
+//					.add(Restrictions.ilike("customer.name", "%" + searchText + "%"))
+//					);
+//		}
 
 //		if (searchDistrict != null) {
 //			Disjunction districtDis = Restrictions.disjunction();
@@ -45,7 +45,7 @@ public class OrderListFilter implements Filter {
 //			criteria.add(districtDis);
 //		}
 		
-		criteria.addOrder(Order.desc("name"));
+		criteria.addOrder(Order.desc("id"));
 		return criteria;
 	}
 }
