@@ -12,14 +12,43 @@
 	<jsp:output omit-xml-declaration="yes" />
 
 	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="cssFolder" value="/css" />
+	
 	<spring:url var="jsFolder" value="/resources/js" />
 	<spring:url var="customerListURL" value="/admin/customer/list"/>
+	<spring:url var="orderURL" value="/admin/order/detailFromCustomer"/>
+	<spring:url var="url" value="/admin/addressNote/getAddressNoteListFromDistinctId" />
 	
 	<![CDATA[
+	<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
+	<script src="/scripts/thickbox-compressed.js"></script>
+		<script src="/js/agent.js"></script>
+	
 	<script type="text/javascript">
 		function updateCustomer() {
 			document.forms[0].submit();
 		}
+		
+		function changeDist(el) {
+			var $el = $(el),
+			$addressNoteId = $('#addressNoteId');// jquery
+			
+			var data = "dist=" + $el.val();
+			
+			var url = "${url}";
+			$.ajax({
+				type: 'POST', 
+				dataType:'json', 
+				url: url, 
+				data : data,
+				success: function(dataRes) {
+					renderComboBox($addressNoteId, dataRes, $addressNoteId[0].firstChild.text);
+					$addressNoteId.get(0).selectedIndex = 0;
+					$('#addressNoteId').select2();
+				}
+			});
+		}
+		
 	</script>
 	
 ]]>
@@ -66,15 +95,14 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Trạng thái
-					</td>
-					<td>${statusText}</td>
+					<td align="right">Đã kích hoạt:</td>
+					<td><form:checkbox path="active" /></td>
 				</tr>
 				<tr>
-					<td align="right">Phone(<label class="errorMessage">*</label>):
+					<td align="right">Số điện thoại(<label class="errorMessage">*</label>):
 					</td>
 					<td>
-						<form:input path="phone" class="textInput"/> 
+						<form:input path="phone" class="textInput"/>
 						<form:errors path="phone" cssClass="errorMessage" />
 					</td>
 				</tr>
@@ -83,78 +111,45 @@
 					</td>
 					<td>
 						<form:input path="email" class="textInput"/>
-						<form:errors path="email" cssClass="errorMessage" />
 					</td>
 				</tr>
 				
 				<!-- Thong tin dia chi -->
 				<tr>
-					<td align="right">Địa chỉ khách hàng nhập:
+					<td align="right">Địa chỉ khách hàng nhập(<label class="errorMessage">*</label>):
 					</td>
 					<td>
-						<form:input path="email" class="textInput"/>
-						<form:errors path="email" cssClass="errorMessage" />
+						<form:input path="address" class="textInput"/>
+						<form:errors path="address" cssClass="errorMessage" />
 					</td>
 				</tr>
 				<tr>
 					<td align="right">Quận:
 					</td>
 					<td>
-						<form:select path="districtId" cssClass="select2_combo" style="width:150px">
+						<form:select path="districtId" id="districtId" cssClass="select2_combo" style="width:150px" onchange="changeDist(this)">
 							<form:option value="">--- Chọn Quận ---</form:option>
 							<form:options items="${districtList}" itemValue="id" itemLabel="name" />
 						</form:select>
-						
-						<form:errors path="districtId" cssClass="errorMessage" />
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Địa chỉ đã lưu:
+					<td align="right">Địa chỉ đã lưu(<label class="errorMessage">*</label>):
 					</td>
 					<td>
-						<form:select path="addressFromProvince" cssClass="select2_combo" style="width:150px">
+						<form:select path="addressNoteId" id="addressNoteId" cssClass="select2_combo" style="width:150px">
 							<form:option value="">--- Chọn Địa chỉ ---</form:option>
-							<form:options items="${addressListFromProvince}" itemValue="id" itemLabel="name" />
+							<form:options items="${addressNoteListSameDistrictId}" itemValue="id" itemLabel="name" />
 						</form:select>
+						<form:errors path="addressNoteId" cssClass="errorMessage" />
 					</td>
 				</tr>
-				
-				<tr>
-					<td align="right">Tên đường:
-					</td>
-					<td>
-						<!-- from addressnote -->
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Địa chỉ:
-					</td>
-					<td>
-						<!-- from addressnote -->
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Tòa nhà/công ty:
-					</td>
-					<td>
-						<!-- from addressnote -->
-					</td>
-				</tr>
-				<tr>
-					<td align="right">Tầng:
-					</td>
-					<td>
-						<!-- from addressnote -->
-					</td>
-				</tr>
-				
 				
 				<tr>
 					<td align="right">Ghi chú:
 					</td>
 					<td>
-						<form:input path="email" class="textInput"/>
-						<form:errors path="email" cssClass="errorMessage" />
+						<form:textarea path="note" class="textInput" cssStyle="width:45%" rows="5"/>
 					</td>
 				</tr>
 				
@@ -164,11 +159,22 @@
 
 				<tr>
 					<td><label> <!-- Empty --> </label></td>
-					<td><a href="javascript:;"
-						onclick="javascript:updateCustomer();" class="btn-1"
-						title="Lưu thông tin khách hàng"><span><span>Lưu</span></span></a>
+					<td>
+						<c:choose>
+							<c:when test="${customer.id == null}">
+								<a href="javascript:void(0)" class="btn-1" title="Đặt món"><span><span style="color:gray">Đặt món</span></span></a>
+							</c:when>
+							<c:otherwise>
+								<a href="${orderURL}/${customer.id}" class="btn-1" title="Đặt món"><span><span>Đặt món</span></span></a>
+							</c:otherwise>
+						</c:choose>
+
+						<a href="javascript:;"
+							onclick="javascript:updateCustomer();" class="btn-1"
+							title="Lưu thông tin khách hàng"><span><span>Lưu</span></span></a>
+							
 						<a href="${customerListURL}" class="btn-1"
-						title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
+							title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
 					</td>
 				</tr>
 				

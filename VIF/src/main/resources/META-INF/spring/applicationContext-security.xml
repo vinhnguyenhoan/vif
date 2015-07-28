@@ -10,6 +10,7 @@
 		<logout logout-url="/resources/j_spring_security_logout" logout-success-url="/login"/>
 		<remember-me key="uniqueAndSecret"/>
 		<!-- Configure these elements to secure URIs in your application -->
+		<intercept-url pattern="/admin/**" access="isAuthenticated()" />
 		<intercept-url pattern="/css/**" access="permitAll" />
     	<intercept-url pattern="/scripts/**" access="permitAll" />
     	<intercept-url pattern="/images/**" access="permitAll" />
@@ -21,9 +22,6 @@
     	<intercept-url pattern="/guide/**" access="permitAll" />
     	<intercept-url pattern="/downloads/**" access="permitAll" />
 		<intercept-url pattern="/services/**" access="permitAll" />
-    	<intercept-url pattern="/web/**" access="permitAll" />
-		<intercept-url pattern="/admin/**" access="isAuthenticated()" />
-		
 	
 		<intercept-url pattern="/settings/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/version/**" access="hasRole('ROLE_ADMIN')" />
@@ -38,6 +36,8 @@
 		<intercept-url pattern="/testxml/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')" />
 		<intercept-url pattern="/salestrans/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/import/**" access="hasRole('ROLE_ADMIN')" />
+		
+    	<intercept-url pattern="/**" access="permitAll" />
 	</http>
 	
 	<beans:bean id="LoginUserDetailsService" class="vn.vif.daos.LoginUserDetailsService"></beans:bean>

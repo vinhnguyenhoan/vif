@@ -1,10 +1,14 @@
 package vn.vif.models;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "ORDER_DETAIL")
 public class OrderDetail implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5478098263186652439L;
@@ -18,6 +22,10 @@ public class OrderDetail implements java.io.Serializable {
 	private Integer price;
 	
 	private Integer number;
+	
+	private Integer miniPrice;
+	
+	private Integer miniNumber;
 	
 	private String note;
 	
@@ -62,13 +70,31 @@ public class OrderDetail implements java.io.Serializable {
 		this.price = price;
 	}
 
-	@Column(name = "PRICE", precision = 3)
+	@Column(name = "NUMBER", precision = 3)
 	public Integer getNumber() {
 		return number;
 	}
 
 	public void setNumber(Integer number) {
 		this.number = number;
+	}
+
+	@Column(name = "MINI_PRICE", precision = 9)
+	public Integer getMiniPrice() {
+		return miniPrice;
+	}
+
+	public void setMiniPrice(Integer price) {
+		this.miniPrice = price;
+	}
+
+	@Column(name = "MINI_NUMBER", precision = 3)
+	public Integer getMiniNumber() {
+		return miniNumber;
+	}
+
+	public void setMiniNumber(Integer number) {
+		this.miniNumber = number;
 	}
 
 	@Column(name = "NOTE", length = 200)

@@ -111,6 +111,10 @@
 					</td>
 				</tr>
 				<tr>
+					<td align="right">Món ngon:</td>
+					<td><form:checkbox path="specItem"/></td>
+				</tr>
+				<tr>
 					<td align="right">Ngày bán:
 					</td>
 					<td>

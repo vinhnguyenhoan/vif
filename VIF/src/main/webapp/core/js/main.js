@@ -33,6 +33,8 @@ $(document).ready(function() {
 		$(this).parent().addClass('current-menu-item');
 		$('#date-name').text($(this).attr('title'));
 		$('#date').text($(this).attr('date'));
+		$('#com-viet > div').hide();
+		$('#menu_' + this.id).show()
 		return false;
 	})
 });

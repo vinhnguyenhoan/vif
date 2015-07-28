@@ -12,6 +12,8 @@
     <spring:url var="logoutURL" value="/resources/j_spring_security_logout" />	
 	<spring:url var="orderItemListURL" value="/admin/orderItem/list"  />
 	<spring:url var="addOrderItemURL" value="/admin/orderItem/add"  />
+	<spring:url var="addressNoteListURL" value="/admin/addressNote/list"  />
+	<spring:url var="addAddressNoteURL" value="/admin/addressNote/add"  />
 	
 	<spring:url var="addCustomerURL" value="/admin/customer/add"  />
 	<spring:url var="customerListURL" value="/admin/customer/list"  />
@@ -114,10 +116,7 @@
                    </a>
                </p>
                <ul style="display:none">
-               		   <li><a href="${attendURL}" title="Danh sách hiện diện">Chấm công</a></li>
-               		   <li><a href="${createTargetURL}" title="Lập chỉ tiêu">Giao chỉ tiêu</a></li>                   
-                       <li><a href="${lisTargetURL}" title="Danh sách chỉ tiêu">Danh sách chỉ tiêu</a></li>
-                 </ul>
+               </ul>
            </div>
            </sec:authorize>
            
@@ -214,10 +213,6 @@
                    </a>
                </p>
                <ul style="display:none" id="">
-                      	
-                       	<li><a href="${customerCareURL}" title="Nhật ký CS ĐBH">Nhật ký Chăm Sóc</a></li>
-                       	<li><a href="${transVasURL}" title="Danh sách Giao dịch">Nhật ký Bán Hàng</a></li>
-                       	<li><a href="${bestStaffURL}" title="Danh sách Top Nhân Viên">Danh sách top Nhân Viên</a></li> 
               </ul>
            </div>
            </sec:authorize>
@@ -255,6 +250,9 @@
 	            <sec:authorize ifAnyGranted="ADMIN,SUPERVIOR">
                    <li><a href="${addOrderItemURL}" title="Thêm món ăn">Thêm món ăn</a></li>
                    <li><a href="${orderItemListURL}" title="Danh sách món ăn">Danh sách món ăn</a></li>
+                   
+                   <li><a href="${addAddressNoteURL}" title="Thêm Địa điểm">Thêm Địa điểm</a></li>
+                   <li><a href="${addressNoteListURL}" title="Danh sách Đia điểm">Danh sách Địa điểm</a></li>
                    
                    <li><a href="${addCustomerURL}" title="Thêm Khách hàng">Thêm Khách hàng</a></li>
                    <li><a href="${customerListURL}" title="Danh sách Khách hàng">Danh sách Khách hàng</a></li>

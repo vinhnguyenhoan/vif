@@ -39,6 +39,8 @@ public class OrderItem implements java.io.Serializable {
 
 	private Integer miniPrice;
 	
+	private Boolean specItem;
+	
 	private String image;
 
 	private MultipartFile logoFile;
@@ -133,6 +135,15 @@ public class OrderItem implements java.io.Serializable {
 		this.miniPrice = miniPrice;
 	}
 
+	@Column(name = "SPEC_ITEM")
+	public Boolean getSpecItem() {
+		return specItem;
+	}
+
+	public void setSpecItem(Boolean isSpecItem) {
+		this.specItem = isSpecItem;
+	}
+	
 	@Column(name = "IMAGE", precision = 200)
 	public String getImage() {
 		return image;

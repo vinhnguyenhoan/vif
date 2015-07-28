@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 
 import vn.vif.models.AddressNote;
@@ -26,6 +27,7 @@ import vn.vif.models.filter.AddressNoteListFilter;
 import vn.vif.services.AddressNoteService;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
+import vn.vif.utils.VIFUtils;
 import vn.vif.utils.converter.OptionItem;
 
 @Controller
@@ -149,5 +151,14 @@ public class AddressNoteController {
 			result.add(new OptionItem(dis.id, dis.fullName, dis.name));
 		}
 		return result;
+	}
+	
+	@ResponseBody // add to return JSON
+	@RequestMapping(value = "/addressNote/getAddressNoteListFromDistinctId")
+	public List<OptionItem> getAddressNoteListFromDistinctId(@RequestParam(value = "dist", required = false) Long distId) {
+		if (!VIFUtils.isValid(distId)) {
+			return new LinkedList<OptionItem>();
+		}
+		return addressNoteService.listByDistrictIdAsOptionItems(distId);
 	}
 }

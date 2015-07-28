@@ -23,7 +23,8 @@ public class Customer implements java.io.Serializable {
 	
 	@Embedded
 	private AddressNote addressNote;
-	
+	@Transient
+	private Long addressNoteId;
 	@Transient
 	private Long districtId;
 	
@@ -35,7 +36,7 @@ public class Customer implements java.io.Serializable {
 	
 	private String note;
 
-	private Boolean isActive;
+	private Boolean active;
 	
 	public Customer() {
 	}
@@ -106,17 +107,17 @@ public class Customer implements java.io.Serializable {
 	}
 
 	@Column(name = "ACTIVE")
-	public Boolean isActive() {
-		return isActive;
+	public Boolean getActive() {
+		return active;
 	}
 
 	public void setActive(Boolean isActive) {
-		this.isActive = isActive;
+		this.active = isActive;
 	}
 	
 	@Transient
 	public String getStatusText() {
-		if (isActive == null || !isActive) {
+		if (active == null || !active) {
 			return "Chưa kích hoạt";
 		}
 		return "Đã kích hoạt";
@@ -132,12 +133,26 @@ public class Customer implements java.io.Serializable {
 		this.addressNote = addressNote;
 	}
 
-	public Long getDistrictItem() {
-		return districtId;
+	public Long getDistrictId() {
+		if (addressNote != null) {
+			return addressNote.getDistrictId();
+		}
+		return -1l;
 	}
 
-	public void setDistrictItem(Long districtId) {
+	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
+	}
+
+	public Long getAddressNoteId() {
+		if (addressNote != null) {
+			return addressNote.getId();
+		}
+		return addressNoteId;
+	}
+
+	public void setAddressNoteId(Long addressNoteId) {
+		this.addressNoteId = addressNoteId;
 	}
 	
 }
