@@ -6,15 +6,15 @@
 
 <jsp:directive.page contentType="text/html;charset=UTF-8" />
 
-<spring:url var="core" value="/core" />
-<spring:url var="imageFolder" value="/images" />
+<spring:url var="core" value="/resources/core" />
+<spring:url var="imageFolder" value="/resources/images" />
 
 <head>
 	<title>VIF</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<link rel="shortcut icon" href="${core}/images/logo.png" />
 	<link rel="apple-touch-icon" href="${core}/images/logo.png" />
-	<link rel="stylesheet" href="./style.css" />
+	<link rel="stylesheet" href="./style.css?v=1" />
 	<link rel="stylesheet" href="${core}/styles/default/default.css" />
 	<script type="text/javascript" src="${core}/js/libs/modernizr-2.0.6.min.js"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/libs/jquery-1.6.2.min.js"><!-- Fix for FF & Opera --></script>
@@ -26,8 +26,9 @@
 	<script type="text/javascript" src="${core}/js/libs/underscore-min.js"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/libs/underscore.string.js"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/mylibs/rising.js"><!-- Fix for FF & Opera --></script>
-	<script type="text/javascript" src="${core}/js/main.js"><!-- Fix for FF & Opera --></script>
+	<script type="text/javascript" src="${core}/js/main.js?v=1"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/mylibs/responsive.js"><!-- Fix for FF & Opera --></script>
+	<script src="${core}/js/jquery.cleanple.js" type="text/javascript"><!-- Fix for FF & Opera --></script>
 	<meta charset="UTF-8"/>
 </head>
 
@@ -58,13 +59,15 @@
 		<nav role="navigation-sup">
 			<ul>
 				<li>
-					<a href="#">Cơm Trưa<br/>&#38; Món Ngon<br/>Việt Nam</a>
+					<a href="#">
+						<img src="${core}/images/tab1.png" />
+					</a>
 				</li>
 				<li>
-					<a href="#">Thầu Nhà Ăn<br/>&#38; Cung Cấp<br/>Suất Ăn</a>
+					<a href="#"><img src="${core}/images/tab2.png" /></a>
 				</li>
 				<li>
-					<a href="#">Thực Phẩm<br/>Giao Đi<br/>&#160;</a>
+					<a href="#"><img src="${core}/images/tab3.png" /></a>
 				</li>
 			</ul>
 		</nav>
@@ -94,164 +97,98 @@
 <div id="content" role="main">
 
 	<section id="slider" class="default" style="height: 349px;">
-
-<script>
-	Rising.sliderConfig = {
-		autoplay: true,
-		transitionTime: 780,
-		pauseTime: 2000,
-		easing: 'easeInOutExpo',
-		height: 349,
-		width: 1024
-	}
-
-	Rising.sliderData = [];
-	Rising.sliderData.push({
-		img: '${core}/images/content/slide-1.jpg',
-		url: '#slide-1'
-	});
-	Rising.sliderData.push({
-		img: '${core}/images/content/slide-2.jpg',
-		url: '#slide-2'
-	});
-	Rising.sliderData.push({
-		img: '${core}/images/content/slide-3.jpg',
-		url: '#slide-3'
-	});
-</script>
-
-		<div class="workarea">
-			<span class="blind"><!-- + --></span>
-			<img class="slide" alt="" width="1024" height="349" src="${core}/images/content/slide-1.jpg" />
-		</div><!-- .workarea -->
-
-		<a class="title-desc" style="top: 131px;display: none" href="#slide-1">
-			<hgroup>
-				<h1>Đặt Món Trực Tuyến</h1>
-				<h2>Giao món buổi trưa miễn phí.</h2>
-			</hgroup>
-		</a><!-- .title -->
-
-		<ul class="common-slide-controls" style="display: none"><!-- + --></ul>
+		<ul id="architectSlider" class="architectSlider" style="margin:0;padding:0;">
+			<li>
+				<img src="${core}/images/content/slide-1.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide-1.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide2.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide2.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide3.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide3.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide4.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide4.jpg" alt="" class="slide-thumbnail" />						</li>
+			<li>
+				<img src="${core}/images/content/slide5.jpg" alt="" class="slide-image" />
+				<img src="${core}/images/content/slide5.jpg" alt="" class="slide-thumbnail" />						</li>
+		</ul>
 		
 	</section><!-- slider -->
 
 	<!-- + -->
-
+	
 	<section id="nav-time">
-		<span>THỰC ĐƠN HÔM NAY</span>
-		<span style="padding-left:20px;">20/5/2015</span>
+		<div>
+			<span>THỰC ĐƠN <span id="date-name">${todayName}</span></span>
+			<span style="padding-left:20px;" id="date">${todayDate}</span>
+		</div>
 		<ul>
-			<li class="current-menu-item">
-				<a href="#">T2</a>
-			</li>
-			<li>
-				<a href="#">T3</a>
-			</li>
-			<li>
-				<a href="#">T4</a>
-			</li>
-			<li>
-				<a href="#">T5</a>
-			</li>
-			<li>
-				<a href="#">T6</a>
-			</li>
-			<li>
-				<a href="#">T7</a>
-			</li>
+			<c:forEach items="${dates}" var="d" varStatus="status">
+				<c:set var="cl" value=""/>
+				<c:if test="${today==d.id}">
+					<c:set var="cl" value="current-menu-item"/>
+				</c:if>
+				<li class="${cl}">
+					<a href="#" title="${d.name}" date="${d.date}" id="${d.id}">T${d.id}</a>
+				</li>
+			</c:forEach>
 		</ul>
-		<span id="search-span"><input type="button"/><span>
-			<input style="background:none;width:160px;height:24px;border:0;padding:0;min-width:160px;" type="text" name="searchText" value="Tìm kiếm nhanh"/>
-		</span></span>
+		<span id="search-span">
+			<span class="button"><!-- + --></span>
+			<span>
+				<input style="background:none;width:160px;height:24px;border:0;padding:0;min-width:160px;" type="text" name="searchText" value="Tìm kiếm nhanh"/>
+			</span>
+		</span>
 	</section>
 
 	<!-- + -->
 
 	<section class="modular scrollable" id="com-viet">
-			<h1 class="section-heading left"><img id="time" src="${core}/images/com-viet.png" /></h1>
+			<h1 class="section-heading left">
+				<img id="time" src="${core}/images/com-viet.png" />
+				<span style="font-size: 14px;color: #969696;"><i>Kèm cơm, canh, rau &amp; trái cây tráng miệng</i></span>
+			</h1>
 
-			<div class="scroller">
-
-				<article class="first">
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
-					</header>
-				</article>
-
-				<!-- + -->
-
-				<article>
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
-					</header>
-				</article>
-
-				<!-- + -->
-
-				<article>
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
-					</header>
-				</article>
-
-				<div class="clear"><!-- + --></div>
-
-				<!-- + -->
-
-				<article class="first">
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
-					</header>
-				</article>
-
-				<!-- + -->
-
-				<article>
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
-					</header>
-				</article>
-				
-				<!-- + -->
-
-				<article>
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price">27.000đ</span>
-						<span class="price mini">Mini: 25.000đ</span>
-					</header>
-				</article>
-
-			</div><!-- .scroller -->
+			<c:forEach items="${dates}" var="d" varStatus="status">
+				<c:set var="cl" value="display:none"/>
+				<c:if test="${today==d.id}">
+					<c:set var="cl" value=""/>
+				</c:if>
+				<div class="scroller" style="${cl}" id="menu_${d.id}">
+					<c:forEach items="${orderItemData[d.id]}" var="it" varStatus="status">
+						<c:set var="cl" value=""/>
+						<c:if test="${status.index % 3 == 0}">
+							<c:set var="cl" value="first"/>
+						</c:if>
+						<article class="${cl}">
+							<header>
+								<div class="frame">
+									<c:choose>
+										<c:when test="${it.image != null}">
+											<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
+										</c:when>
+										<c:otherwise>
+											<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<span class="name">${it.name}</span><br/>
+								<span class="price">${it.price}đ</span>
+								<c:if test="${it.miniPrice != null}">
+									<span class="price mini">Mini: ${it.miniPrice}đ</span>
+								</c:if>
+							</header>
+						</article>
+						<c:if test="${status.index % 3 == 2}">
+							<div class="clear"><!-- + --></div>
+						</c:if>
+					</c:forEach>
+	
+				</div><!-- .scroller -->
+			</c:forEach>
+			
 	</section><!-- from-blog -->
 
 	<!-- + -->
@@ -260,38 +197,36 @@
 			<h1 class="section-heading left"><img id="time" src="${core}/images/mon-ngon-viet.png" /></h1>
 
 			<div class="scroller">
-
-				<article class="first">
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price spec">27.000đ</span>
-					</header>
-				</article>
-
-				<article>
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price spec">27.000đ</span>
-					</header>
-				</article>
-
-				<article>
-					<header>
-						<div class="frame">
-							<img src="${core}/images/content/product1.jpg" />
-						</div>
-						<span class="name">Thịt bằm rang nấm đông cô tươi</span><br/>
-						<span class="price spec">27.000đ</span>
-					</header>
-				</article>
-
+				<c:forEach items="${orderItemSpec}" var="it" varStatus="status">
+					<c:set var="cl" value=""/>
+					<c:if test="${status.index % 3 == 0}">
+						<c:set var="cl" value="first"/>
+					</c:if>
+					<article class="${cl}">
+						<header>
+							<div class="frame">
+								<c:choose>
+									<c:when test="${it.image != null}">
+										<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
+									</c:when>
+									<c:otherwise>
+										<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
+									</c:otherwise>
+								</c:choose>
+							</div>
+							<span class="name">${it.name}</span><br/>
+							<span class="price spec">${it.price}đ</span>
+						</header>
+					</article>
+					<c:if test="${status.index % 3 == 2}">
+						<div class="clear"><!-- + --></div>
+					</c:if>
+				</c:forEach>
+				
 			</div><!-- .column-grid -->
+			
+			<a style="font-size: 14px;color: #969696;" href="#"><b><i>Tải file Thực đơn Tuần/Tháng</i></b></a>
+			
 	</section><!-- services -->
 
 </div><!-- content -->
@@ -339,17 +274,50 @@
 
 </div><!-- wrap -->
 
-<script>
-Rising.theme = 'default';
-Rising.colors = {
-	postTitleHover: '#EB5426',
-	footerLinkHover: '#FF973F',
-	frameHover: '#EA7716',
-	lightboxBg: '#F7F7F7',
-	sourceCodeBg: '#FCFCFC'
-};
+<script type="text/javascript">
+	Rising.theme = 'default';
+	Rising.colors = {
+		postTitleHover: '#EB5426',
+		footerLinkHover: '#FF973F',
+		frameHover: '#EA7716',
+		lightboxBg: '#F7F7F7',
+		sourceCodeBg: '#FCFCFC'
+	};
+	jQuery(document).ready(function(){
+		setTimeout(function(){
+			jQuery('#architectSlider').architectSlider({
+				sliderWidth:1024,
+				sliderHeight:349,
+				pauseTime:7000,
+				animationSpeed:500,
+				effect:'stripeFadeVer',// slider animation effect (cubeInLinearHor / cubeInLinearVer / cubeInDiagonal / cubeInRandom / stripeMoveHor / stripeMoveVer / stripeFadeHor / stripeFadeVer / stripeChangeHor / stripeChangeVer / stripeHalfHor / stripeHalfVer / stripeHalfOtherHor / stripeHalfOtherVer / slideFade)						easing:'',
+				descriptionOpacity:1,
+				numberNav:false,
+				numberNavThumb:true,
+				numberNavHide:false,
+				thumbnailWidth:80,
+				thumbnailHeight:34,
+				timeLine:false,
+				customblocksize:{
+					cubeinlinearhor:{height:80, width:94},
+					cubeinlinearver:{height:80, width:94},
+					cubeindiagonal:{height:80, width:94},
+					cubeinrandom:{height:80, width:94},
+					stripemovehor:{width:47},
+					stripemovever:{height:20},
+					stripefadehor:{width:47},
+					stripefadever:{height:20},
+					stripechangehor:{width:47},
+					stripechangever:{height:20},
+					stripehalfhor:{width:47},
+					stripehalfver:{height:20},
+					stripehalfotherhor:{width:47},
+					stripehalfotherver:{height:20}
+				}
+			});
+		}, 2000);
+	});
 </script>
-
 <!-- Analytics -->
 </body>
 </html>

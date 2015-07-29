@@ -145,6 +145,10 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 				<prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout}</prop>
 				<prop key="hibernate.c3p0.idle_test_periods">${hibernate.c3p0.idle_test_periods}</prop>
 				<prop key="hibernate.c3p0.acquire_increment">${hibernate.c3p0.acquire_increment}</prop>
+				
+				<prop key="hibernate.connection.useUnicode">true</prop>
+	            <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+	            <prop key="hibernate.connection.charSet">UTF-8</prop>
 			</props>
 		</property>
 	</bean>

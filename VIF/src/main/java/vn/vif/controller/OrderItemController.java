@@ -35,25 +35,60 @@ public class OrderItemController {
 
 	@Autowired
 	private OrderItemService orderItemService;
+	
 	@Autowired
 	private View jsonView_i;
+	
 	@Autowired
 	private ServletContext context;
 	
 	@RequestMapping(value = "/orderItem/list", method = { RequestMethod.GET,
 			RequestMethod.POST })
-	public String listOrderItems(
+	public String viewListOrderItems(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
 			Model uiModel) {
+		return orderItemsList(page, size, orderItemListFilter, uiModel, false);
+	}
+	
+	@RequestMapping(value = "/orderItem/list/saveDate", method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public String moveOrderItemsList(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
+			Model uiModel) {
+		return orderItemsList(page, size, orderItemListFilter, uiModel, true);
+	}
+	
+	private String orderItemsList(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@ModelAttribute("frmOrderItemList") @Valid OrderItemListFilter orderItemListFilter,
+			Model uiModel, boolean isSaveDate) {
+		// Save before view
+		List<Integer> moveToDates = orderItemListFilter.getMoveToDate();
+		List<OrderItem> allItem = orderItemListFilter.getItemSelected();
+		if (isSaveDate && allItem != null) {
+			for (OrderItem orderItem : allItem) {
+				if (orderItem.getSelectedToMoveSellDate()) {
+					orderItem.setMoveToDate(moveToDates);
+					orderItemService.update(orderItem);
+				}
+			}
+		}
+		
 		long count = orderItemService.count(orderItemListFilter);
 		PaginationInfo paginationInfo = PaginationUtil.calculatePage(count,
 				page, size, uiModel);
 		List<OrderItem> orderItemList = orderItemService.list(orderItemListFilter, paginationInfo.getStart(), paginationInfo.getSize());
 		
+		orderItemListFilter.setItemSelected(orderItemList);
 		uiModel.addAttribute("orderItemList", orderItemList);
+		uiModel.addAttribute("dateList", OrderItem.getDataList());
+
 		return "orderItemList";
+		// return "redirect:/admin/orderItem/list";
 	}
 
 	@RequestMapping(value = "/orderItem/detail/{id}")
@@ -64,6 +99,7 @@ public class OrderItemController {
 			if (orderItem == null) {
 				return "notFoundError";
 			}
+			uiModel.addAttribute("dateList", OrderItem.getDataList());
 			uiModel.addAttribute("orderItem", orderItem);	
 			return "orderItemDetail";
 		} catch (Exception e) {
@@ -90,27 +126,25 @@ public class OrderItemController {
 		validateInputData(orderItem, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
-				if (orderItem.getId() > 0) {
+				if (orderItem.getId() != null) {
 					OrderItem oI = orderItemService.find(orderItem.getId());
 					oI.setDesc(orderItem.getDesc());
 					oI.setName(orderItem.getName());
 					oI.setPrice(orderItem.getPrice());
 					oI.setMiniPrice(orderItem.getMiniPrice());
-					
+					oI.setMoveToDate(orderItem.getMoveToDate());
+					oI.setLogoFile(orderItem.getLogoFile());
 					uploadLogo(oI);
 					
 					orderItemService.update(oI);
-					
 				} else {
-					
-					
 					orderItemService.add(orderItem);
-					
 					if (uploadLogo(orderItem)) {
 						orderItemService.update(orderItem);
 					}
 				}
 				uiModel.addAttribute("success", true);
+				uiModel.addAttribute("dateList", OrderItem.getDataList());
 				return "redirect:/admin/orderItem/detail/" + orderItem.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -124,6 +158,7 @@ public class OrderItemController {
 			}
 			
 		}
+		// Handle for exception
 		uiModel.addAttribute("orderItem", orderItem);	
 		return "orderItemDetail";
 	}
@@ -133,7 +168,8 @@ public class OrderItemController {
 			String filename = or.getLogoFile().getOriginalFilename();
 			String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length()).toLowerCase();
 			if (extension.equals("png") || extension.equals("jpg") || extension.equals("gif")) {
-				String logo = "logo_" + or.getId() + "." + extension;
+				String logo = "order_item_" + or.getId() + "." + extension;
+				String image = "images/pruducts/" + logo;
 				logo = File.separator + "images" + File.separator+ "pruducts" + File.separator + logo;
 				String path = context.getRealPath("") + logo;
 				File folder = new File(path);
@@ -144,7 +180,7 @@ public class OrderItemController {
 					InputStream is = or.getLogoFile().getInputStream();
 					ImageUtil.writeImage(path, is);
 					is.close();
-					or.setImage(logo);
+					or.setImage(image);
 					return true;
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -158,70 +194,9 @@ public class OrderItemController {
 	public String addOrderItem(HttpServletRequest request, Model uiModel) {
 		OrderItem orderItem = new OrderItem();
 		uiModel.addAttribute("orderItem", orderItem);
+		uiModel.addAttribute("dateList", OrderItem.getDataList());
 		return "orderItemAdd";
 	}
-
-	/*@RequestMapping(value = "/user/add", params = { "new" })
-	public String addNewUser(@ModelAttribute("user") @Valid VIFUser user,
-			BindingResult bindingResult, HttpServletRequest request,
-			Model uiModel) {
-		VIFUser me = userService.getLogin();
-		if (me == null)
-			return "login";
-		
-		validateInputData(user, bindingResult, request,"new");
-
-		String nativePass = user.getPassword();
-		if (!bindingResult.hasErrors()) {
-			// before saving to DB, encrypt the password
-			try {
-				user.setPassword(encryptPassword(user.getPassword()));
-			} catch (NoSuchAlgorithmException nsae) {
-				logger.error(nsae.getMessage(), nsae);
-				nsae.printStackTrace();
-			}
-			if (null != user.getBirthdayString() && !user.getBirthdayString().isEmpty()) {
-				user.setBirthday(Utility.parseLocalDate(user.getBirthdayString()));
-			}
-//				if(user.getSendEmail()){
-//					user.setActiveCode(GPSUtils.generalCode(user.getId()));
-//					user.setIsActive(false);
-//				} else {
-//					user.setActiveCode("");
-//					user.setIsActive(true);
-//				}
-			user.setCreatedBy(me.getId());
-			user.setCreatedDate(new Date());
-			try {
-				
-				userService.add(user);
-				
-				uiModel.addAttribute("success", true);
-				
-				return "redirect:/admin/user/detail/" + user.getId();
-			} catch (Exception e) {
-				e.printStackTrace();
-				uiModel.addAttribute("success", false);
-				user.setPassword(nativePass);
-			}
-			
-		} else {
-			// restore native pass
-			user.setPassword(nativePass);
-			List<FieldError> errors = bindingResult.getFieldErrors();
-			for (FieldError fieldError : errors) {
-				bindingResult.rejectValue(fieldError.getField(),
-						fieldError.getDefaultMessage());
-			}
-			
-			
-		}
-		
-		uiModel.addAttribute("user", user);
-		uiModel.addAttribute("roleList", UserRole.getListUserRole(me));
-			
-		return "userAdd";
-	}*/
 
 	private void validateInputData(OrderItem orderItem, BindingResult bindingResult) {
 		if (StringUtils.isEmpty(orderItem.getName())) {
@@ -232,6 +207,6 @@ public class OrderItemController {
 			bindingResult.rejectValue("price", "app_field_empty",
 					new Object[]{"Giá"}, "empty_error_code");
 		}
-		//TODO check image type and size
 	}
+	
 }

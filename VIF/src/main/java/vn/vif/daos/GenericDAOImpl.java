@@ -13,7 +13,9 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Projections;
+import org.hibernate.impl.CriteriaImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -225,7 +227,7 @@ public class GenericDAOImpl implements GenericDAO {
 							sql += "(lower(entt." + fieldName + ") like lower(:value" + index + ") or lower(entt."
 									+ fieldName + "SearchTag) like lower(:value" + index + "))";
 						} else {
-							sql += "lower(entt." + fieldName + ") like lower(:value" + index + ")";
+							sql += "entt." + fieldName + " = :value" + index;
 						}
 					} else if (fieldValues[index] instanceof Object[]) {
 						Object[] temp = (Object[]) fieldValues[index];
@@ -341,7 +343,24 @@ public class GenericDAOImpl implements GenericDAO {
 			if (length >= 0) {
 				criteria.setMaxResults(length);
 			}
-			List results=criteria.list();
+			List<Object> results;
+			if (filter instanceof DistinctFilter) {
+				if (length > 0) {
+					criteria.setProjection(Projections.distinct(Projections.property(((DistinctFilter)filter).getId())));
+					List ids = criteria.list();
+					results = new ArrayList<Object>();
+					for (Object id : ids) {
+						results.add(session.get(
+								Class.forName( ((CriteriaImpl)criteria).getEntityOrClassName() ), 
+								(Long)id ));
+					}
+				} else {
+					criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+					results = criteria.list();
+				}
+			} else {
+				results = criteria.list();
+			}
 			return results;
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
@@ -360,6 +379,9 @@ public class GenericDAOImpl implements GenericDAO {
 			Criteria criteria=filter.getCriteria(session);
 			if (criteria == null) {
 				return 0;
+			}
+			if (criteria instanceof DistinctFilter) {
+				criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			}
 			criteria.setProjection(Projections.rowCount());
 			long count=((Number) criteria.uniqueResult()).longValue();
@@ -382,6 +404,9 @@ public class GenericDAOImpl implements GenericDAO {
 			Criteria criteria=filter.getCriteria(session);
 			if (criteria == null) {
 				return new ArrayList(0);
+			}
+			if (criteria instanceof DistinctFilter) {
+				criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			}
 			List results=criteria.list();
 			return results;

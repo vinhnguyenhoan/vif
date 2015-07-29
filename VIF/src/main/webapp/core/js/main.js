@@ -18,7 +18,7 @@ $(document).ready(function() {
 	ui_lightbox();
 	ui_shortcodes();
 	ui_syntax_highlight();
-	Rising.load();
+//	Rising.load();
 	$('#search-span input[type=text]').focus(function() {
 		if (this.value.trim()=='Tìm kiếm nhanh') {
 			this.value = '';
@@ -28,6 +28,15 @@ $(document).ready(function() {
 			this.value = 'Tìm kiếm nhanh';
 		}
 	});
+	$('#nav-time ul li a').click(function() {
+		$(this).parent().parent().children().removeClass('current-menu-item');
+		$(this).parent().addClass('current-menu-item');
+		$('#date-name').text($(this).attr('title'));
+		$('#date').text($(this).attr('date'));
+		$('#com-viet > div').hide();
+		$('#menu_' + this.id).show()
+		return false;
+	})
 });
 
 function ui_enhance() {

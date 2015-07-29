@@ -1,17 +1,27 @@
 package vn.vif.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import vn.vif.models.OrderItem;
+import vn.vif.services.OrderItemService;
+import vn.vif.utils.VIFUtils;
 @Controller
 public class HomeController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
+	@Autowired
+	private OrderItemService orderItemService;
 
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -63,6 +73,11 @@ public class HomeController {
 			RequestMethod.POST })
 	public String home(HttpServletRequest request, Model uiModel) {
 		
+		VIFUtils.fillDate(uiModel);
+		
+		Map<Integer, List<OrderItem>> data = orderItemService.getOrderItemData();
+		uiModel.addAttribute("orderItemData", data);
+		uiModel.addAttribute("orderItemSpec", data.get(-1));
 		
 		return "web";
 	}

@@ -14,11 +14,13 @@
 	<spring:url var="scriptFolder" value="/resources/scripts" />
 	<spring:url var="jsFolder" value="/resources/js" />
 	<spring:url var="imageFolder" value="/resources/images" />
+	<spring:url var="core" value="/resources/core" />
 	
 	<!-- Google map meta data -->
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" ></meta>
 
-	<link href="${imageFolder}/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<!-- <link href="${imageFolder}/favicon.ico" rel="shortcut icon" type="image/x-icon" /> -->
+	<link rel="shortcut icon" href="${core}/images/logo.png" />
 	<link href="${cssFolder}/screen.css?v=1" rel="stylesheet" type="text/css"/>
 
 	<!-- calendar -->
