@@ -1,10 +1,8 @@
 package vn.vif.models.filter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import vn.vif.daos.Filter;
 import vn.vif.models.OrderList;

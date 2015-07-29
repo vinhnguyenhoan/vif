@@ -65,7 +65,7 @@ public class OrderList implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH })
+	@OneToOne(cascade = { CascadeType.DETACH })
 	@JoinColumn(name = "CUSTOMER_ID")
 	public Customer getCustomer() {
 		return customer;
@@ -84,7 +84,7 @@ public class OrderList implements java.io.Serializable {
 		this.note = note;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH })
+	@OneToMany(fetch= FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "DETAIL_ID")
 	public List<OrderDetail> getDetails() {
 		return details;
