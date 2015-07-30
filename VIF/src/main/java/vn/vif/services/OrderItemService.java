@@ -11,6 +11,6 @@ public interface OrderItemService extends GeneralService<OrderItem> {
 
 	List<OrderItem> getOrderItemAllDay();
 
-	public Map<Integer, List<OrderItem>> getOrderItemData();
+	public Map<Integer, List<OrderItem>>[] getOrderItemData();
 
 }

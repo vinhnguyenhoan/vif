@@ -35,6 +35,8 @@ $(document).ready(function() {
 		$('#date').text($(this).attr('date'));
 		$('#com-viet > div').hide();
 		$('#menu_' + this.id).show()
+		$('#mon-ngon > div').hide();
+		$('#menu_spec_' + this.id).show()
 		return false;
 	})
 });

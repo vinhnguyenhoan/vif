@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
 import vn.vif.models.OrderItem;
+import vn.vif.models.WeekOfMonth;
 import vn.vif.models.filter.OrderItemListFilter;
 import vn.vif.services.OrderItemService;
 import vn.vif.utils.ImageUtil;
@@ -86,6 +87,7 @@ public class OrderItemController {
 		orderItemListFilter.setItemSelected(orderItemList);
 		uiModel.addAttribute("orderItemList", orderItemList);
 		uiModel.addAttribute("dateList", OrderItem.getDataList());
+		uiModel.addAttribute("weekList", WeekOfMonth.getList());
 
 		return "orderItemList";
 		// return "redirect:/admin/orderItem/list";
@@ -100,6 +102,7 @@ public class OrderItemController {
 				return "notFoundError";
 			}
 			uiModel.addAttribute("dateList", OrderItem.getDataList());
+			uiModel.addAttribute("weekList", WeekOfMonth.getList());
 			uiModel.addAttribute("orderItem", orderItem);	
 			return "orderItemDetail";
 		} catch (Exception e) {
@@ -134,6 +137,8 @@ public class OrderItemController {
 					oI.setMiniPrice(orderItem.getMiniPrice());
 					oI.setMoveToDate(orderItem.getMoveToDate());
 					oI.setLogoFile(orderItem.getLogoFile());
+					oI.setSpecItem(orderItem.getSpecItem());
+					oI.setWeek(orderItem.getWeek());
 					uploadLogo(oI);
 					
 					orderItemService.update(oI);
@@ -145,6 +150,7 @@ public class OrderItemController {
 				}
 				uiModel.addAttribute("success", true);
 				uiModel.addAttribute("dateList", OrderItem.getDataList());
+				uiModel.addAttribute("weekList", WeekOfMonth.getList());
 				return "redirect:/admin/orderItem/detail/" + orderItem.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -195,6 +201,7 @@ public class OrderItemController {
 		OrderItem orderItem = new OrderItem();
 		uiModel.addAttribute("orderItem", orderItem);
 		uiModel.addAttribute("dateList", OrderItem.getDataList());
+		uiModel.addAttribute("weekList", WeekOfMonth.getList());
 		return "orderItemAdd";
 	}
 

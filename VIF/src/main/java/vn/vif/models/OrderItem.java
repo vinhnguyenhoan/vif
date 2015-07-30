@@ -52,6 +52,8 @@ public class OrderItem implements java.io.Serializable {
 	private Integer fr;
 	private Integer sa;
 	private Integer su;
+	
+	private int week = WeekOfMonth.WEEK_1.getId();
 
 	private List<Integer> moveToDate;
 	private boolean selectedToMoveSellDate;
@@ -144,6 +146,15 @@ public class OrderItem implements java.io.Serializable {
 		this.specItem = isSpecItem;
 	}
 	
+	@Column(name = "WEEK", nullable=false, length=4)
+	public int getWeek() {
+		return week;
+	}
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
 	@Column(name = "IMAGE", precision = 200)
 	public String getImage() {
 		return image;

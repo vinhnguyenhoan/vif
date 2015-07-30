@@ -126,7 +126,17 @@
 						<form:errors path="moveToDate" cssClass="errorMessage" />
 					</td>
 				</tr>
-				
+				<tr>
+					<td align="right">Tuần(<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<form:select path="week" cssClass="select2_combo" style="width:150px">
+							<form:options items="${weekList}" itemValue="id" itemLabel="name" />
+						</form:select>
+						
+						<form:errors path="moveToDate" cssClass="errorMessage" />
+					</td>
+				</tr>
 				<tr>
 					<td>&#160;</td>
 				</tr>

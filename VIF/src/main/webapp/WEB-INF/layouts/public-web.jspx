@@ -1,6 +1,7 @@
 <html xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:tiles="http://tiles.apache.org/tags-tiles" xmlns:spring="http://www.springframework.org/tags"
-	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 <!--[if IE 8]> <html class="no-js ie8" lang="en"> <![endif]-->
 <!--[if gt IE 8]> <html class="no-js" lang="en"> <![endif]-->
 
@@ -156,35 +157,42 @@
 				<c:if test="${today==d.id}">
 					<c:set var="cl" value=""/>
 				</c:if>
-				<div class="scroller" style="${cl}" id="menu_${d.id}">
-					<c:forEach items="${orderItemData[d.id]}" var="it" varStatus="status">
-						<c:set var="cl" value=""/>
-						<c:if test="${status.index % 3 == 0}">
-							<c:set var="cl" value="first"/>
-						</c:if>
-						<article class="${cl}">
-							<header>
-								<div class="frame">
-									<c:choose>
-										<c:when test="${it.image != null}">
-											<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
-										</c:when>
-										<c:otherwise>
-											<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
-										</c:otherwise>
-									</c:choose>
-								</div>
-								<span class="name">${it.name}</span><br/>
-								<span class="price">${it.price}đ</span>
-								<c:if test="${it.miniPrice != null}">
-									<span class="price mini">Mini: ${it.miniPrice}đ</span>
+				<div class="scroller" style="${cl}" id="menu_${d.id}" align="center">
+					<c:choose>
+						<c:when test="${not empty orderItemData[d.id]}">
+							<c:forEach items="${orderItemData[d.id]}" var="it" varStatus="status">
+								<c:set var="cl" value=""/>
+								<c:if test="${status.index % 3 == 0}">
+									<c:set var="cl" value="first"/>
 								</c:if>
-							</header>
-						</article>
-						<c:if test="${status.index % 3 == 2}">
-							<div class="clear"><!-- + --></div>
-						</c:if>
-					</c:forEach>
+								<article class="${cl}">
+									<header>
+										<div class="frame">
+											<c:choose>
+												<c:when test="${it.image != null}">
+													<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
+												</c:when>
+												<c:otherwise>
+													<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
+												</c:otherwise>
+											</c:choose>
+										</div>
+										<span class="name">${it.name}</span><br/>
+										<span class="price"><fmt:formatNumber value="${it.price}" pattern="#,###"/>đ</span>
+										<c:if test="${it.miniPrice != null}">
+											<span class="price mini">Mini: <fmt:formatNumber value="${it.miniPrice}" pattern="#,###"/>đ</span>
+										</c:if>
+									</header>
+								</article>
+								<c:if test="${status.index % 3 == 2}">
+									<div class="clear"><!-- + --></div>
+								</c:if>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<b style="line-height: 80px"><i>Vui lòng liên hệ theo hotline</i></b>
+						</c:otherwise>
+					</c:choose>
 	
 				</div><!-- .scroller -->
 			</c:forEach>
@@ -196,34 +204,46 @@
 	<section class="modular scrollable" id="mon-ngon">
 			<h1 class="section-heading left"><img id="time" src="${core}/images/mon-ngon-viet.png" /></h1>
 
-			<div class="scroller">
-				<c:forEach items="${orderItemSpec}" var="it" varStatus="status">
+			<c:forEach items="${dates}" var="d" varStatus="status">
+				<c:set var="cl" value="display:none"/>
+				<c:if test="${today==d.id}">
 					<c:set var="cl" value=""/>
-					<c:if test="${status.index % 3 == 0}">
-						<c:set var="cl" value="first"/>
-					</c:if>
-					<article class="${cl}">
-						<header>
-							<div class="frame">
-								<c:choose>
-									<c:when test="${it.image != null}">
-										<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
-									</c:when>
-									<c:otherwise>
-										<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
-									</c:otherwise>
-								</c:choose>
-							</div>
-							<span class="name">${it.name}</span><br/>
-							<span class="price spec">${it.price}đ</span>
-						</header>
-					</article>
-					<c:if test="${status.index % 3 == 2}">
-						<div class="clear"><!-- + --></div>
-					</c:if>
-				</c:forEach>
-				
-			</div><!-- .column-grid -->
+				</c:if>
+				<div class="scroller" style="${cl}" id="menu_spec_${d.id}" align="center">
+					<c:choose>
+						<c:when test="${not empty orderItemSpec[d.id]}">
+							<c:forEach items="${orderItemSpec[d.id]}" var="it" varStatus="status">
+								<c:set var="cl" value=""/>
+								<c:if test="${status.index % 3 == 0}">
+									<c:set var="cl" value="first"/>
+								</c:if>
+								<article class="${cl}">
+									<header>
+										<div class="frame">
+											<c:choose>
+												<c:when test="${it.image != null}">
+													<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
+												</c:when>
+												<c:otherwise>
+													<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
+												</c:otherwise>
+											</c:choose>
+										</div>
+										<span class="name">${it.name}</span><br/>
+										<span class="price spec"><fmt:formatNumber value="${it.price}" pattern="#,###"/>đ</span>
+									</header>
+								</article>
+								<c:if test="${status.index % 3 == 2}">
+									<div class="clear"><!-- + --></div>
+								</c:if>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<b style="line-height: 80px"><i>Vui lòng liên hệ theo hotline</i></b>
+						</c:otherwise>
+					</c:choose>
+				</div><!-- .column-grid -->
+			</c:forEach>
 			
 			<a style="font-size: 14px;color: #969696;" href="#"><b><i>Tải file Thực đơn Tuần/Tháng</i></b></a>
 			

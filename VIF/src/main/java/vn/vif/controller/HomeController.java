@@ -1,5 +1,6 @@
 package vn.vif.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -75,9 +76,18 @@ public class HomeController {
 		
 		VIFUtils.fillDate(uiModel);
 		
-		Map<Integer, List<OrderItem>> data = orderItemService.getOrderItemData();
-		uiModel.addAttribute("orderItemData", data);
-		uiModel.addAttribute("orderItemSpec", data.get(-1));
+		Map<Integer, List<OrderItem>>[] data = orderItemService.getOrderItemData();
+		uiModel.addAttribute("orderItemData", data[0]);
+		uiModel.addAttribute("orderItemSpec", data[1]);
+		
+		/*Calendar ca = Calendar.getInstance();
+		ca.set(Calendar.MONTH, Calendar.JANUARY);
+		ca.set(Calendar.DAY_OF_MONTH, 1);
+		for (int i = 0; i < 40; i++) {
+			int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
+			System.out.println(currentWeek + " " + ca.getTime());
+			ca.add(Calendar.DAY_OF_MONTH, 1);
+		}*/
 		
 		return "web";
 	}
