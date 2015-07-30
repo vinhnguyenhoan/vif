@@ -10,8 +10,6 @@ public class OrderLineDetail implements java.io.Serializable {
 	
 	private OrderDetail orderDetail;
 	
-	private Integer number;
-	
 	public OrderLineDetail() {
 	}
 
@@ -19,6 +17,14 @@ public class OrderLineDetail implements java.io.Serializable {
 		this.id = id;
 		this.orderItem = orderItem;
 		this.orderDetail = orderDetail;
+		if (orderItem != null) {
+			if ((orderDetail.getPrice() == null || orderDetail.getPrice() <= 0)) {
+				orderDetail.setPrice(orderItem.getPrice());
+			}
+			if ((orderDetail.getMiniPrice() == null || orderDetail.getMiniPrice() <= 0)) {
+				orderDetail.setMiniPrice(orderItem.getMiniPrice());
+			}
+		}
 	}
 	
 	public int getId() {
@@ -30,6 +36,9 @@ public class OrderLineDetail implements java.io.Serializable {
 	}
 
 	public OrderItem getOrderItem() {
+		if (orderItem == null) {
+			orderItem = new OrderItem();
+		}
 		return orderItem;
 	}
 
@@ -45,12 +54,4 @@ public class OrderLineDetail implements java.io.Serializable {
 		this.orderDetail = orderDetail;
 	}
 
-	public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-	
 }

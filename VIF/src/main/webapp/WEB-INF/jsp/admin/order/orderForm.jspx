@@ -188,13 +188,13 @@
 											${itemIndex.orderItem.name}
 										</td>
 										<td>
-											${itemIndex.orderItem.price}
+											<input name="listPrice" value="${itemIndex.orderDetail.price}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 										</td>
 										<td>
 											 <input name="listNumber" value="${itemIndex.orderDetail.number}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 										</td>
 										<td>
-											${itemIndex.orderItem.miniPrice}
+											<input name="listMiniPrice" value="${itemIndex.orderDetail.miniPrice}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 										</td>
 										<td>
 											 <input name="listMiniNumber" value="${itemIndex.orderDetail.miniNumber}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
@@ -236,7 +236,7 @@
 											${itemIndex.orderItem.name}
 										</td>
 										<td>
-											${itemIndex.orderItem.price}
+											<input name="listAllDayPrice" value="${itemIndex.orderDetail.price}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
 										</td>
 										<td>
 											 <input name="listAllDayNumber" value="${itemIndex.orderDetail.number}" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>

@@ -36,7 +36,11 @@ public class OrderList implements java.io.Serializable {
 	@Transient
 	private List<Long> listOrderItemId;
 	@Transient
+	private List<Integer> listPrice;
+	@Transient
 	private List<Integer> listNumber;
+	@Transient
+	private List<Integer> listMiniPrice;
 	@Transient
 	private List<Integer> listMiniNumber;
 	@Transient
@@ -46,6 +50,8 @@ public class OrderList implements java.io.Serializable {
 	private List<OrderLineDetail> allDayDetailLines;
 	@Transient
 	private List<Long> listAllDaytOrderItemId;
+	@Transient
+	private List<Integer> listAllDayPrice;
 	@Transient
 	private List<Integer> listAllDayNumber;
 	@Transient
@@ -187,5 +193,31 @@ public class OrderList implements java.io.Serializable {
 		this.listNoteSpec = listNoteSpec;
 	}
 
-	
+	@Transient
+	public List<Integer> getListPrice() {
+		return listPrice;
+	}
+
+	public void setListPrice(List<Integer> listPrice) {
+		this.listPrice = listPrice;
+	}
+
+	@Transient
+	public List<Integer> getListMiniPrice() {
+		return listMiniPrice;
+	}
+
+	public void setListMiniPrice(List<Integer> listMiniPrice) {
+		this.listMiniPrice = listMiniPrice;
+	}
+
+	@Transient
+	public List<Integer> getListAllDayPrice() {
+		return listAllDayPrice;
+	}
+
+	public void setListAllDayPrice(List<Integer> listAllDayPrice) {
+		this.listAllDayPrice = listAllDayPrice;
+	}
+
 }
