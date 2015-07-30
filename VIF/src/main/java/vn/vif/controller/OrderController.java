@@ -78,6 +78,7 @@ public class OrderController {
 
 	@RequestMapping(value = "/order/detail/{id}")
 	public String orderDetail(@PathVariable("id") Long orderId, HttpServletRequest request, Model uiModel) {
+		// TODO order detail can not edit...
 		try {
 			OrderList order = orderService.find(orderId);
 			if (order == null) {
@@ -89,9 +90,12 @@ public class OrderController {
 			
 			int index = 0;
 			for (OrderDetail detail : details) {
-				OrderItem item = orderItemService.find(detail.getOrderItemId());
+				OrderItem item = null;
+				if (detail.getOrderItemId() != null) {
+					item = orderItemService.find(detail.getOrderItemId());
+				}
 				OrderLineDetail lineDetail = new OrderLineDetail(index++, item, detail);
-				if (item.getSpecItem() != null && item.getSpecItem()) {
+				if (item != null && item.getSpecItem() != null && item.getSpecItem()) {
 					orderListAllday.add(lineDetail);
 				} else {
 					orderListToday.add(lineDetail);

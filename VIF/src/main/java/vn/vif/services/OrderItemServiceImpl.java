@@ -22,7 +22,7 @@ public class OrderItemServiceImpl extends GeneralServiceImpl<OrderItem> implemen
 	public List<OrderItem> getOrderItemToday() {
 		int dayOfW = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
 		OrderItemListFilter itemFilter = new OrderItemListFilter();
-		itemFilter.setMoveToDate(Arrays.asList(dayOfW));
+		itemFilter.setSearchDate(Arrays.asList(dayOfW));
 		itemFilter.setSpecItem(false);
 		return list(itemFilter);
 	}

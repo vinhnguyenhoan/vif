@@ -6,10 +6,10 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import vn.vif.daos.Filter;
+import vn.vif.daos.DistinctFilter;
 import vn.vif.models.Customer;
 
-public class CustomerListFilter implements Filter {
+public class CustomerListFilter implements DistinctFilter {
 
 	private String searchText;
 //	private List<Long> searchDistrict;
@@ -48,5 +48,10 @@ public class CustomerListFilter implements Filter {
 		
 		criteria.addOrder(Order.desc("name"));
 		return criteria;
+	}
+
+	@Override
+	public String getId() {
+		return "id";
 	}
 }

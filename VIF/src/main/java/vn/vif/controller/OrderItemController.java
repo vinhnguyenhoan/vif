@@ -134,6 +134,7 @@ public class OrderItemController {
 					oI.setMiniPrice(orderItem.getMiniPrice());
 					oI.setMoveToDate(orderItem.getMoveToDate());
 					oI.setLogoFile(orderItem.getLogoFile());
+					oI.setSpecItem(orderItem.getSpecItem());
 					uploadLogo(oI);
 					
 					orderItemService.update(oI);
