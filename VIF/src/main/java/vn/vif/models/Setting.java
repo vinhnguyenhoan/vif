@@ -59,7 +59,7 @@ public class Setting implements java.io.Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "PHONE_NUMBER", length = 20)
+	@Column(name = "PHONE_NUMBER", length = 50)
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}

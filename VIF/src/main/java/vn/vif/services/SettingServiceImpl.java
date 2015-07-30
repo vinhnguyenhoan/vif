@@ -28,9 +28,19 @@ public class SettingServiceImpl extends GeneralServiceImpl<Setting> implements S
 		}
 		return st;
 	}
-
+	
+	@Override
+	public void add(Setting entity) {
+		// do nothing
+	}
+	
 	@Override
 	public void add(Session session, Setting entity) throws HibernateException {
+		// do nothing
+	}
+	
+	@Override
+	public void delete(Setting entity) {
 		// do nothing
 	}
 	
