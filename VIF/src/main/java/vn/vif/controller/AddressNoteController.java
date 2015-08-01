@@ -146,7 +146,7 @@ public class AddressNoteController {
 	}
 	
 	private static final List<OptionItem> convertDistricyListToOptionItem() {
-		List<OptionItem> result = new LinkedList<>();
+		List<OptionItem> result = new LinkedList<OptionItem>();
 		for (District dis : District.values()) {
 			result.add(new OptionItem(dis.id, dis.fullName, dis.name));
 		}

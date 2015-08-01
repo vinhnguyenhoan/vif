@@ -17,14 +17,12 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 	@Autowired
 	private OrderItemService orderItemService;
 	
-	@Override
 	public Class<OrderList> getEntityClass() {
 		return OrderList.class;
 	}
 
-	@Override
 	public List<OrderLineDetail> getOrderListToday() {
-		List<OrderLineDetail> result = new LinkedList<>();
+		List<OrderLineDetail> result = new LinkedList<OrderLineDetail>();
 		List<OrderItem> orderItemToday = orderItemService.getOrderItemToday();
 		int index = 1;
 		for (OrderItem oI : orderItemToday) {
@@ -34,9 +32,8 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 		return result;
 	}
 
-	@Override
 	public List<OrderLineDetail> getOrderListAllDay() {
-		List<OrderLineDetail> result = new LinkedList<>();
+		List<OrderLineDetail> result = new LinkedList<OrderLineDetail>();
 		List<OrderItem> orderItemAllDay = orderItemService.getOrderItemAllDay();
 		int index = 1;
 		for (OrderItem oI : orderItemAllDay) {

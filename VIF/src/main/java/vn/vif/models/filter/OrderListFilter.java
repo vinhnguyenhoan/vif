@@ -27,7 +27,6 @@ public class OrderListFilter implements DistinctFilter {
 //		this.searchDistrict = searchDistrict;
 //	}
 
-	@Override
 	public Criteria getCriteria(Session session) {
 		Criteria criteria = session.createCriteria(OrderList.class);
 		

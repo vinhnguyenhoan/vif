@@ -30,7 +30,6 @@ public class CustomerListFilter implements DistinctFilter {
 //		this.searchDistrict = searchDistrict;
 //	}
 
-	@Override
 	public Criteria getCriteria(Session session) {
 		Criteria criteria = session.createCriteria(Customer.class);
 		

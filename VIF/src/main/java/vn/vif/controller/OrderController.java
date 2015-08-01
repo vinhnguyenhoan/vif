@@ -78,15 +78,14 @@ public class OrderController {
 
 	@RequestMapping(value = "/order/detail/{id}")
 	public String orderDetail(@PathVariable("id") Long orderId, HttpServletRequest request, Model uiModel) {
-		// TODO order detail can not edit...
 		try {
 			OrderList order = orderService.find(orderId);
 			if (order == null) {
 				return "notFoundError";
 			}
 			List<OrderDetail> details = order.getDetails();
-			List<OrderLineDetail> orderListToday = new LinkedList<>();
-			List<OrderLineDetail> orderListAllday = new LinkedList<>();
+			List<OrderLineDetail> orderListToday = new LinkedList<OrderLineDetail>();
+			List<OrderLineDetail> orderListAllday = new LinkedList<OrderLineDetail>();
 			
 			int index = 0;
 			for (OrderDetail detail : details) {
@@ -102,10 +101,10 @@ public class OrderController {
 				}
 			}
 			order.setTodayDetailLines(orderListToday);
-			List<Long> listOrderItemId = new ArrayList<>(orderListToday.size());
-			List<Integer> listOrderItemNumber = new ArrayList<>(orderListToday.size());
-			List<Integer> listOrderItemMiniNumber = new ArrayList<>(orderListToday.size());
-			List<String> listNote = new ArrayList<>(orderListToday.size());
+			List<Long> listOrderItemId = new ArrayList<Long>(orderListToday.size());
+			List<Integer> listOrderItemNumber = new ArrayList<Integer>(orderListToday.size());
+			List<Integer> listOrderItemMiniNumber = new ArrayList<Integer>(orderListToday.size());
+			List<String> listNote = new ArrayList<String>(orderListToday.size());
 			for (OrderLineDetail oL : orderListToday) {
 				listOrderItemId.add(oL.getOrderItem().getId());
 				listOrderItemNumber.add(oL.getOrderDetail().getNumber());
@@ -118,9 +117,9 @@ public class OrderController {
 			order.setListNote(listNote);
 
 			order.setAllDayDetailLines(orderListAllday);
-			List<Long> listOrderItemAllDayId = new ArrayList<>(orderListAllday.size());
-			List<Integer> listOrderItemAllDayNumber = new ArrayList<>(orderListAllday.size());
-			List<String> listNoteSpec = new ArrayList<>(orderListToday.size());
+			List<Long> listOrderItemAllDayId = new ArrayList<Long>(orderListAllday.size());
+			List<Integer> listOrderItemAllDayNumber = new ArrayList<Integer>(orderListAllday.size());
+			List<String> listNoteSpec = new ArrayList<String>(orderListToday.size());
 			for (OrderLineDetail oL : orderListAllday) {
 				listOrderItemAllDayId.add(oL.getOrderItem().getId());
 				listOrderItemAllDayNumber.add(oL.getOrderDetail().getNumber());
@@ -157,7 +156,7 @@ public class OrderController {
 		validateInputData(order, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
-				List<OrderDetail> details = new LinkedList<>();
+				List<OrderDetail> details = new LinkedList<OrderDetail>();
 				List<Long> orderItemIdToday = order.getListOrderItemId();
 				int index = 0;
 				for (Long itemId : orderItemIdToday) {
@@ -270,12 +269,12 @@ public class OrderController {
 		OrderList order = new OrderList();
 		List<OrderLineDetail> orderListToday = orderService.getOrderListToday();
 		order.setTodayDetailLines(orderListToday);
-		List<Long> listOrderItemId = new ArrayList<>(orderListToday.size());
-		List<Integer> listOrderItemNumber = new ArrayList<>(orderListToday.size());
-		List<Integer> listOrderItemPrice = new ArrayList<>(orderListToday.size());
-		List<Integer> listOrderItemMiniNumber = new ArrayList<>(orderListToday.size());
-		List<Integer> listOrderItemMiniPrice = new ArrayList<>(orderListToday.size());
-		List<String> listNote = new ArrayList<>(orderListToday.size());
+		List<Long> listOrderItemId = new ArrayList<Long>(orderListToday.size());
+		List<Integer> listOrderItemNumber = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemPrice = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemMiniNumber = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemMiniPrice = new ArrayList<Integer>(orderListToday.size());
+		List<String> listNote = new ArrayList<String>(orderListToday.size());
 		for (OrderLineDetail oL : orderListToday) {
 			listOrderItemId.add(oL.getOrderItem().getId());
 			listOrderItemNumber.add(oL.getOrderDetail().getNumber());
@@ -294,10 +293,10 @@ public class OrderController {
 		List<OrderLineDetail> orderListAllday = orderService.getOrderListAllDay();
 		order.setAllDayDetailLines(orderListAllday);
 		
-		List<Long> listOrderItemAllDayId = new ArrayList<>(orderListAllday.size());
-		List<Integer> listOrderItemAllDayNumber = new ArrayList<>(orderListAllday.size());
-		List<Integer> listOrderItemAllDayPrice = new ArrayList<>(orderListAllday.size());
-		List<String> listNoteSpec = new ArrayList<>(orderListToday.size());
+		List<Long> listOrderItemAllDayId = new ArrayList<Long>(orderListAllday.size());
+		List<Integer> listOrderItemAllDayNumber = new ArrayList<Integer>(orderListAllday.size());
+		List<Integer> listOrderItemAllDayPrice = new ArrayList<Integer>(orderListAllday.size());
+		List<String> listNoteSpec = new ArrayList<String>(orderListToday.size());
 		for (OrderLineDetail oL : orderListAllday) {
 			listOrderItemAllDayId.add(oL.getOrderItem().getId());
 			listOrderItemAllDayNumber.add(oL.getOrderDetail().getNumber());
@@ -323,7 +322,7 @@ public class OrderController {
 	}
 	
 	private static final List<OptionItem> convertDistricyListToOptionItem() {
-		List<OptionItem> result = new LinkedList<>();
+		List<OptionItem> result = new LinkedList<OptionItem>();
 		for (District dis : District.values()) {
 			result.add(new OptionItem(dis.id, dis.fullName, dis.name));
 		}

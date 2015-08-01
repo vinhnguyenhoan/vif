@@ -22,7 +22,6 @@ public class AddressNoteServiceImpl extends GeneralServiceImpl<AddressNote> impl
 
 		private Long searchDistrictId;
 
-		@Override
 		public Criteria getCriteria(Session session) {
 			Criteria criteria = session.createCriteria(AddressNote.class);
 			
@@ -48,19 +47,17 @@ public class AddressNoteServiceImpl extends GeneralServiceImpl<AddressNote> impl
 		return AddressNote.class;
 	}
 
-	@Override
 	public List<AddressNote> listByDistrictId(Long distId) {
 		if (!VIFUtils.isValid(distId)) {
-			return new LinkedList<>();
+			return new LinkedList<AddressNote>();
 		}
 		addressNoteFilterByDistId.searchDistrictId = distId;
 		return list(addressNoteFilterByDistId);
 	}
 
-	@Override
 	public List<OptionItem> listByDistrictIdAsOptionItems(Long districtId) {
 		List<AddressNote> listANFromDis = listByDistrictId(districtId);
-		List<OptionItem> listOI = new LinkedList<>();
+		List<OptionItem> listOI = new LinkedList<OptionItem>();
 		for (AddressNote aN : listANFromDis) {
 			listOI.add(new OptionItem(aN.getId(), aN.toString()));
 		}

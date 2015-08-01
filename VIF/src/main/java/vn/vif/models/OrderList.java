@@ -71,7 +71,7 @@ public class OrderList implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH })
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH })
 	@JoinColumn(name = "CUSTOMER_ID")
 	public Customer getCustomer() {
 		return customer;
