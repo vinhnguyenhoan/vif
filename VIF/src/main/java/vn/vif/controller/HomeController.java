@@ -1,19 +1,28 @@
 package vn.vif.controller;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import vn.vif.models.OrderItem;
+import vn.vif.services.OrderItemService;
 import vn.vif.utils.VIFUtils;
 @Controller
 public class HomeController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
+	@Autowired
+	private OrderItemService orderItemService;
 
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -66,6 +75,19 @@ public class HomeController {
 	public String home(HttpServletRequest request, Model uiModel) {
 		
 		VIFUtils.fillDate(uiModel);
+		
+		Map<Integer, List<OrderItem>>[] data = orderItemService.getOrderItemData();
+		uiModel.addAttribute("orderItemData", data[0]);
+		uiModel.addAttribute("orderItemSpec", data[1]);
+		
+		/*Calendar ca = Calendar.getInstance();
+		ca.set(Calendar.MONTH, Calendar.JANUARY);
+		ca.set(Calendar.DAY_OF_MONTH, 1);
+		for (int i = 0; i < 40; i++) {
+			int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
+			System.out.println(currentWeek + " " + ca.getTime());
+			ca.add(Calendar.DAY_OF_MONTH, 1);
+		}*/
 		
 		return "web";
 	}

@@ -373,7 +373,8 @@ public class VIFUtils {
 		String name = "HÔM NAY";
 		if (id == Calendar.SUNDAY) {
 			ca.add(Calendar.DAY_OF_MONTH, 1);
-			name = names[1];
+			name = names[0];
+			id = ca.get(Calendar.DAY_OF_WEEK);
 		}
 		list.add(new DateItem(id, name, formatDate(ca.getTime())));
 		uiModel.addAttribute("today", id);
