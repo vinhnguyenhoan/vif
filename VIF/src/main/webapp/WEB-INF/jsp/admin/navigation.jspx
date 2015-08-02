@@ -19,6 +19,7 @@
 	<spring:url var="customerListURL" value="/admin/customer/list"  />
 	<spring:url var="addOrderURL" value="/admin/order/add"  />
 	<spring:url var="orderListURL" value="/admin/order/list"  />
+	<spring:url var="menuListURL" value="/admin/menu/list"  />
 	
 	<!-- TODO review and remove unused below -->
 	<spring:url var="posListURL" value="/pos/list"  />
@@ -55,8 +56,6 @@
     <spring:url var="perfSettingsURL" value="/performance/setting"  />
     <spring:url var="sendSmsURL" value="/version/detail"  />
 	<spring:url var="inventoryListURL" value="/store/inventory/" />
-	<spring:url var="orderListURL" value="/order/list/" />
-	<spring:url var="requestListURL" value="/order/requestGoods/list" />
     <spring:url var="stockTransExportURL" value="/stock/trans/"/>
     <spring:url var="stockTransImportURL" value="/stock/trans/im/"/>
     <spring:url var="digitalGoodsURL" value="/stock/digitalGoods"/>
@@ -106,7 +105,7 @@
             </div>
             </sec:authorize>
 
-			<sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
+			<!-- <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
            <div class="block-nav-left">
                <p class="title-1">
                        <a href="#" title="">
@@ -118,7 +117,7 @@
                <ul style="display:none">
                </ul>
            </div>
-           </sec:authorize>
+           </sec:authorize> -->
            
            <![CDATA[
                <script type="text/javascript">
@@ -203,7 +202,7 @@
                </script>
            ]]>
 
-           <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
+           <!-- <sec:authorize ifAnyGranted="ADMIN,ROLE_COMPANY_ADMIN">
            <div class="block-nav-left">
                <p class="title-1">
                    <a href="#" title="">
@@ -215,7 +214,7 @@
                <ul style="display:none" id="">
               </ul>
            </div>
-           </sec:authorize>
+           </sec:authorize> -->
 
            <div class="block-nav-left">
                <p class="title-1">
@@ -228,6 +227,7 @@
                
                <ul style="display:none">
 	            <sec:authorize ifAnyGranted="ADMIN,SUPERVIOR">
+	            	<li><a href="${menuListURL}" title="Quản lý thực đơn">Quản lý thực đơn</a></li>
                    <li><a href="${addUserURL}" title="Thêm người sử dụng">Thêm người sử dụng</a></li>
                    <li><a href="${userListURL}" title="Danh sách người sử dụng">Danh sách Người sử dụng</a></li>
                  </sec:authorize>

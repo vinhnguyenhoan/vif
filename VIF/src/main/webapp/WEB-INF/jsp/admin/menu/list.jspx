@@ -1,0 +1,168 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="TableWrapper"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="orderItemDetailURL" value="/admin/orderItem/detail" />
+	<spring:url var="imagesFolder" value="/images" />
+
+	<![CDATA[
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js?v=2"></script>
+	<script type="text/javascript">
+		function deleteItem(id) {
+			if (!confirm('Bạn có chắc muốn xóa?')) {
+				return false;
+			}
+			$('#menuFilter').append('<input type="hidden" name="deleteItem" value="' + id + '" />');
+			submitActionForm('menuFilter', '');
+			return false;
+		}
+		
+		function addItem() {
+			if (!$('#day').val()) {
+				alert('Chưa chọn ngày bán!');
+				return false;
+			}
+			if (!$('#week').val()) {
+				alert('Chưa chọn tuần!');
+				return false;
+			}
+			if (!$('#addItem').val()) {
+				alert('Chưa món ăn!');
+				return false;
+			}
+			$('#menuFilter').append('<input type="hidden" name="isAdd" value="true" />');
+			submitActionForm('menuFilter', '');
+			return false;
+		}
+	</script>
+	]]>
+
+	<div id="inner-content">
+		<span class="bor-left"><img src="${imagesFolder}/dummy.gif"
+			alt="" /></span>
+		<div class="content-title">
+			<h2>
+				<span>THỰC ĐƠN</span>
+			</h2>
+		</div>
+		<div id="content">
+<form:form method="POST" id="menuFilter" commandName="menuFilter" modelAttribute="menuFilter">
+				<input type="hidden" id="page" value="${page}" />
+				<input type="hidden" id="size" value="${size}" />
+				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
+					<tr>
+						<td colspan="4" valign="top">
+							<div style="padding-right:20px; display: inline;">
+								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('menuFilter', '');}"
+									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
+								<form:select path="day" cssClass="select2_combo" style="padding:0 20px;width:170px">
+									<form:option value="">--- Chọn ngày bán ---</form:option>
+									<form:options items="${dateList}" itemValue="id" itemLabel="name" />
+								</form:select>
+								<form:select path="week" cssClass="select2_combo" style="padding-right:20px;width:150px">
+									<form:option value="">--- Chọn tuần ---</form:option>
+									<form:options items="${weekList}" itemValue="id" itemLabel="name" />
+								</form:select>
+							</div>
+							<a href="javascript:"
+							onclick="submitActionForm('menuFilter', '')" class="btn-1"
+							title="Danh Sách Món Ăn"><span><span style="width:90px">Xem Danh Sách</span></span></a>
+							
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" valign="top">
+							<div style="padding-right:20px; display: inline;">
+								Thêm món vào thực đơn
+								<form:select path="addItem" cssClass="select2_combo" style="padding-right:20px;width:150px">
+									<form:option value="">--- Chọn món ---</form:option>
+									<form:options items="${orderItemList}" itemValue="id" itemLabel="name" />
+								</form:select>
+							</div>
+							<a href="javascript:" onclick="addItem()" class="btn-1"
+							title="Thêm món"><span><span style="width:90px">Thêm món</span></span></a>
+							
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								page="${page}" size="${size}" submitMethod="POST"
+								formSubmit="orderItemList" id="orderItemTopPagination" /></td>
+					</tr>
+					
+					<tr>
+						<td colspan="5">
+						
+							<table width="100%" border="0" cellspacing="0" cellpadding="0"
+								class="table-2">
+								<thead>
+									<tr>
+										<td width="4%"></td>
+										<td>Tên</td>
+										<td width="10%">Món ngon</td>
+										<td width="14%">Ngày bán</td>
+										<td>Tuần bán</td>
+										<td width="14%">Giá</td>
+										<td width="14%">Giá mini</td>
+										<td width="10%">Hành động</td>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${menuList}" var="item" varStatus="status">
+										<tr>
+											<td align="center">
+												${(page-1)*size+status.count}
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${item.orderItem.id}">${item.orderItem.name}</a>
+											</td>
+											<td align="center">
+												<c:choose>
+													<c:when test="${item.orderItem.specItem}">
+														<input type="checkbox" checked="checked" disabled="disabled" />
+													</c:when>
+													<c:otherwise>
+														<input type="checkbox" disabled="disabled" />
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${item.orderItem.id}">${item.dayString}</a>
+											</td>
+											<td>
+												<a href="${orderItemDetailURL}/${item.orderItem.id}">${item.weekString}</a>
+											</td>
+											<td align="right">
+												<fmt:formatNumber value="${item.orderItem.price}" pattern="#,###"/>
+											</td>
+											<td align="right">
+												<fmt:formatNumber value="${item.orderItem.miniPrice}" pattern="#,###"/>
+											</td>
+											<td align="center">
+												<a href="#" onclick="deleteItem(${item.id})" class="redTxt" title="Xóa">Xóa</a>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><util:pagination maxPages="${maxPages}"
+								submitMethod="POST" formSubmit="orderItemList" page="${page}"
+								size="${size}" id="orderItemBottomPagination" /></td>
+					</tr>
+				</table>
+				
+</form:form>
+		</div>
+	</div>
+</div>
