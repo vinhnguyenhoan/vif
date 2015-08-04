@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.impl.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,8 @@ public class CustomerController {
 	
 	@Autowired
 	private ServletContext context;
+
+	private static final EmailValidator emailValidator = new EmailValidator();
 
 	@RequestMapping(value = "/customer/list", method = {RequestMethod.GET, RequestMethod.POST })
 	public String viewListCustomers(
@@ -113,7 +116,12 @@ public class CustomerController {
 					customerFromDB.setEmail(customer.getEmail());
 					customerFromDB.setName(customer.getName());
 					customerFromDB.setNote(customer.getNote());
-					customerFromDB.setPhone(customer.getPhone());
+					String phone = customer.getPhone().trim();
+					phone = phone.replace(".", "");
+					phone = phone.replace(",", "");
+					phone = phone.replace("+84,", "");
+
+					customerFromDB.setPhone(phone);
 					customerService.update(customerFromDB);
 				} else {
 					customerService.add(customer);
@@ -147,20 +155,32 @@ public class CustomerController {
 
 	private void validateInputData(Customer customer, BindingResult bindingResult) {
 		if (StringUtils.isEmpty(customer.getName())) {
-			bindingResult.rejectValue("name", "app_field_empty",
-					new Object[]{"Tên"}, "empty_error_code");
+			bindingResult.rejectValue("name", "app_field_empty", new Object[]{"Tên"}, "empty_error_code");
 		}
 		if (StringUtils.isEmpty(customer.getPhone())) {
-			bindingResult.rejectValue("phone", "app_field_empty",
-					new Object[]{"Số điện thoại"}, "empty_error_code");
-			// TODO check format phone
+			bindingResult.rejectValue("phone", "app_field_empty", new Object[]{"Số điện thoại"}, "empty_error_code");
+			// TODO check format phone invalid_phone_number
+		} else {
+//			String phone = customer.getPhone();
+//			phone = phone.trim();
+//			if (phone.length() > 15) {
+//				bindingResult.rejectValue("phone", "invalid_phone_number", new Object[]{"Số điện thoại"}, "empty_error_code");
+//			} else {
+//				phone = phone.replace("+84,", "");
+//				phone = phone.replace(".", "");
+//				phone = phone.replace(",", "");
+//			}
+			
+		}
+		if (StringUtils.isEmpty(customer.getEmail())) {
+			bindingResult.rejectValue("email", "app_field_empty", new Object[]{"Email"}, "empty_error_code");
+		} else if (!emailValidator.isValid(customer.getEmail(), null)) {
+			bindingResult.rejectValue("email", "invalid_user_email", new Object[]{"Email"}, "empty_error_code");
 		}
 		// TODO check format email
 		if (StringUtils.isEmpty(customer.getAddress()) && (customer.getAddressNoteId() == null || customer.getAddressNoteId() <= 0)) {
-			bindingResult.rejectValue("address", "app_field_empty",
-					new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
-			bindingResult.rejectValue("addressNoteId", "app_field_empty",
-					new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
+			bindingResult.rejectValue("address", "app_field_empty", new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
+			bindingResult.rejectValue("addressNoteId", "app_field_empty", new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
 		}
 		// TODO check unique name ?
 	}
