@@ -85,6 +85,17 @@
 				<tr class="info">
 					<td align="right"><strong>Thông tin đơn hàng</strong></td>
 				</tr>
+				<tr>
+					<td align="right">Đã kiểm tra đơn hàng:</td>
+					<td><form:checkbox path="active" /></td>
+				</tr>
+				<tr>
+					<td align="right">Mô tả:
+					</td>
+					<td>
+						<form:textarea path="note" class="textInput" cssStyle="width:45%" rows="5"/> 
+					</td>
+				</tr>
 				
 				<tr>
 					<td>&#160;</td>

@@ -27,6 +27,8 @@ public class OrderList implements java.io.Serializable {
 	@Transient
 	private Customer customerEditing;
 	
+	private Boolean active;
+	
 	private String note;
 	
 	private List<OrderDetail> details;
@@ -218,6 +220,15 @@ public class OrderList implements java.io.Serializable {
 
 	public void setListAllDayPrice(List<Integer> listAllDayPrice) {
 		this.listAllDayPrice = listAllDayPrice;
+	}
+
+	@Column(name = "ACTIVE")
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }

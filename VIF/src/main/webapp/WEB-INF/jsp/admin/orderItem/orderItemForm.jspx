@@ -90,7 +90,7 @@
 					<td align="right">Mô tả:
 					</td>
 					<td>
-						<form:input path="desc" class="textInput numberField"/> 
+						<form:input path="desc" class="textInput"/> 
 						<form:errors path="desc" cssClass="errorMessage" />
 					</td>
 				</tr>
