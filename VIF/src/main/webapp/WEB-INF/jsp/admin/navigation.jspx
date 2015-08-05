@@ -19,6 +19,7 @@
 	<spring:url var="customerListURL" value="/admin/customer/list"  />
 	<spring:url var="addOrderURL" value="/admin/order/add"  />
 	<spring:url var="orderListURL" value="/admin/order/list"  />
+	<spring:url var="menuListURL" value="/admin/menu/list"  />
 	
    	<div id="sidebar-left" class="context-block">
    	 
@@ -159,6 +160,7 @@
                
                <ul style="display:none">
 	            <sec:authorize ifAnyGranted="ADMIN,SUPERVIOR">
+	          	   <li><a href="${menuListURL}" title="Quản lý thực đơn">Quản lý thực đơn</a></li>
                    <li><a href="${addUserURL}" title="Thêm người sử dụng">Thêm người sử dụng</a></li>
                    <li><a href="${userListURL}" title="Danh sách người sử dụng">Danh sách Người sử dụng</a></li>
                  </sec:authorize>

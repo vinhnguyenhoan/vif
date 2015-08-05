@@ -26,7 +26,7 @@ public enum WeekOfMonth {
 	}
 	
 	public static WeekOfMonth getById(int id){
-		for (WeekOfMonth w : getList()) {
+		for (WeekOfMonth w : values()) {
 			if (w.id == id) {
 				return w;
 			}
@@ -35,6 +35,6 @@ public enum WeekOfMonth {
 	}
 	
 	public static List<WeekOfMonth> getList() {
-		return Arrays.asList(WEEK_1, WEEK_2, WEEK_3, WEEK_4);
+		return Arrays.asList(values());
 	}
 }

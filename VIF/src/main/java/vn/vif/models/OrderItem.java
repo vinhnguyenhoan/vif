@@ -90,6 +90,10 @@ public class OrderItem implements java.io.Serializable {
 	public OrderItem() {
 	}
 	
+	public OrderItem(Long id) {
+		this.id = id;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
