@@ -21,6 +21,12 @@ nav[role=navigation-order] {
 	top: 120px;
 	text-align: center;
 }
+nav[role=navigation-order] > span {
+	color: #c31f5c;
+    font-size: 19px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 19px;}
 nav[role=navigation-order] > a:hover { opacity: 0.9; }
 nav[role=navigation-order] #time {
 	padding-top:10px;

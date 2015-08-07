@@ -15,7 +15,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<link rel="shortcut icon" href="${core}/images/logo.png" />
 	<link rel="apple-touch-icon" href="${core}/images/logo.png" />
-	<link rel="stylesheet" href="./style.css?v=1" />
+	<link rel="stylesheet" href="./style.css?v=2" />
 	<link rel="stylesheet" href="${core}/styles/default/default.css" />
 	<script type="text/javascript" src="${core}/js/libs/modernizr-2.0.6.min.js"><!-- Fix for FF & Opera --></script>
 	<script type="text/javascript" src="${core}/js/libs/jquery-1.6.2.min.js"><!-- Fix for FF & Opera --></script>
@@ -89,6 +89,8 @@
 			<a href="#"><img alt="Đặt món trực tuyến" src="${core}/images/order-button.png" /></a>
 			<br/>
 			<img id="time" src="${core}/images/order-time.png" />
+			<br/>
+			<span>(08) 6262 4484<br/>6680 5042 - 6680 5043</span>
 		</nav>
 	</section><!-- navigation -->
 </header><!-- header -->
