@@ -47,16 +47,19 @@ public class MenuItemServiceImpl extends GeneralServiceImpl<MenuItem> implements
 		});
 		Map<Integer, List<MenuItem>> re = new HashMap<Integer, List<MenuItem>>();
 		Map<Integer, List<MenuItem>> reSpec = new HashMap<Integer, List<MenuItem>>();
+		Map<Integer, List<MenuItem>> map;
+		List<MenuItem> its;
 		for (MenuItem it : list) {
 			Integer date = it.getDay();
-			List<MenuItem> its;
 			if (it.getOrderItem().getSpecItem() != null && it.getOrderItem().getSpecItem()) {
-				re = reSpec;
+				map = reSpec;
+			} else {
+				map = re;
 			}
-			its = re.get(date);
+			its = map.get(date);
 			if (its == null) {
 				its = new ArrayList<MenuItem>();
-				re.put(date, its);
+				map.put(date, its);
 			}
 			its.add(it);
 		}

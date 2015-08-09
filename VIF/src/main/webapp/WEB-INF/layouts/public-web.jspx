@@ -171,18 +171,18 @@
 									<header>
 										<div class="frame">
 											<c:choose>
-												<c:when test="${it.image != null}">
-													<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
+												<c:when test="${it.orderItem.image != null}">
+													<img src="${it.orderItem.image}" width="219px" heigth="163px" title="${it.orderItem.desc}"/>
 												</c:when>
 												<c:otherwise>
 													<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
 												</c:otherwise>
 											</c:choose>
 										</div>
-										<span class="name">${it.name}</span><br/>
-										<span class="price"><fmt:formatNumber value="${it.price}" pattern="#,###"/>đ</span>
-										<c:if test="${it.miniPrice != null}">
-											<span class="price mini">Mini: <fmt:formatNumber value="${it.miniPrice}" pattern="#,###"/>đ</span>
+										<span class="name">${it.orderItem.name}</span><br/>
+										<span class="price"><fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ</span>
+										<c:if test="${it.orderItem.miniPrice != null}">
+											<span class="price mini">Mini: <fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ</span>
 										</c:if>
 									</header>
 								</article>
@@ -223,16 +223,16 @@
 									<header>
 										<div class="frame">
 											<c:choose>
-												<c:when test="${it.image != null}">
-													<img src="${it.image}" width="219px" heigth="163px" title="${it.desc}"/>
+												<c:when test="${it.orderItem.image != null}">
+													<img src="${it.orderItem.image}" width="219px" heigth="163px" title="${it.orderItem.desc}"/>
 												</c:when>
 												<c:otherwise>
 													<img src="${core}/images/content/product1.jpg" width="219px" heigth="163px" title="Chưa có ảnh"/>
 												</c:otherwise>
 											</c:choose>
 										</div>
-										<span class="name">${it.name}</span><br/>
-										<span class="price spec"><fmt:formatNumber value="${it.price}" pattern="#,###"/>đ</span>
+										<span class="name">${it.orderItem.name}</span><br/>
+										<span class="price spec"><fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ</span>
 									</header>
 								</article>
 								<c:if test="${status.index % 3 == 2}">

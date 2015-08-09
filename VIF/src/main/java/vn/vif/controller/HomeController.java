@@ -1,6 +1,5 @@
 package vn.vif.controller;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import vn.vif.models.OrderItem;
+import vn.vif.models.MenuItem;
+import vn.vif.services.MenuItemService;
 import vn.vif.services.OrderItemService;
 import vn.vif.utils.VIFUtils;
 @Controller
@@ -23,6 +23,8 @@ public class HomeController {
 	protected final Log logger = LogFactory.getLog(getClass());
 	@Autowired
 	private OrderItemService orderItemService;
+	@Autowired
+	private MenuItemService menuItemService;
 
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -76,7 +78,8 @@ public class HomeController {
 		
 		VIFUtils.fillDate(uiModel);
 		
-		Map<Integer, List<OrderItem>>[] data = orderItemService.getOrderItemData();
+//		Map<Integer, List<OrderItem>>[] data = orderItemService.getOrderItemData();
+		Map<Integer, List<MenuItem>>[] data = menuItemService.getMenuItemData();
 		uiModel.addAttribute("orderItemData", data[0]);
 		uiModel.addAttribute("orderItemSpec", data[1]);
 		
