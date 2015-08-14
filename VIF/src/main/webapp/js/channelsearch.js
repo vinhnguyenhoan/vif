@@ -1,3 +1,4 @@
+
 function getParam(form, pre) {
 	var els = $("[name='"+form+"']").find("[id^='"+pre+"']");
 	var re = null;

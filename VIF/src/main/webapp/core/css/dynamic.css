@@ -49,3 +49,6 @@ nav[role=navigation-order] #time {
 }
 
 #home #quote { text-align: center; }
+
+#TB_window td {border-bottom: none;}
+#TB_title {font-size:14px;}

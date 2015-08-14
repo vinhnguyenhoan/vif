@@ -9,6 +9,7 @@
 
 <spring:url var="core" value="/resources/core" />
 <spring:url var="imageFolder" value="/resources/images" />
+<spring:url var="scriptsFolder" value="/scripts" />
 
 <head>
 	<title>VIF</title>
@@ -36,6 +37,14 @@
 <body id="home">
 <div id="wrap">
 
+<spring:url var="home" value="/" />
+
+<script type="text/javascript">
+	function getAppRootPath() {
+		return '${home}';
+	}
+</script>
+
 <!-- + -->
 
 <header role="banner">
@@ -53,7 +62,7 @@
 				</li>
 			</ul>
 			<br/>
-			<a href="#"><span id="login-span">Đăng nhập</span></a>
+			<a href="#" onclick="openLoginDialog();return false;"><span id="login-span">Đăng nhập</span></a>
 		</div>
 	</section>
 	<section id="nav-wrap">
@@ -246,8 +255,8 @@
 					</c:choose>
 				</div><!-- .column-grid -->
 			</c:forEach>
-			
-			<a style="font-size: 14px;color: #969696;" href="#"><b><i>Tải file Thực đơn Tuần/Tháng</i></b></a>
+			<spring:url var="menu" value="/images/upload/menu.zip" />
+			<a style="font-size: 14px;color: #969696;" href="${menu}"><b><i>Tải file Thực đơn Tuần/Tháng</i></b></a>
 			
 	</section><!-- services -->
 
@@ -293,6 +302,10 @@
 		</div><!-- .column -->
 	</div>
 </footer><!-- footer -->
+
+
+<jsp:include page="../jsp/login.jspx"></jsp:include>
+
 
 </div><!-- wrap -->
 

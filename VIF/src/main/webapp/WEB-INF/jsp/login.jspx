@@ -1,0 +1,209 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8"
+		pageEncoding="UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="cssFolder" value="/css" />
+	<spring:url var="url" value="/admin/orderItem/getWard" />
+	
+	<![CDATA[
+		<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
+		<script src="${scriptsFolder}/thickbox-compressed.js"></script>
+	<script type="text/javascript">
+		function openLoginDialog() {
+			clearForm();
+			tb_show('Đăng nhập','TB_inline?height=200&amp;width=400&amp;inlineId=loginDialog');
+		}
+		function openRegisterDialog() {
+			clearForm();
+			tb_show('Đăng ký','TB_inline?height=330&amp;width=400&amp;inlineId=registerDialog');
+		}
+		function clearForm() {
+			var childs = $("#loginDialog").children();
+			for (var i = 0; i < childs.length; i++) {
+				$("#" + $(childs[i]).attr('parent')).append($(childs[i]));
+			}
+			childs = $("#TB_ajaxContent").children();
+			for (var i = 0; i < childs.length; i++) {
+				$("#" + $(childs[i]).attr('parent')).append($(childs[i]));
+			}
+		}
+		function changeDist(el) {
+			var $el = $(el),
+				$w = $('#ward');// jquery
+			
+			var data = "dist=" + $el.val();
+			
+			var url = "${url}";
+			$.ajax({
+				type: 'POST', 
+				dataType:'json', 
+				url: url, 
+				data : data,
+				success: function(data) {
+					renderComboBox($w, data, $w[0].firstChild.text);
+				}
+			});
+		}
+		function getParam(form, pre) {
+			var els = $("[name='"+form+"']").find("[id^='"+pre+"']");
+			var re = null;
+			for (var i = 0; i < els.length; i++) {
+				if (els[i].value == null) continue;
+				var vl = els[i].value;
+				if (els[i].type.toLowerCase() == "checkbox") {
+					vl = els[i].checked;
+				}
+				if (re == null) {
+					re = els[i].id.substring(pre.length) + '=' + vl;
+				} else {
+					re += '&' + els[i].id.substring(pre.length) + '=' + vl;
+				}
+			}
+			return re;
+		}
+		function doRegister() {
+			if (checkEmpty('r_name', 'Nhập họ tên!')) {
+				return;
+			}
+			if (checkEmpty('r_phone', 'Nhập số điện thoại!')) {
+				return;
+			}
+			if (checkEmpty('r_address', 'Nhập số địa chỉ!')) {
+				return;
+			}
+			if (checkEmpty('r_district', 'Nhập quận!')) {
+				return;
+			}
+			var data = getParam("registerDialog", "r_");
+		}
+		function checkSelected(field, message, messageId) {
+			var el = document.getElementById(field);
+			if (el.value == 0) {
+				if (messageId == null) {
+					$('#messageError').html(message)
+				} else {
+					$('#'+messageId+'').html(message)
+				}
+				el.focus();
+				return true;
+			}
+			return false;
+		}
+		function checkEmpty(field, message, messageId) {
+			var el = document.getElementById(field);
+			if (el.tagName.toLowerCase() == 'select') {
+				return checkSelected(field, message, messageId);
+			}
+			if (el.value.trim().length == 0) {
+				if (messageId == null) {
+					$('#messageError').html(message)
+				} else {
+					$('#'+messageId+'').html(message)
+				}
+				el.focus();
+				return true;
+			}
+			return false;
+		}
+	</script>
+	
+]]>
+		<div id="loginDialog" style="display:none">
+			<table width="100%" cellpadding="0" cellspacing="5" parent="loginDialog">
+				<col width="40%" />
+				<col width="60%" />
+				
+				<tr class="info">
+					<td align="center" colspan="2"><strong>Đăng nhập đặt món online</strong></td>
+				</tr>
+				<tr>
+					<td align="right">Mã số KH(<label style="color:red;">*</label>):
+					</td>
+					<td>
+						<input name="code" class="textInput"/> 
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="button" onclick="" value="Đăng nhập"/>
+						<br/>
+						<br/>
+						<a href="#" onclick="openRegisterDialog();return false;">Đăng ký đặt món online</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="registerDialog" style="display:none">
+			<table width="100%" cellpadding="0" cellspacing="5" name="registerDialog" parent="registerDialog" >
+				<col width="40%" />
+				<col width="60%" />
+				
+				<tr class="info">
+					<td align="center" colspan="2"><strong>Đăng ký đặt món online</strong></td>
+				</tr>
+				<tr class="info">
+					<td align="center" colspan="2"><span id="messageError" style="color:red;"></span></td>
+				</tr>
+				<tr>
+					<td align="right">Họ tên(<label style="color:red;">*</label>):
+					</td>
+					<td>
+						<input id="r_name" class="textInput"/> 
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Số điện thoại(<label style="color:red;">*</label>):
+					</td>
+					<td>
+						<input id="r_phone" class="textInput"/> 
+					</td>
+				</tr>
+				<tr>
+					<td align="right" colspan="2"><i>Số điện thoại sẽ được dùng làm mã khách hàng</i>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Email:
+					</td>
+					<td>
+						<input id="r_email" class="textInput"/> 
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Địa chỉ(<label style="color:red;">*</label>):
+					</td>
+					<td>
+						<input id="r_address" class="textInput"/> 
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Quận(<label style="color:red;">*</label>):
+					</td>
+					<td>
+						<select id="r_district">
+							<option value="0">--- Chọn quận ---</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="button" onclick="doRegister();" value="Đăng ký"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+</div>
