@@ -9,10 +9,10 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import vn.vif.daos.Filter;
+import vn.vif.daos.DistinctFilter;
 import vn.vif.models.OrderItem;
 
-public class OrderItemListFilter implements Filter {
+public class OrderItemListFilter implements DistinctFilter {
 
 	private String searchText;
 	private List<Integer> searchDate;
@@ -94,6 +94,11 @@ public class OrderItemListFilter implements Filter {
 		}
 		criteria.addOrder(Order.desc("name"));
 		return criteria;
+	}
+
+	@Override
+	public String getId() {
+		return "id";
 	}
 
 }

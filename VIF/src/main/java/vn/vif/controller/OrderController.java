@@ -89,9 +89,12 @@ public class OrderController {
 			
 			int index = 0;
 			for (OrderDetail detail : details) {
-				OrderItem item = orderItemService.find(detail.getOrderItemId());
+				OrderItem item = null;
+				if (detail.getOrderItemId() != null) {
+					item = orderItemService.find(detail.getOrderItemId());
+				}
 				OrderLineDetail lineDetail = new OrderLineDetail(index++, item, detail);
-				if (item.getSpecItem() != null && item.getSpecItem()) {
+				if (item != null && item.getSpecItem() != null && item.getSpecItem()) {
 					orderListAllday.add(lineDetail);
 				} else {
 					orderListToday.add(lineDetail);
@@ -153,65 +156,60 @@ public class OrderController {
 		validateInputData(order, bindingResult);
 		if (!bindingResult.hasErrors()) {
 			try {
-				List<OrderDetail> details = new LinkedList<OrderDetail>();
-				List<Long> orderItemIdToday = order.getListOrderItemId();
-				int index = 0;
-				for (Long itemId : orderItemIdToday) {
-					OrderItem item = orderItemService.find(itemId);
-					if (item == null) {
-						uiModel.addAttribute("success", false);
-						// TODO throw error
-						uiModel.addAttribute("orderList", order);
-						return "orderDetail";
-					}
-					OrderDetail detail = new OrderDetail();
-					detail.setOrderItemId(itemId);
-					detail.setMiniNumber(order.getListMiniNumber().get(index));
-					detail.setNumber(order.getListNumber().get(index));
-					detail.setNote(order.getListNote().get(index));
-					details.add(detail);
-					index++;
-				}
-				
-				List<Long> orderItemIdAllDay = order.getListAllDaytOrderItemId();
-				index = 0;
-				for (Long itemId : orderItemIdAllDay) {
-					OrderItem item = orderItemService.find(itemId);
-					if (item == null) {
-						uiModel.addAttribute("success", false);
-						// TODO throw error
-						uiModel.addAttribute("orderList", order);
-						return "orderDetail";
-					}
-					OrderDetail detail = new OrderDetail();
-					detail.setOrderItemId(itemId);
-					detail.setNumber(order.getListAllDayNumber().get(index));
-					detail.setNote(order.getListNote().get(index));
-					details.add(detail);
-					index++;
-				}
-				order.setDetails(details);
-				if (!details.isEmpty()) {
-					for (OrderDetail detail : details) {
-						orderDetailService.add(detail);
-					}
-				}
-				
-				
-				order.setCustomer(order.getCustomerEditing());
-				if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
-					customerService.add(order.getCustomer());
-				}
 				if (order.getId() != null) {
 					OrderList aN = orderService.find(order.getId());
-					aN.setDetails(order.getDetails());
-//					aN.setAddress(order.getAddress());
-//					aN.setDistrictId(order.getDistrictId());
-//					aN.setLevel(order.getLevel());
-//					aN.setOfficeName(order.getOfficeName());
-//					aN.setStreet(order.getStreet());
-//					orderService.update(aN);
+					// TODO handle case update detail ?
+					//aN.setDetails(order.getDetails());
+					aN.setNote(order.getNote());
+					aN.setActive(order.getActive());
+					orderService.update(order);
 				} else {
+					List<OrderDetail> details = new LinkedList<OrderDetail>();
+					List<Long> orderItemIdToday = order.getListOrderItemId();
+					int index = 0;
+					for (Long itemId : orderItemIdToday) {
+						OrderItem item = orderItemService.find(itemId);
+						if (item == null) {
+							uiModel.addAttribute("success", false);
+							// TODO throw error
+							uiModel.addAttribute("orderList", order);
+							return "orderDetail";
+						}
+						OrderDetail detail = new OrderDetail();
+						detail.setOrderItemId(itemId);
+						detail.setMiniNumber(order.getListMiniNumber().get(index));
+						detail.setNumber(order.getListNumber().get(index));
+						detail.setMiniPrice(order.getListMiniPrice().get(index));
+						detail.setPrice(order.getListPrice().get(index));
+						detail.setNote(order.getListNote().get(index));
+						details.add(detail);
+						index++;
+					}
+					
+					List<Long> orderItemIdAllDay = order.getListAllDaytOrderItemId();
+					index = 0;
+					for (Long itemId : orderItemIdAllDay) {
+						OrderItem item = orderItemService.find(itemId);
+						if (item == null) {
+							uiModel.addAttribute("success", false);
+							// TODO throw error
+							uiModel.addAttribute("orderList", order);
+							return "orderDetail";
+						}
+						OrderDetail detail = new OrderDetail();
+						detail.setOrderItemId(itemId);
+						detail.setNumber(order.getListAllDayNumber().get(index));
+						detail.setPrice(order.getListAllDayPrice().get(index));
+						detail.setNote(order.getListNote().get(index));
+						details.add(detail);
+						index++;
+					}
+					order.setDetails(details);
+					
+					order.setCustomer(order.getCustomerEditing());
+					if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
+						customerService.add(order.getCustomer());
+					}
 					orderService.add(order);
 				}
 				uiModel.addAttribute("success", true);
@@ -262,21 +260,31 @@ public class OrderController {
 
 	private OrderList createNewOrder() {
 		OrderList order = new OrderList();
+		
+		// Order from admin is active as default
+		order.setActive(true);
+		
 		List<OrderLineDetail> orderListToday = orderService.getOrderListToday();
 		order.setTodayDetailLines(orderListToday);
 		List<Long> listOrderItemId = new ArrayList<Long>(orderListToday.size());
 		List<Integer> listOrderItemNumber = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemPrice = new ArrayList<Integer>(orderListToday.size());
 		List<Integer> listOrderItemMiniNumber = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemMiniPrice = new ArrayList<Integer>(orderListToday.size());
 		List<String> listNote = new ArrayList<String>(orderListToday.size());
 		for (OrderLineDetail oL : orderListToday) {
 			listOrderItemId.add(oL.getOrderItem().getId());
 			listOrderItemNumber.add(oL.getOrderDetail().getNumber());
+			listOrderItemPrice.add(oL.getOrderDetail().getPrice());
 			listOrderItemMiniNumber.add(oL.getOrderDetail().getMiniNumber());
+			listOrderItemMiniPrice.add(oL.getOrderDetail().getMiniPrice());
 			listNote.add(oL.getOrderDetail().getNote());
 		}
 		order.setListOrderItemId(listOrderItemId);
 		order.setListNumber(listOrderItemNumber);
 		order.setListMiniNumber(listOrderItemMiniNumber);
+		order.setListPrice(listOrderItemPrice);
+		order.setListMiniPrice(listOrderItemMiniPrice);
 		order.setListNote(listNote);
 		
 		List<OrderLineDetail> orderListAllday = orderService.getOrderListAllDay();
@@ -284,14 +292,17 @@ public class OrderController {
 		
 		List<Long> listOrderItemAllDayId = new ArrayList<Long>(orderListAllday.size());
 		List<Integer> listOrderItemAllDayNumber = new ArrayList<Integer>(orderListAllday.size());
+		List<Integer> listOrderItemAllDayPrice = new ArrayList<Integer>(orderListAllday.size());
 		List<String> listNoteSpec = new ArrayList<String>(orderListToday.size());
 		for (OrderLineDetail oL : orderListAllday) {
 			listOrderItemAllDayId.add(oL.getOrderItem().getId());
 			listOrderItemAllDayNumber.add(oL.getOrderDetail().getNumber());
+			listOrderItemAllDayPrice.add(oL.getOrderDetail().getPrice());
 			listNoteSpec.add(oL.getOrderDetail().getNote());
 		}
 		order.setListAllDaytOrderItemId(listOrderItemAllDayId);
 		order.setListAllDayNumber(listOrderItemAllDayNumber);
+		order.setListAllDayPrice(listOrderItemAllDayPrice);
 		order.setListNoteSpec(listNoteSpec);
 		return order;
 	}

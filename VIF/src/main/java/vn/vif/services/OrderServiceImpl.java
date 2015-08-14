@@ -17,7 +17,6 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 	@Autowired
 	private OrderItemService orderItemService;
 	
-	@Override
 	public Class<OrderList> getEntityClass() {
 		return OrderList.class;
 	}

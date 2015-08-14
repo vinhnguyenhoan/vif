@@ -1,15 +1,13 @@
 package vn.vif.models.filter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
-import vn.vif.daos.Filter;
+import vn.vif.daos.DistinctFilter;
 import vn.vif.models.OrderList;
 
-public class OrderListFilter implements Filter {
+public class OrderListFilter implements DistinctFilter {
 	private String searchText;
 //	private List<Long> searchDistrict;
 	
@@ -46,5 +44,10 @@ public class OrderListFilter implements Filter {
 		
 		criteria.addOrder(Order.desc("id"));
 		return criteria;
+	}
+
+	@Override
+	public String getId() {
+		return "id";
 	}
 }

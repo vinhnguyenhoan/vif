@@ -39,6 +39,9 @@
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('customerList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
+								Xem chưa kích hoạt<form:checkbox id="searchNotActive" path="searchNotActive" onkeypress="if(event.keyCode==13) {submitActionForm('customerList', '');}"
+									value="${fn:escapeXml(searchActive)}" />
+									
 							</div>
 							<a href="javascript:"
 							onclick="submitActionForm('customerList', '')" class="btn-1"
