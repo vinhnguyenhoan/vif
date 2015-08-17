@@ -41,6 +41,9 @@ import vn.vif.utils.converter.OptionItem;
 public class OrderController {
 	
 	@Autowired
+	private CustomerController customerController;
+	
+	@Autowired
 	private CustomerService customerService;
 	
 	@Autowired
@@ -208,8 +211,9 @@ public class OrderController {
 					
 					order.setCustomer(order.getCustomerEditing());
 					if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
-						// reuse handle customer with customer controller 
-						customerService.add(order.getCustomer());
+						// reuse handle customer with customer controller
+						// TODO bindingResult new path
+						customerController.updateCustomer(order.getCustomer(), null, uiModel, bindingResult);
 					}
 					orderService.add(order);
 				}

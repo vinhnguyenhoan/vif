@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
+import vn.vif.daos.GenericDAO;
 import vn.vif.models.AddressNote;
 import vn.vif.models.Customer;
 import vn.vif.models.District;
@@ -29,6 +30,7 @@ import vn.vif.services.AddressNoteService;
 import vn.vif.services.CustomerService;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
+import vn.vif.utils.VIFException;
 import vn.vif.utils.VIFUtils;
 import vn.vif.utils.converter.OptionItem;
 
@@ -128,6 +130,9 @@ public class CustomerController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				uiModel.addAttribute("success", false);
+				if (e instanceof VIFException) {
+					uiModel.addAttribute("error_code", ((VIFException) e).getErrorCode());
+				}
 			}
 		} else {
 			List<FieldError> errors = bindingResult.getFieldErrors();
