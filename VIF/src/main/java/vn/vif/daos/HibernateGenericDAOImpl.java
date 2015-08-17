@@ -15,21 +15,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Projections;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.impl.CriteriaImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import vn.vif.utils.FunctionException;
+import vn.vif.utils.VIFException;
 
 @SuppressWarnings({ "rawtypes" })
 @Repository
-public class GenericDAOImpl implements GenericDAO {
+public class HibernateGenericDAOImpl implements GenericDAO {
 	
 	@Autowired
 	protected SessionFactory sessionFactory;
 	
-	public GenericDAOImpl() {
+	public HibernateGenericDAOImpl() {
 		//sessionFactory = new Configuration().configure().buildSessionFactory();
 	}
 
@@ -54,15 +56,26 @@ public class GenericDAOImpl implements GenericDAO {
 			tx.commit();
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
+			if (e instanceof ConstraintViolationException) {
+				throw new VIFException(CONSTRAINT_VIOLATION, e.getMessage(), e);
+			}
 			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	@Transactional
 	public void add(Session session, Object entity) throws HibernateException {
-		session.persist(entity);
+		try {
+			session.persist(entity);
+		} catch (ConstraintViolationException e) {
+			throw new VIFException(CONSTRAINT_VIOLATION, e.getMessage(), e);
+		}
 	}
 
 	@Transactional
@@ -75,9 +88,16 @@ public class GenericDAOImpl implements GenericDAO {
 			return result;
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
+			if (e instanceof ConstraintViolationException) {
+				throw new VIFException(CONSTRAINT_VIOLATION, e.getMessage(), e);
+			}
 			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -92,8 +112,16 @@ public class GenericDAOImpl implements GenericDAO {
 			tx.commit();
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
+			if (e instanceof ConstraintViolationException) {
+				throw new VIFException(CONSTRAINT_VIOLATION, e.getMessage(), e);
+			}
+			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -111,8 +139,13 @@ public class GenericDAOImpl implements GenericDAO {
 			delete(session, entity);
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
+			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -133,9 +166,13 @@ public class GenericDAOImpl implements GenericDAO {
 			return result;
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
-			return null;
+			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -153,7 +190,11 @@ public class GenericDAOImpl implements GenericDAO {
 		} catch (HibernateException e) {
 			new FunctionException(getClass(), e);
 		} finally{
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
@@ -194,9 +235,13 @@ public class GenericDAOImpl implements GenericDAO {
 			return result;
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
-			return null;
+			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	@Transactional
@@ -292,9 +337,13 @@ public class GenericDAOImpl implements GenericDAO {
 			return result;
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
-			return null;
+			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -320,13 +369,18 @@ public class GenericDAOImpl implements GenericDAO {
 			query.executeUpdate();
 		} catch (Exception e) {
 			new FunctionException(getClass(), e);
+			throw e;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<?> list(Filter filter, int start,int length) {
+	public List list(Filter filter, int start, int length) {
 		Session session = null ;
 		try {
 			SessionFactory sessionFactory = getSessionFactory();
@@ -360,11 +414,18 @@ public class GenericDAOImpl implements GenericDAO {
 				results = criteria.list();
 			}
 			return results;
-		} catch (Exception e) {
-			new FunctionException(getClass(), e);
-			return new ArrayList(0);
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -388,7 +449,11 @@ public class GenericDAOImpl implements GenericDAO {
 			new FunctionException(getClass(), e);
 			return 0;
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -412,7 +477,11 @@ public class GenericDAOImpl implements GenericDAO {
 			new FunctionException(getClass(), e);
 			return new ArrayList(0);
 		} finally {
-			close(session);
+			try {
+				close(session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

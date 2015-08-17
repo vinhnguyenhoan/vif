@@ -9,6 +9,8 @@ import org.hibernate.SessionFactory;
 
 public interface GenericDAO {
 	
+	static final String CONSTRAINT_VIOLATION = "CONSTRAINT_VIOLATION";
+	
 	//cho phep cac service truy cap vao session va thuc hien cac lenh batch
 	public SessionFactory getSessionFactory();
 	

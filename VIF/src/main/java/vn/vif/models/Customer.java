@@ -61,7 +61,7 @@ public class Customer implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "EMAIL", unique = true, nullable = false, length = 50)
+	@Column(name = "EMAIL", nullable = false, length = 50)
 	public String getEmail() {
 		return email;
 	}
