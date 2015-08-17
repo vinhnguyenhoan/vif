@@ -52,10 +52,11 @@ public class GenericDAOImpl implements GenericDAO {
 			add(session, entity);
 			session.flush();
 			tx.commit();
-			close(session);
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
+			throw e;
+		} finally {
+			close(session);
 		}
 	}
 	
@@ -71,12 +72,12 @@ public class GenericDAOImpl implements GenericDAO {
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
 			Object result = session.merge(entity);
-			close(session);
 			return result;
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
-			return null;
+			throw e;
+		} finally {
+			close(session);
 		}
 	}
 
@@ -89,10 +90,10 @@ public class GenericDAOImpl implements GenericDAO {
 			Transaction tx = session.beginTransaction();		
 			update(session, entity);
 			tx.commit();
-			close(session);
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
+		} finally {
+			close(session);
 		}
 	}
 	
@@ -108,10 +109,10 @@ public class GenericDAOImpl implements GenericDAO {
 			SessionFactory sessionFactory = getSessionFactory();
 			session = sessionFactory.openSession();
 			delete(session, entity);
-			close(session);
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
+		} finally {
+			close(session);
 		}
 	}
 	
@@ -129,12 +130,12 @@ public class GenericDAOImpl implements GenericDAO {
 			String sql = "from " + objectClass.getSimpleName();
 			Query query = session.createQuery(sql);
 			List result = query.list();
-			close(session);
 			return result;
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
 			return null;
+		} finally {
+			close(session);
 		}
 	}
 
@@ -151,7 +152,7 @@ public class GenericDAOImpl implements GenericDAO {
 			}
 		} catch (HibernateException e) {
 			new FunctionException(getClass(), e);
-		}finally{
+		} finally{
 			close(session);
 		}
 		return result;
@@ -190,12 +191,12 @@ public class GenericDAOImpl implements GenericDAO {
 				query.setMaxResults(length);
 			}
 			List result = query.list();
-			close(session);
 			return result;
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
 			return null;
+		} finally {
+			close(session);
 		}
 	}
 	@Transactional
@@ -288,22 +289,20 @@ public class GenericDAOImpl implements GenericDAO {
 				query.setMaxResults(length);
 			}
 			List result = query.list();
-			close(session);
 			return result;
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
 			return null;
+		} finally {
+			close(session);
 		}
 	}
 
 	public void close(Session session) {
-		
-		if(session!=null){
+		if (session!=null) {
 			session.flush();
 			session.close();
 		}
-		
 	}
 
 	@Transactional
@@ -319,15 +318,14 @@ public class GenericDAOImpl implements GenericDAO {
 				}
 			}
 			query.executeUpdate();
-			close(session);
 		} catch (Exception e) {
-			close(session);
 			new FunctionException(getClass(), e);
+		} finally {
+			close(session);
 		}
 	}
 
-	
-	
+	@SuppressWarnings("unchecked")
 	public List<?> list(Filter filter, int start,int length) {
 		Session session = null ;
 		try {

@@ -208,6 +208,7 @@ public class OrderController {
 					
 					order.setCustomer(order.getCustomerEditing());
 					if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
+						// reuse handle customer with customer controller 
 						customerService.add(order.getCustomer());
 					}
 					orderService.add(order);
