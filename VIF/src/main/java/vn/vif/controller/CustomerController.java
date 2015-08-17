@@ -151,6 +151,7 @@ public class CustomerController {
 	}
 
 	private void validateInputData(Customer customer, BindingResult bindingResult) {
+		// TODO check contain customer
 		if (StringUtils.isEmpty(customer.getName())) {
 			bindingResult.rejectValue("name", "app_field_empty", new Object[]{"Tên"}, "empty_error_code");
 		}
