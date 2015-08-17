@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import vn.vif.models.Customer;
@@ -91,6 +92,7 @@ public class HomeController {
 		uiModel.addAttribute("orderItemData", data[0]);
 		uiModel.addAttribute("orderItemSpec", data[1]);
 		uiModel.addAttribute("districtList", District.values());
+		uiModel.addAttribute("login", customerService.getLogin());
 		
 		/*Calendar ca = Calendar.getInstance();
 		ca.set(Calendar.MONTH, Calendar.JANUARY);
@@ -117,7 +119,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/register")
 	@ResponseBody
-	public Map<String, Object> createUser(@ModelAttribute("customer") @Valid Customer customer) {
+	public Map<String, Object> register(@ModelAttribute("customer") @Valid Customer customer) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String error = null;
 		customer.setPhone(VIFUtils.formatPhoneNumber(customer.getPhone()));
@@ -143,6 +145,34 @@ public class HomeController {
 		} else {
 			customerService.add(customer);
 			data.put("success", "Quý khách đã đăng ký thành công. Chúng tôi sẽ liên hệ để kích hoạt tài khoản của quý khách. Xin cám ơn!");
+		}
+		return data;
+	}
+	
+	@RequestMapping(value = "/loginCus")
+	@ResponseBody
+	public Map<String, Object> login(@RequestParam(value = "code", required = true) String code) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		String error = null;
+		if (!VIFUtils.isValid(code)) {
+			error = "Mã khách hàng không được rỗng";
+		} else {
+			List<Customer> list = customerService.list(new String[]{"phone"}, new Object[]{code}, true, null, -1, -1);
+			if (list.isEmpty()) {
+				error = "Mã khách hàng không tồn tại";
+			} else {
+				Customer cus = list.get(0);
+				if (!cus.getActive()) {
+					error = "Mã khách hàng chưa được kích hoạt!";
+				} else {
+					customerService.login(cus);
+				}
+			}
+		}
+		if (error != null) {
+			data.put("error", error);
+		} else {
+			data.put("success", "Đăng nhập thành công!");
 		}
 		return data;
 	}

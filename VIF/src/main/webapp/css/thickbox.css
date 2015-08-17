@@ -21,7 +21,8 @@
 #TB_window a:hover {color: #c31f5c;}
 #TB_window a:active {color: #666666;}
 #TB_window a:focus{color: #666666;}
-
+#TB_window #TB_closeWindowButton {color: #ffffff;}
+#TB_window #TB_closeWindowButton:hover {color: #666666;}
 /* ----------------------------------------------------------------------------------------------------------------*/
 /* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
 /* ----------------------------------------------------------------------------------------------------------------*/
@@ -53,7 +54,7 @@
 	z-index: 102;
 	color:#fff;
 	display:none;
-	border: 4px solid #525252;
+	border: 4px solid #c31f5c;
 	text-align:left;
 	top:50%;
 	left:50%;
