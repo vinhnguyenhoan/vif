@@ -35,5 +35,17 @@ public enum District {
 		}
 		return null;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
 	
 }

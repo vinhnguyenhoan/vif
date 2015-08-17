@@ -1,19 +1,26 @@
 package vn.vif.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import vn.vif.models.Customer;
+import vn.vif.models.District;
 import vn.vif.models.MenuItem;
+import vn.vif.services.CustomerService;
 import vn.vif.services.MenuItemService;
 import vn.vif.services.OrderItemService;
 import vn.vif.utils.VIFUtils;
@@ -25,6 +32,8 @@ public class HomeController {
 	private OrderItemService orderItemService;
 	@Autowired
 	private MenuItemService menuItemService;
+	@Autowired
+	private CustomerService customerService;
 
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -78,10 +87,10 @@ public class HomeController {
 		
 		VIFUtils.fillDate(uiModel);
 		
-//		Map<Integer, List<OrderItem>>[] data = orderItemService.getOrderItemData();
 		Map<Integer, List<MenuItem>>[] data = menuItemService.getMenuItemData();
 		uiModel.addAttribute("orderItemData", data[0]);
 		uiModel.addAttribute("orderItemSpec", data[1]);
+		uiModel.addAttribute("districtList", District.values());
 		
 		/*Calendar ca = Calendar.getInstance();
 		ca.set(Calendar.MONTH, Calendar.JANUARY);
@@ -91,6 +100,8 @@ public class HomeController {
 			System.out.println(currentWeek + " " + ca.getTime());
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}*/
+		
+		System.out.println(VIFUtils.formatPhoneNumber("+849876543"));
 		
 		return "web";
 	}
@@ -102,5 +113,37 @@ public class HomeController {
 		
 		
 		return home(request, uiModel);
+	}
+	
+	@RequestMapping(value = "/register")
+	@ResponseBody
+	public Map<String, Object> createUser(@ModelAttribute("customer") @Valid Customer customer) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		String error = null;
+		customer.setPhone(VIFUtils.formatPhoneNumber(customer.getPhone()));
+		if (!VIFUtils.isValid(customer.getName())) {
+			error = "Chưa nhập tên";
+		} else if (!VIFUtils.isValid(customer.getPhone())) {
+			error = "Chưa nhập số điện thoại";
+		} else if (customerService.list(new String[]{"phone"}, 
+				new Object[]{customer.getPhone()}, true, null, -1, -1).size() > 0) {
+			error = "Số điện thoại này đã được đăng ký";
+		} else if (!VIFUtils.isValid(customer.getAddress())) {
+			error = "Chưa nhập số địa chỉ";
+		} else if (!VIFUtils.isValid(customer.getDistrictId())) {
+			error = "Chưa chọn quận";
+		} else if (!VIFUtils.isValid(customer.getEmail())) {
+			error = "Chưa nhập email";
+		} else if (customerService.list(new String[]{"email"}, 
+				new Object[]{customer.getEmail()}, true, null, -1, -1).size() > 0) {
+			error = "Email này đã được đăng ký";
+		}
+		if (error != null) {
+			data.put("error", error);
+		} else {
+			customerService.add(customer);
+			data.put("success", "Quý khách đã đăng ký thành công. Chúng tôi sẽ liên hệ để kích hoạt tài khoản của quý khách. Xin cám ơn!");
+		}
+		return data;
 	}
 }

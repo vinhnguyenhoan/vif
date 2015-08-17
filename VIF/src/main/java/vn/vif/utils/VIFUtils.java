@@ -22,6 +22,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.Model;
 
 
@@ -391,5 +392,19 @@ public class VIFUtils {
 			list.add(new DateItem(id, name, formatDate(ca.getTime())));
 		}
 		uiModel.addAttribute("dates", list);
+	}
+
+
+	public static String formatPhoneNumber(String phone) {
+		if (!isValid(phone)) {
+			return null;
+		}
+		phone = StringUtils.trim(phone);
+		phone = phone.replace("+84", "");
+		phone = phone.replaceAll("[ .,-]", "");
+		if (!phone.startsWith("0")) {
+			phone = "0" + phone;
+		}
+		return phone;
 	}
 }

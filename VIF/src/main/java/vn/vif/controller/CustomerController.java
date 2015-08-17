@@ -29,6 +29,7 @@ import vn.vif.services.AddressNoteService;
 import vn.vif.services.CustomerService;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
+import vn.vif.utils.VIFUtils;
 import vn.vif.utils.converter.OptionItem;
 
 @Controller
@@ -106,6 +107,7 @@ public class CustomerController {
 					aN = addressNoteService.find(customer.getAddressNoteId());
 				}
 				customer.setAddressNote(aN);
+				customer.setPhone(VIFUtils.formatPhoneNumber(customer.getPhone()));
 				if (customer.getId() != null) {
 					Customer customerFromDB = customerService.find(customer.getId());
 					customerFromDB.setActive(customer.getActive());
@@ -116,12 +118,7 @@ public class CustomerController {
 					customerFromDB.setEmail(customer.getEmail());
 					customerFromDB.setName(customer.getName());
 					customerFromDB.setNote(customer.getNote());
-					String phone = customer.getPhone().trim();
-					phone = phone.replace(".", "");
-					phone = phone.replace(",", "");
-					phone = phone.replace("+84,", "");
-
-					customerFromDB.setPhone(phone);
+					customerFromDB.setPhone(customer.getPhone());
 					customerService.update(customerFromDB);
 				} else {
 					customerService.add(customer);

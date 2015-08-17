@@ -15,7 +15,8 @@
 	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
 	<spring:url var="scriptsFolder" value="/scripts" />
 	<spring:url var="cssFolder" value="/css" />
-	<spring:url var="url" value="/admin/orderItem/getWard" />
+	<spring:url var="url" value="/register" />
+	<spring:url var="loading" value="scripts/colorbox/example1/images/loading.gif"/>
 	
 	<![CDATA[
 		<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
@@ -74,27 +75,61 @@
 			return re;
 		}
 		function doRegister() {
-			if (checkEmpty('r_name', 'Nhập họ tên!')) {
+			if (checkEmpty('r_name', 'Chưa nhập họ tên!')) {
 				return;
 			}
-			if (checkEmpty('r_phone', 'Nhập số điện thoại!')) {
+			if (checkEmpty('r_phone', 'Chưa nhập số điện thoại!')) {
 				return;
 			}
-			if (checkEmpty('r_address', 'Nhập số địa chỉ!')) {
+			if (checkEmpty('r_email', 'Chưa nhập email!')) {
 				return;
 			}
-			if (checkEmpty('r_district', 'Nhập quận!')) {
+			if (!validateEmail($('#r_email').val())) {
+				$('#messageError').html('Email không đúng định dạng');
+				return;
+			}
+			if (checkEmpty('r_email', 'Chưa nhập email!')) {
+				return;
+			}
+			if (checkEmpty('r_address', 'Chưa nhập số địa chỉ!')) {
+				return;
+			}
+			if (checkEmpty('r_districtId', 'Chưa nhập quận!')) {
 				return;
 			}
 			var data = getParam("registerDialog", "r_");
+			$('#messageError').html('');
+			$('#messageInfor').html('<img src="${loading}"/>');
+			
+			$.ajax({
+			  type: "POST",
+			  url: '${url}',
+			  data: data,
+			  success: function(data) {
+			  	$('#messageInfor').html('');
+				if (data.error != null) {
+					$('#messageError').html(data.error);
+					$('#loading').hide();
+				}
+				if (data.success != null) {
+					$('#messageInfor').html(data.success);
+				}
+			  },
+			  dataType: 'json',
+			  contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+			});
+		}
+		function validateEmail(email) {
+		    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		    return re.test(email);
 		}
 		function checkSelected(field, message, messageId) {
 			var el = document.getElementById(field);
 			if (el.value == 0) {
 				if (messageId == null) {
-					$('#messageError').html(message)
+					$('#messageError').html(message);
 				} else {
-					$('#'+messageId+'').html(message)
+					$('#'+messageId+'').html(message);
 				}
 				el.focus();
 				return true;
@@ -155,7 +190,10 @@
 					<td align="center" colspan="2"><strong>Đăng ký đặt món online</strong></td>
 				</tr>
 				<tr class="info">
-					<td align="center" colspan="2"><span id="messageError" style="color:red;"></span></td>
+					<td align="center" colspan="2">
+						<span id="messageError" style="color:red;"><!--  --></span>
+						<span id="messageInfor" style="color:green;"><!--  --></span>
+					</td>
 				</tr>
 				<tr>
 					<td align="right">Họ tên(<label style="color:red;">*</label>):
@@ -176,7 +214,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Email:
+					<td align="right">Email(<label style="color:red;">*</label>):
 					</td>
 					<td>
 						<input id="r_email" class="textInput"/> 
@@ -193,8 +231,11 @@
 					<td align="right">Quận(<label style="color:red;">*</label>):
 					</td>
 					<td>
-						<select id="r_district">
+						<select id="r_districtId">
 							<option value="0">--- Chọn quận ---</option>
+							<c:forEach items="${districtList}" var="item">
+								<option value="${item.id}">${item.fullName}</option>
+							</c:forEach>
 						</select>
 					</td>
 				</tr>

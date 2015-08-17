@@ -173,7 +173,7 @@ public class OrderItemController {
 		if (or.getLogoFile()!=null && or.getLogoFile().getSize()!=0 && or.getLogoFile().getSize()/1024 < 1000) { // < 500 Kb
 			String filename = or.getLogoFile().getOriginalFilename();
 			String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length()).toLowerCase();
-			if (extension.equals("png") || extension.equals("jpg") || extension.equals("gif")) {
+			if (extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg") || extension.equals("gif")) {
 				String logo = "order_item_" + or.getId() + "." + extension;
 				String image = "images/pruducts/" + logo;
 				logo = File.separator + "images" + File.separator+ "pruducts" + File.separator + logo;
