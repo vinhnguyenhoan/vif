@@ -90,18 +90,22 @@ public class CustomerController {
 	public String updateCustomer(@ModelAttribute("customer") @Valid Customer customer,
 			HttpServletRequest request, Model uiModel,
 			BindingResult bindingResult) {
-		return addUpdateCustomer(customer, uiModel, bindingResult);
+		return addUpdateCustomerInternal(customer, uiModel, bindingResult);
 	}
 
 	@RequestMapping(value = "/customer/add", params = { "new" })
 	public String addNewCustomer(@ModelAttribute("customer") @Valid Customer customer,
 			HttpServletRequest request, Model uiModel,
 			BindingResult bindingResult) {
-		return addUpdateCustomer(customer, uiModel, bindingResult);
+		return addUpdateCustomerInternal(customer, uiModel, bindingResult);
 	}
 	
-	private String addUpdateCustomer(Customer customer, Model uiModel, BindingResult bindingResult) {
-		validateInputData(customer, bindingResult);
+	private String addUpdateCustomerInternal(Customer customer, Model uiModel, BindingResult bindingResult) {
+		return this.addUpdateCustomer(customer, uiModel, bindingResult, null);
+	}
+	
+	public String addUpdateCustomer(Customer customer, Model uiModel, BindingResult bindingResult, String prefixParentFieldName) {
+		validateInputData(customer, bindingResult, prefixParentFieldName);
 		if (!bindingResult.hasErrors()) {
 			try {
 				AddressNote aN = null;
@@ -155,13 +159,16 @@ public class CustomerController {
 		return "customerAdd";
 	}
 
-	private void validateInputData(Customer customer, BindingResult bindingResult) {
+	private void validateInputData(Customer customer, BindingResult bindingResult, String prefixParentFieldName) {
+		if (StringUtils.isBlank(prefixParentFieldName)) {
+			prefixParentFieldName = "";
+		}
 		// TODO check contain customer
 		if (StringUtils.isEmpty(customer.getName())) {
-			bindingResult.rejectValue("name", "app_field_empty", new Object[]{"Tên"}, "empty_error_code");
+			bindingResult.rejectValue(prefixParentFieldName + "name", "app_field_empty", new Object[]{"Tên"}, "empty_error_code");
 		}
 		if (StringUtils.isEmpty(customer.getPhone())) {
-			bindingResult.rejectValue("phone", "app_field_empty", new Object[]{"Số điện thoại"}, "empty_error_code");
+			bindingResult.rejectValue(prefixParentFieldName + "phone", "app_field_empty", new Object[]{"Số điện thoại"}, "empty_error_code");
 			// TODO check format phone invalid_phone_number
 		} else {
 //			String phone = customer.getPhone();
@@ -176,14 +183,14 @@ public class CustomerController {
 			
 		}
 		if (StringUtils.isEmpty(customer.getEmail())) {
-			bindingResult.rejectValue("email", "app_field_empty", new Object[]{"Email"}, "empty_error_code");
+			bindingResult.rejectValue(prefixParentFieldName + "email", "app_field_empty", new Object[]{"Email"}, "empty_error_code");
 		} else if (!emailValidator.isValid(customer.getEmail(), null)) {
-			bindingResult.rejectValue("email", "invalid_user_email", new Object[]{"Email"}, "empty_error_code");
+			bindingResult.rejectValue(prefixParentFieldName + "email", "invalid_user_email", new Object[]{"Email"}, "empty_error_code");
 		}
 		// TODO check format email
 		if (StringUtils.isEmpty(customer.getAddress()) && (customer.getAddressNoteId() == null || customer.getAddressNoteId() <= 0)) {
-			bindingResult.rejectValue("address", "app_field_empty", new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
-			bindingResult.rejectValue("addressNoteId", "app_field_empty", new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
+			bindingResult.rejectValue(prefixParentFieldName + "address", "app_field_empty", new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
+			bindingResult.rejectValue(prefixParentFieldName + "addressNoteId", "app_field_empty", new Object[]{"Địa chỉ hoặc Địa chỉ đã lưu"}, "empty_error_code");
 		}
 		// TODO check unique name ?
 	}

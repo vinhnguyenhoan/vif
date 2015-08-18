@@ -213,7 +213,11 @@ public class OrderController {
 					if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
 						// reuse handle customer with customer controller
 						// TODO bindingResult new path
-						customerController.updateCustomer(order.getCustomer(), null, uiModel, bindingResult);
+						customerController.addUpdateCustomer(order.getCustomer(), uiModel, bindingResult, "customer.");
+						if (!(boolean) uiModel.asMap().get("success")) {
+							uiModel.addAttribute("orderList", order);	
+							return "orderDetail";
+						}
 					}
 					orderService.add(order);
 				}
