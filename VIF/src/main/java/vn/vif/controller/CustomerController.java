@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
-import vn.vif.daos.GenericDAO;
 import vn.vif.models.AddressNote;
 import vn.vif.models.Customer;
 import vn.vif.models.District;

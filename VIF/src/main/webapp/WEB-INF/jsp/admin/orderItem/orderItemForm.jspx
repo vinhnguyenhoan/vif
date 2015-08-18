@@ -114,30 +114,6 @@
 					<td align="right">Món ngon:</td>
 					<td><form:checkbox path="specItem"/></td>
 				</tr>
-				<%-- <tr>
-					<td align="right">Ngày bán:
-					</td>
-					<td>
-						<form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
-							<form:option value="">--- Chọn ngày bán ---</form:option>
-							<form:options items="${dateList}" itemValue="id" itemLabel="name" />
-						</form:select>
-						
-						<form:errors path="moveToDate" cssClass="errorMessage" />
-					</td>
-				</tr>
-				
-				<tr>
-					<td align="right">Tuần(<label class="errorMessage">*</label>):
-					</td>
-					<td>
-						<form:select path="week" cssClass="select2_combo" style="width:150px">
-							<form:options items="${weekList}" itemValue="id" itemLabel="name" />
-						</form:select>
-						
-						<form:errors path="moveToDate" cssClass="errorMessage" />
-					</td>
-				</tr> --%>
 				<tr>
 					<td>&#160;</td>
 				</tr>

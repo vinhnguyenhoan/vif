@@ -38,10 +38,6 @@
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderItemList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
-								<%-- <form:select path="searchDate" cssClass="select2_combo" style="width:150px">
-									<form:option value="">--- Chọn ngày bán ---</form:option>
-									<form:options items="${dateList}" itemValue="id" itemLabel="name" />
-								</form:select> --%>
 							</div>
 							<a href="javascript:"
 							onclick="submitActionForm('orderItemList', '')" class="btn-1"
@@ -113,12 +109,6 @@
 					</tr>
 				</table>
 				
-				
-				<%-- <form:select path="moveToDate" cssClass="select2_combo" style="width:150px">
-					<form:option value=""> Chọn ngày bán </form:option>
-					<form:options items="${dateList}" itemValue="id" itemLabel="name" />
-				</form:select> --%>
-
 				<a href="javascript:"
 					onclick="submitActionForm('orderItemList', '/admin/orderItem/list/saveDate')" class="btn-1"
 					title="Chuyển ngày bán"><span><span style="width:90px">Chuyển ngày bán</span></span></a>
