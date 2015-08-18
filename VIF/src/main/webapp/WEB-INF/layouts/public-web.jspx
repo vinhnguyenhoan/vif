@@ -62,7 +62,23 @@
 				</li>
 			</ul>
 			<br/>
-			<a href="#" onclick="openLoginDialog();return false;"><span id="login-span">Đăng nhập</span></a>
+			<c:choose>
+				<c:when test="${login != null}">
+					<a href="#" onclick="openLoginDialog();return false;">
+						<span id="login-span">
+							${login.name}
+						</span>
+					</a>
+				</c:when>
+				<c:otherwise>
+					<a href="#" onclick="openLoginDialog();return false;">
+						<span id="login-span">
+							Đăng nhập
+						</span>
+					</a>
+				</c:otherwise>
+			</c:choose>
+			
 		</div>
 	</section>
 	<section id="nav-wrap">
@@ -189,9 +205,18 @@
 											</c:choose>
 										</div>
 										<span class="name">${it.orderItem.name}</span><br/>
-										<span class="price"><fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ</span>
+										<span class="price" style="float:left">
+											<c:if test="${login != null}">
+												<a href="#"><img src="${core}/images/order.png"/></a>
+											</c:if>
+											<fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ
+										</span>
 										<c:if test="${it.orderItem.miniPrice != null}">
-											<span class="price mini">Mini: <fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ</span>
+											<span class="price mini">
+												<c:if test="${login != null}">
+													<a href="#"><img src="${core}/images/order.png"/></a>
+												</c:if>
+												Mini: <fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ</span>
 										</c:if>
 									</header>
 								</article>
@@ -241,7 +266,11 @@
 											</c:choose>
 										</div>
 										<span class="name">${it.orderItem.name}</span><br/>
-										<span class="price spec"><fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ</span>
+										<span class="price spec">
+											<c:if test="${login != null}">
+												<a href="#"><img src="${core}/images/order.png"/></a>
+											</c:if>
+											<fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ</span>
 									</header>
 								</article>
 								<c:if test="${status.index % 3 == 2}">

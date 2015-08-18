@@ -16,6 +16,7 @@
 	<spring:url var="scriptsFolder" value="/scripts" />
 	<spring:url var="cssFolder" value="/css" />
 	<spring:url var="url" value="/register" />
+	<spring:url var="loginUrl" value="/loginCus" />
 	<spring:url var="loading" value="scripts/colorbox/example1/images/loading.gif"/>
 	
 	<![CDATA[
@@ -25,10 +26,12 @@
 		function openLoginDialog() {
 			clearForm();
 			tb_show('Đăng nhập','TB_inline?height=200&amp;width=400&amp;inlineId=loginDialog');
+			$('#TB_closeAjaxWindow')[0].childNodes[1].remove();
 		}
 		function openRegisterDialog() {
 			clearForm();
 			tb_show('Đăng ký','TB_inline?height=330&amp;width=400&amp;inlineId=registerDialog');
+			$('#TB_closeAjaxWindow')[0].childNodes[1].remove();
 		}
 		function clearForm() {
 			var childs = $("#loginDialog").children();
@@ -40,21 +43,30 @@
 				$("#" + $(childs[i]).attr('parent')).append($(childs[i]));
 			}
 		}
-		function changeDist(el) {
-			var $el = $(el),
-				$w = $('#ward');// jquery
-			
-			var data = "dist=" + $el.val();
-			
-			var url = "${url}";
+		function doLogin() {
+			if ($('#l_code').val().trim()=='') {
+				$('#l_code').focus()
+				return;
+			}
+			var data = 'code=' + $('#l_code').val().trim();
+			$('#l_messageError').html('');
+			$('#l_messageInfor').html('<img src="${loading}"/>');
 			$.ajax({
-				type: 'POST', 
-				dataType:'json', 
-				url: url, 
-				data : data,
-				success: function(data) {
-					renderComboBox($w, data, $w[0].firstChild.text);
+			  type: "POST",
+			  url: '${loginUrl}',
+			  data: data,
+			  success: function(data) {
+			  	$('#l_messageInfor').html('');
+				if (data.error != null) {
+					$('#l_messageError').html(data.error);
 				}
+				if (data.success != null) {
+					$('#l_messageInfor').html(data.success);
+					window.location.reload();
+				}
+			  },
+			  dataType: 'json',
+			  contentType: "application/x-www-form-urlencoded; charset=UTF-8"
 			});
 		}
 		function getParam(form, pre) {
@@ -109,7 +121,6 @@
 			  	$('#messageInfor').html('');
 				if (data.error != null) {
 					$('#messageError').html(data.error);
-					$('#loading').hide();
 				}
 				if (data.success != null) {
 					$('#messageInfor').html(data.success);
@@ -163,16 +174,22 @@
 				<tr class="info">
 					<td align="center" colspan="2"><strong>Đăng nhập đặt món online</strong></td>
 				</tr>
+				<tr class="info">
+					<td align="center" colspan="2">
+						<span id="l_messageError" style="color:red;"><!--  --></span>
+						<span id="l_messageInfor" style="color:green;"><!--  --></span>
+					</td>
+				</tr>
 				<tr>
 					<td align="right">Mã số KH(<label style="color:red;">*</label>):
 					</td>
 					<td>
-						<input name="code" class="textInput"/> 
+						<input id="l_code" class="textInput" placeholder="Mã khách hàng"/> 
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
-						<input type="button" onclick="" value="Đăng nhập"/>
+						<input type="button" onclick="doLogin();" value="Đăng nhập"/>
 						<br/>
 						<br/>
 						<a href="#" onclick="openRegisterDialog();return false;">Đăng ký đặt món online</a>
