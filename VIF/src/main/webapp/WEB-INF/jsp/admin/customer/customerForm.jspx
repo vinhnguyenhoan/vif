@@ -21,12 +21,19 @@
 	
 	<![CDATA[
 	<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
-	<script src="/scripts/thickbox-compressed.js"></script>
-		<script src="/js/agent.js"></script>
+	<script src="/scripts/thickbox-compressed.js?v=2"></script>
+	<script src="/js/agent.js"></script>
+	<script type="text/javascript" src="${scriptsFolder}/user.js?v=2"></script>
+	<script type="text/javascript" src="${scriptsFolder}/commonfilter.js?v=2"></script>
 	
 	<script type="text/javascript">
 		function updateCustomer() {
 			document.forms[0].submit();
+		}
+		
+		function replaceCustomer() {
+			$(document.forms[0]).append('<input name="override" value="true" type="hidden"/>');
+			updateCustomer();
 		}
 		
 		function changeDist(el) {
@@ -49,9 +56,44 @@
 			});
 		}
 		
+		function closeConfirm() {
+			tb_remove('Xác nhận Tồn tại khách hàng', 'TB_inline?height=65&amp;width=300&amp;inlineId=confirmDialog');
+		}
+		
+		$(document).ready(
+			function() {
+				if ('${error_code}') {
+					tb_show('Xác nhận Tồn tại khách hàng', 'TB_inline?height=65&amp;width=300&amp;inlineId=confirmDialog');
+				}
+			}
+		);
 	</script>
 	
 ]]>
+
+<div class="formContent" id="confirmDialog" style="display:none">
+	<table width="100%" cellpadding="0" cellspacing="5"
+		class="TableThongTinTram">
+		<col width="20%" />
+		<col width="80%" />
+
+		<tr>
+			<td><label> <!-- Empty --> </label></td>
+			<td><a href="javascript:;"
+				onclick="javascript:replaceCustomer();" class="btn-1"
+				title="Lưu thông tin món ăn"><span><span>Lưu đè</span></span></a>
+				
+				<a href="javascript:;"
+				onclick="javascript:closeConfirm();" class="btn-1"
+				title="Lưu thông tin món ăn"><span><span>Hủy</span></span></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>&#160;</td>
+		</tr>
+	</table>
+</div>
 
 	<form:form action="${requestScope.customerFormLink}" method="POST" commandName="customer" name="customer">
 		<form:hidden path="id" />
@@ -185,6 +227,5 @@
 			</table>
 		</div>
 	</form:form>
-	<!--- TODO Search Order Item ? <jsp:include page="searchDaiLyForm.jspx"></jsp:include> -->
 
 </div>

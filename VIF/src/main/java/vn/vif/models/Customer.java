@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "CUSTOMER")
-public class Customer implements java.io.Serializable {
+public class Customer implements OverrideableEntity, java.io.Serializable {
 
 	private static final long serialVersionUID = -2438072521185484380L;
 	
@@ -37,6 +37,8 @@ public class Customer implements java.io.Serializable {
 	private String note;
 
 	private Boolean active;
+	@Transient
+	private boolean override;
 	
 	public Customer() {
 	}
@@ -153,6 +155,15 @@ public class Customer implements java.io.Serializable {
 
 	public void setAddressNoteId(Long addressNoteId) {
 		this.addressNoteId = addressNoteId;
+	}
+
+	public void setOverride(boolean override) {
+		this.override = override;
+	}
+
+	@Transient
+	public boolean getOverride() {
+		return this.override;
 	}
 	
 }

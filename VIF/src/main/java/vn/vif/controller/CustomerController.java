@@ -113,8 +113,17 @@ public class CustomerController {
 				}
 				customer.setAddressNote(aN);
 				customer.setPhone(VIFUtils.formatPhoneNumber(customer.getPhone()));
-				if (customer.getId() != null) {
-					Customer customerFromDB = customerService.find(customer.getId());
+				if (customer.getId() != null || customer.getOverride()) {
+					Customer customerFromDB = null;
+					if (customer.getOverride()) {
+						List<Customer> listCusFromPhone = customerService.list(new String[]{"phone"}, new Object[]{customer.getPhone()}, true, null, -1, -1);
+						if (listCusFromPhone != null && listCusFromPhone.size() > 0) {
+							customerFromDB = listCusFromPhone.get(0);
+							customer.setId(customerFromDB.getId());
+						}
+					} else {
+						customerFromDB = customerService.find(customer.getId());
+					}
 					customerFromDB.setActive(customer.getActive());
 					customerFromDB.setAddress(customer.getAddress());
 					customerFromDB.setAddressNote(aN);

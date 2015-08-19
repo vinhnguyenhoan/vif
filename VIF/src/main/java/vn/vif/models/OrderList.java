@@ -33,6 +33,8 @@ public class OrderList implements java.io.Serializable {
 	
 	private List<OrderDetail> details;
 	
+	private String address;
+	
 	@Transient
 	private List<OrderLineDetail> todayDetailLines;
 	@Transient
@@ -229,6 +231,15 @@ public class OrderList implements java.io.Serializable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	@Column(name = "ADDRESS")
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

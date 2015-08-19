@@ -108,15 +108,7 @@
 								size="${size}" id="orderItemBottomPagination" /></td>
 					</tr>
 				</table>
-				
-				<a href="javascript:"
-					onclick="submitActionForm('orderItemList', '/admin/orderItem/list/saveDate')" class="btn-1"
-					title="Chuyển ngày bán"><span><span style="width:90px">Chuyển ngày bán</span></span></a>
 					
-					<a href="javascript:"
-					onclick="openDialog()" class="btn-1"
-					title="Chuyển ngày bán"><span><span style="width:90px">Mở dialog ví dụ</span></span></a>
-				
 </form:form>
 		</div>
 	</div>
