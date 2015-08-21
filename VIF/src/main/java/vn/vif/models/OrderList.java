@@ -1,5 +1,7 @@
 package vn.vif.models;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,9 +17,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import vn.vif.services.OrderItemService;
+
 @Entity
 @Table(name = "ORDER_LIST")
-public class OrderList implements java.io.Serializable {
+public class OrderList implements OverrideableEntity, java.io.Serializable {
 
 	private static final long serialVersionUID = -1268094244606364985L;
 
@@ -60,6 +64,9 @@ public class OrderList implements java.io.Serializable {
 	private List<Integer> listAllDayNumber;
 	@Transient
 	private List<String> listNoteSpec;
+	
+	@Transient
+	private boolean override;
 	
 	public OrderList() {
 	}
@@ -104,6 +111,28 @@ public class OrderList implements java.io.Serializable {
 		this.details = details;
 	}
 
+	public void updateDetailsForView(OrderItemService orderItemService) {
+		List<OrderLineDetail> orderListToday = new LinkedList<OrderLineDetail>();
+		List<OrderLineDetail> orderListAllday = new LinkedList<OrderLineDetail>();
+		
+		int index = 0;
+		for (OrderDetail detail : details) {
+			OrderItem item = null;
+			if (detail.getOrderItemId() != null) {
+				item = orderItemService.find(detail.getOrderItemId());
+			}
+			OrderLineDetail lineDetail = new OrderLineDetail(index++, item, detail);
+			if (item != null && item.getSpecItem() != null && item.getSpecItem()) {
+				orderListAllday.add(lineDetail);
+			} else {
+				orderListToday.add(lineDetail);
+			}
+		}
+		this.setTodayDetailLines(orderListToday);
+
+		this.setAllDayDetailLines(orderListAllday);
+	}
+	
 	@Transient
 	public Customer getCustomerEditing() {
 		if (customerEditing == null) {
@@ -121,8 +150,60 @@ public class OrderList implements java.io.Serializable {
 		return todayDetailLines;
 	}
 	
-	public void setTodayDetailLines(List<OrderLineDetail> todayDetailLines) {
-		this.todayDetailLines = todayDetailLines;
+	public void setTodayDetailLines(List<OrderLineDetail> orderListToday) {
+		this.todayDetailLines = orderListToday;
+		//		List<Long> listOrderItemId = new ArrayList<Long>(orderListToday.size());
+		//		List<Integer> listOrderItemNumber = new ArrayList<Integer>(orderListToday.size());
+		//		List<Integer> listOrderItemMiniNumber = new ArrayList<Integer>(orderListToday.size());
+		//		List<String> listNote = new ArrayList<String>(orderListToday.size());
+		//		for (OrderLineDetail oL : orderListToday) {
+		//			listOrderItemId.add(oL.getOrderItem().getId());
+		//			listOrderItemNumber.add(oL.getOrderDetail().getNumber());
+		//			listOrderItemMiniNumber.add(oL.getOrderDetail().getMiniNumber());
+		//			listNote.add(oL.getOrderDetail().getNote());
+		//		}
+		//		this.setListOrderItemId(listOrderItemId);
+		//		this.setListNumber(listOrderItemNumber);
+		//		this.setListMiniNumber(listOrderItemMiniNumber);
+		//		this.setListNote(listNote);
+		List<Long> listOrderItemId = new ArrayList<Long>(orderListToday.size());
+		List<Integer> listOrderItemNumber = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemPrice = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemMiniNumber = new ArrayList<Integer>(orderListToday.size());
+		List<Integer> listOrderItemMiniPrice = new ArrayList<Integer>(orderListToday.size());
+		List<String> listNote = new ArrayList<String>(orderListToday.size());
+		for (OrderLineDetail oL : orderListToday) {
+			listOrderItemId.add(oL.getOrderItem().getId());
+			listOrderItemNumber.add(oL.getOrderDetail().getNumber());
+			listOrderItemPrice.add(oL.getOrderDetail().getPrice());
+			listOrderItemMiniNumber.add(oL.getOrderDetail().getMiniNumber());
+			listOrderItemMiniPrice.add(oL.getOrderDetail().getMiniPrice());
+			listNote.add(oL.getOrderDetail().getNote());
+		}
+		this.setListOrderItemId(listOrderItemId);
+		this.setListNumber(listOrderItemNumber);
+		this.setListMiniNumber(listOrderItemMiniNumber);
+		this.setListPrice(listOrderItemPrice);
+		this.setListMiniPrice(listOrderItemMiniPrice);
+		this.setListNote(listNote);
+	}
+
+	public void setTodayDetailLinesFromEditing(List<OrderLineDetail> orderListToday) {
+		this.todayDetailLines = orderListToday;
+		if (listOrderItemId == null) {
+			return;
+		}
+		int index = 0;
+		for (Long itemId : listOrderItemId) {
+			OrderDetail detail = todayDetailLines.get(index).getOrderDetail();
+			detail.setOrderItemId(itemId);
+			detail.setMiniNumber(this.getListMiniNumber().get(index));
+			detail.setNumber(this.getListNumber().get(index));
+			detail.setMiniPrice(this.getListMiniPrice().get(index));
+			detail.setPrice(this.getListPrice().get(index));
+			detail.setNote(this.getListNote().get(index));
+			++index;
+		}
 	}
 
 	@Transient
@@ -157,10 +238,52 @@ public class OrderList implements java.io.Serializable {
 		return allDayDetailLines;
 	}
 
-	public void setAllDayDetailLines(List<OrderLineDetail> allDayDetailLines) {
-		this.allDayDetailLines = allDayDetailLines;
+	public void setAllDayDetailLines(List<OrderLineDetail> orderListAllDay) {
+		this.allDayDetailLines = orderListAllDay;
+//		List<Long> listOrderItemAllDayId = new ArrayList<Long>(orderListAllday.size());
+//		List<Integer> listOrderItemAllDayNumber = new ArrayList<Integer>(orderListAllday.size());
+//		List<String> listNoteSpec = new ArrayList<String>(orderListToday.size());
+//		for (OrderLineDetail oL : orderListAllday) {
+//			listOrderItemAllDayId.add(oL.getOrderItem().getId());
+//			listOrderItemAllDayNumber.add(oL.getOrderDetail().getNumber());
+//			listNoteSpec.add(oL.getOrderDetail().getNote());
+//		}
+//		this.setListAllDaytOrderItemId(listOrderItemAllDayId);
+//		this.setListAllDayNumber(listOrderItemAllDayNumber);
+//		this.setListNoteSpec(listNoteSpec);
+
+		List<Long> listOrderItemAllDayId = new ArrayList<Long>(orderListAllDay.size());
+		List<Integer> listOrderItemAllDayNumber = new ArrayList<Integer>(orderListAllDay.size());
+		List<Integer> listOrderItemAllDayPrice = new ArrayList<Integer>(orderListAllDay.size());
+		List<String> listNoteSpec = new ArrayList<String>(orderListAllDay.size());
+		for (OrderLineDetail oL : orderListAllDay) {
+			listOrderItemAllDayId.add(oL.getOrderItem().getId());
+			listOrderItemAllDayNumber.add(oL.getOrderDetail().getNumber());
+			listOrderItemAllDayPrice.add(oL.getOrderDetail().getPrice());
+			listNoteSpec.add(oL.getOrderDetail().getNote());
+		}
+		this.setListAllDaytOrderItemId(listOrderItemAllDayId);
+		this.setListAllDayNumber(listOrderItemAllDayNumber);
+		this.setListAllDayPrice(listOrderItemAllDayPrice);
+		this.setListNoteSpec(listNoteSpec);
 	}
 
+	public void setAllDayDetailLinesFromEditing(List<OrderLineDetail> orderListAllDay) {
+		this.allDayDetailLines = orderListAllDay;
+		if (getListAllDaytOrderItemId() == null) {
+			return;
+		}
+		int index = 0;
+		for (Long itemId : getListAllDaytOrderItemId()) {
+			OrderDetail detail = allDayDetailLines.get(index).getOrderDetail();
+			detail.setOrderItemId(itemId);
+			detail.setNumber(this.getListAllDayNumber().get(index));
+			detail.setPrice(this.getListAllDayPrice().get(index));
+			detail.setNote(this.getListAllDayNote().get(index));
+			++index;
+		}
+	}
+	
 	@Transient
 	public List<Integer> getListAllDayNumber() {
 		return listAllDayNumber;
@@ -189,7 +312,7 @@ public class OrderList implements java.io.Serializable {
 	}
 
 	@Transient
-	public List<String> getListNoteSpec() {
+	public List<String> getListAllDayNote() {
 		return listNoteSpec;
 	}
 
@@ -240,6 +363,15 @@ public class OrderList implements java.io.Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public void setOverride(boolean override) {
+		this.override = override;
+	}
+
+	@Transient
+	public boolean getOverride() {
+		return this.override;
 	}
 
 }
