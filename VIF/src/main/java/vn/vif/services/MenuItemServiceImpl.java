@@ -31,16 +31,28 @@ public class MenuItemServiceImpl extends GeneralServiceImpl<MenuItem> implements
 		Calendar ca = Calendar.getInstance();
 		// get current week
 		int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
+		final int currentDay = ca.get(Calendar.DAY_OF_WEEK);
 		// get start week in setting
 		int startWeek = settingService.getSetting().getStartWeek();
 		// calculate the week
 		final int week = (Math.abs(currentWeek - startWeek) % 4) + 1;
+		final int nextWeek = (Math.abs(currentWeek + 1 - startWeek) % 4) + 1;
 		List<MenuItem> list = list(new Filter() {
 
 			@Override
 			public Criteria getCriteria(Session session) {
 				Criteria cr = session.createCriteria(getEntityClass());
-				cr.add(Restrictions.eq("week", week));
+				cr.add(Restrictions.disjunction()
+						.add(
+								Restrictions.conjunction()
+								.add(Restrictions.eq("week", week))
+								.add(Restrictions.ge("day", currentDay))
+						).add(
+								Restrictions.conjunction()
+								.add(Restrictions.eq("week", nextWeek))
+								.add(Restrictions.lt("day", currentDay))
+						)
+						);
 				return cr;
 			}
 			

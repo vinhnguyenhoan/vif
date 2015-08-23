@@ -1,0 +1,139 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	class="OrderItemDetailForm" 
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:form="http://www.springframework.org/tags/form">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8"
+		pageEncoding="UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="jsFolder" value="/resources/js" />
+	<spring:url var="orderItemListURL" value="/admin/orderItem/list"/>
+	<spring:url var="scriptsFolder" value="/scripts" />
+	<spring:url var="cssFolder" value="/css" />
+	<spring:url var="url" value="/admin/orderItem/getWard" />
+	
+	<![CDATA[
+		<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
+		<script src="${scriptsFolder}/thickbox-compressed.js"></script>
+	<script type="text/javascript">
+		function openDialog() {
+			tb_show('Example','TB_inline?height=450&amp;width=700&amp;inlineId=exampleDialog');
+		}
+		
+		function changeDist(el) {
+			var $el = $(el),
+				$w = $('#ward');// jquery
+			
+			var data = "dist=" + $el.val();
+			
+			var url = "${url}";
+			$.ajax({
+				type: 'POST', 
+				dataType:'json', 
+				url: url, 
+				data : data,
+				success: function(data) {
+					renderComboBox($w, data, $w[0].firstChild.text);
+				}
+			});
+		}
+	</script>
+	
+]]>
+
+		<div class="formContent" id="exampleDialog" style="display:none">
+			<table width="100%" cellpadding="0" cellspacing="5"
+				class="TableThongTinTram">
+				<col width="20%" />
+				<col width="80%" />
+				<tr>
+					<td></td>
+					<td>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+				<tr class="info">
+					<td align="right"><strong>Thông tin món ăn</strong></td>
+				</tr>
+				<tr>
+					<td align="right">Tên(<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<input path="name" class="textInput"/> 
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Mô tả:
+					</td>
+					<td>
+						<input path="desc" class="textInput numberField"/> 
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Giá(<label class="errorMessage">*</label>):
+					</td>
+					<td>
+						<input path="price" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Giá mini:
+					</td>
+					<td>
+						<input path="miniPrice" class="textInput numberField" onkeyup="restrictInputDoubleOnly(event,this)"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Chọn quận:
+					</td>
+					<td>
+						<select id="dist" class="select2_combo" style="width:150px" onchange="changeDist(this)">
+							<option value="">--- Chọn quận ---</option>
+							<option value="1">Quận 1</option>
+							<option value="2">Quận 2</option>
+						</select>
+						
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Chọn phường:
+					</td>
+					<td>
+						<select id="ward" class="select2_combo" style="width:150px">
+							<option value="">--- Chọn phường ---</option>
+						</select>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>&#160;</td>
+				</tr>
+
+				<tr>
+					<td><label> <!-- Empty --> </label></td>
+					<td><a href="javascript:;"
+						onclick="javascript:updateOrderItem();" class="btn-1"
+						title="Lưu thông tin món ăn"><span><span>Lưu</span></span></a>
+						<a href="${orderItemListURL}" class="btn-1"
+						title="Danh sách món ăn"><span><span>Trở về danh sách</span></span></a>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>&#160;</td>
+				</tr>
+			</table>
+		</div>
+	<!--- TODO Search Order Item ? <jsp:include page="searchDaiLyForm.jspx"></jsp:include> -->
+
+</div>

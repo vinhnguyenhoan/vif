@@ -175,7 +175,7 @@ public class OrderController {
 						// TODO bindingResult new path
 						customerController.addUpdateCustomer(order.getCustomer(), uiModel, bindingResult, "customerEditing.");
 						// TODO fix null
-						if (!(boolean) uiModel.asMap().get("success")) {
+						if (!(Boolean) uiModel.asMap().get("success")) {
 							uiModel.addAttribute("orderList", order);	
 							return "orderDetail";
 						}
