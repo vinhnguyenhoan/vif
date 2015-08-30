@@ -33,6 +33,16 @@
 			tb_show('Đăng ký','TB_inline?height=330&amp;width=400&amp;inlineId=registerDialog');
 			$('#TB_closeAjaxWindow')[0].childNodes[1].remove();
 		}
+		function order(day, id, mini) {
+			clearForm();
+			tb_show('Đặt món','TB_inline?height=560&amp;width=600&amp;inlineId=order_'+day);
+			$('#TB_closeAjaxWindow')[0].childNodes[1].remove();
+			if (id != null) {
+				var $it = $('#o_'+day+'_'+id+(mini?'_miniPrice':'_price'));
+				$it.focus();
+				$it.select();
+			}
+		}
 		function clearForm() {
 			var childs = $("#loginDialog").children();
 			for (var i = 0; i < childs.length; i++) {
@@ -184,7 +194,7 @@
 					<td align="right">Mã số KH(<label style="color:red;">*</label>):
 					</td>
 					<td>
-						<input id="l_code" class="textInput" placeholder="Mã khách hàng"/> 
+						<input id="l_code" class="textInput" placeholder="Mã khách hàng" onkeypress="if((event.keyCode || event.which)==13)doLogin();"/> 
 					</td>
 				</tr>
 				<tr>

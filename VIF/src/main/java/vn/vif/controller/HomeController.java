@@ -1,5 +1,8 @@
 package vn.vif.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +12,16 @@ import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.AutoRetryHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.hibernate.validator.util.privilegedactions.GetMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -103,7 +115,7 @@ public class HomeController {
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}*/
 		
-		System.out.println(VIFUtils.formatPhoneNumber("+849876543"));
+//		System.out.println(VIFUtils.formatPhoneNumber("+849876543"));
 		
 		return "web";
 	}
@@ -175,5 +187,26 @@ public class HomeController {
 			data.put("success", "Đăng nhập thành công!");
 		}
 		return data;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/ip")
+	public String test() {
+		try {
+			HttpClient client = HttpClientBuilder.create().build();
+			HttpUriRequest request = new HttpGet("https://www.iplocation.net/find-ip-address");
+			HttpResponse res = client.execute(request );
+			BufferedReader br = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+			String line, content = "";
+			while ((line = br.readLine()) != null) {
+				content += line;
+			}
+			return content;
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "IP not found!";
 	}
 }
