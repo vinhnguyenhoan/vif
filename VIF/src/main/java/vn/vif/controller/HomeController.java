@@ -3,6 +3,7 @@ package vn.vif.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.AutoRetryHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.hibernate.validator.util.privilegedactions.GetMethod;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,9 +31,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import vn.vif.models.Customer;
 import vn.vif.models.District;
 import vn.vif.models.MenuItem;
+import vn.vif.models.OrderDetail;
+import vn.vif.models.OrderInfor;
+import vn.vif.models.OrderItem;
+import vn.vif.models.OrderList;
 import vn.vif.services.CustomerService;
 import vn.vif.services.MenuItemService;
 import vn.vif.services.OrderItemService;
+import vn.vif.services.OrderService;
 import vn.vif.utils.VIFUtils;
 @Controller
 public class HomeController {
@@ -47,6 +50,8 @@ public class HomeController {
 	private MenuItemService menuItemService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private OrderService orderService;
 
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -189,6 +194,48 @@ public class HomeController {
 		return data;
 	}
 	
+	@RequestMapping(value = "/doOrder")
+	@ResponseBody
+	public Map<String, Object> doOrder(@ModelAttribute("order") @Valid OrderInfor order) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Customer customer = customerService.getLogin();
+		String error = null;
+		if (customer == null) {
+			error = "Vui lòng truy cập vào web và đăng nhập lại";
+		} if (order.ids == null || order.ids.isEmpty()) {
+			error = "Chưa chọn món ăn";
+		} else if (order.quantity == null || order.miniQuantity == null || (order.quantity.isEmpty() && order.miniQuantity.isEmpty())) {
+			error = "Chưa nhập số số lượng món ăn";
+		} else if (order.quantity.size() != order.miniQuantity.size()) {
+			error = "Dữ liệu đặt món không đồng bộ";
+		}
+		if (error != null) {
+			data.put("error", error);
+		} else {
+			OrderList orderList = new OrderList();
+			orderList.setCustomer(customer);
+			List<OrderDetail> details = new ArrayList<OrderDetail>();
+			orderList.setDetails(details);
+			for (int i = 0; i < order.ids.size(); i++) {
+				OrderDetail detail = new OrderDetail();
+				OrderItem orIt = orderItemService.find(order.ids.get(i));
+				if (orIt == null) {
+					continue;
+				}
+				detail.setOrderItemId(orIt.getId());
+				detail.setNumber(order.quantity.get(i));
+				detail.setMiniNumber(order.miniQuantity.get(i));
+				detail.setPrice(orIt.getPrice());
+				detail.setMiniNumber(orIt.getMiniPrice());
+				detail.setNote(order.description.get(i));
+				detail.setOrder(orderList);
+				details.add(detail);
+			}
+			orderService.add(orderList);
+			data.put("success", "Quý khách đã đặt món thành công. Chúng tôi sẽ liên hệ để xác nhận cho quý khách sớm nhất có thể. Xin cám ơn!");
+		}
+		return data;
+	}	
 	@ResponseBody
 	@RequestMapping(value = "/ip")
 	public String test() {
@@ -199,7 +246,7 @@ public class HomeController {
 			BufferedReader br = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
 			String line, content = "";
 			while ((line = br.readLine()) != null) {
-				content += line;
+				content += line.replaceAll("src=\"", "src=\"https://www.iplocation.net/").replaceAll("href=\"", "href=\"https://www.iplocation.net/");
 			}
 			return content;
 		} catch (ClientProtocolException e) {

@@ -38,6 +38,8 @@
 <div id="wrap">
 
 <spring:url var="home" value="/" />
+<spring:url var="orderUrl" value="/doOrder" />
+<spring:url var="loading" value="scripts/colorbox/example1/images/loading.gif"/>
 <![CDATA[
 <script type="text/javascript">
 	function getAppRootPath() {
@@ -102,8 +104,7 @@
 		var id = el.id.split('_')[2];
 		var its = $('div[parent="order_' + day + '"]').find('input[id^="o_"]');
 		var count = 0, countMin = 0, total = 0, totalMin = 0;
-		for (var i=0; i < its.length; i+=2) {
-			day = its[i].id.split('_')[1];
+		for (var i=0; i < its.length; i+=3) {
 			id = its[i].id.split('_')[2];
 			var c = getInt(its[i]);
 			var cm = getInt(its[i + 1]);
@@ -119,6 +120,56 @@
 		$('#o_'+day+'_count').text(formatNumber(count));
 		$('#o_'+day+'_count_min').text(formatNumber(countMin));
 		$('#o_'+day+'_total').text(formatNumber(total + totalMin));
+	}
+	function doOrder(day) {
+		var its = $('div[parent="order_' + day + '"]').find('input[id^="o_"]');
+		var count = 0, countMin = 0, total = 0, totalMin = 0;
+		var ids = '', quantity = '', miniQuantity = '', description = '';
+		for (var i=0; i < its.length; i+=3) {
+			id = its[i].id.split('_')[2];
+			var c = getInt(its[i]);
+			var cm = getInt(its[i + 1]);
+			var des = its[i + 2].value;
+			if (c != 0 || cm != 0) {
+				ids += (i==0?'':'&') + 'ids=' + id;
+				quantity += (i==0?'':'&') + 'quantity=' + c;
+				miniQuantity += (i==0?'':'&') + 'miniQuantity=' + cm;
+				description += (i==0?'':'&') + 'description=' + des;
+			}
+		}
+		if (ids == '') {
+			$('#o_'+day+'_messageError').html('Chưa nhập số lượng món');
+			return;
+		}
+		var data = ids + '&' + quantity + '&' + miniQuantity + '&' + description;
+		$('#o_'+day+'_messageError').html('');
+		$('#o_'+day+'_messageInfor').html('<img src="${loading}"/>');
+		
+		$.ajax({
+		  type: "POST",
+		  url: '${orderUrl}',
+		  data: data,
+		  success: function(data) {
+		  	$('#o_'+day+'_messageInfor').html('');
+			if (data.error != null) {
+				$('#o_'+day+'_messageError').html(data.error);
+			}
+			if (data.success != null) {
+				$('#o_'+day+'_messageInfor').html(data.success);
+			}
+		  },
+		  dataType: 'json',
+		  contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+		});
+	}
+	function doReset(day) {
+		var its = $('div[parent="order_' + day + '"]').find('input[id^="o_"]');
+		for (var i=0; i < its.length; i++) {
+			its[i].value='';
+		}
+		$('#o_'+day+'_count').text('0');
+		$('#o_'+day+'_count_min').text('0');
+		$('#o_'+day+'_total').text('0đ');
 	}
 </script>
 ]]>
@@ -373,18 +424,21 @@
 	<div style="display:none" id="order_${d.id}" align="center">
 		<div parent="order_${d.id}">
 			<table width="100%" cellpadding="0" cellspacing="5" parent="loginDialog">
-				<col/>
-				<col width="20%" />
-				<col width="20%" />
-				<col width="20%" />
 				<tr class="info">
-					<td align="center" colspan="4"><strong>Đặt món ngày ${d.name} (${d.date})</strong></td>
+					<td align="center" colspan="5"><strong>Đặt món ngày ${d.name} (${d.date})</strong></td>
 				</tr>
 				<tr class="info">
-					<td align="center" colspan="4">
+					<td align="center" colspan="5">
 						<span id="o_${d.id}_messageError" style="color:red;"><!--  --></span>
 						<span id="o_${d.id}_messageInfor" style="color:green;"><!--  --></span>
 					</td>
+				</tr>
+				<tr class="info">
+					<td><!--  --></td>
+					<td width="15%" align="center"><b>SL</b></td>
+					<td width="15%" align="center"><b>SL mini</b></td>
+					<td width="27%" align="center"><b>Ghi chú</b></td>
+					<td width="15%" align="center"><b>Thành tiền</b></td>
 				</tr>
 				<c:forEach items="${orderItemData[d.id]}" var="it" varStatus="status">
 					<tr class="info">
@@ -397,13 +451,16 @@
 						<td align="center">
 							<input id="o_${d.id}_${it.orderItem.id}_miniPrice" onkeyup="restrictInputDoubleOnly(event,this);calculate(this);" price="${it.orderItem.miniPrice}" style="width:50px"/> x <br/><fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ
 						</td>
+						<td align="center">
+							<input id="o_${d.id}_${it.orderItem.id}_des" style="width:150px"/>
+						</td>
 						<td align="right">
 							<span id="o_${d.id}_${it.orderItem.id}_total">0</span>đ
 						</td>
 					</tr>
 				</c:forEach>
 				<tr>	
-					<td colspan="4" align="center">
+					<td colspan="5" align="center">
 						<strong>Món ngon</strong>
 					</td>
 				</tr>
@@ -417,6 +474,9 @@
 						</td>
 						<td align="center">
 							<input id="o_${d.id}_${it.orderItem.id}_miniPrice" onkeyup="restrictInputDoubleOnly(event,this);calculate(this);" price="${it.orderItem.miniPrice}" style="width:50px"/> x <br/><fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ
+						</td>
+						<td align="center">
+							<input id="o_${d.id}_${it.orderItem.id}_des" style="width:150px"/>
 						</td>
 						<td align="right">
 							<span id="o_${d.id}_${it.orderItem.id}_total">0</span>đ
@@ -434,12 +494,16 @@
 						<b><span id="o_${d.id}_count_min">0</span></b>
 					</td>
 					<td align="right">
+						
+					</td>
+					<td align="right">
 						<b><span id="o_${d.id}_total">0</span>đ</b>
 					</td>
 				</tr>
 				<tr>	
-					<td colspan="4" align="center">
+					<td colspan="5" align="center">
 						<input type="button" onclick="doOrder(${d.id});" value="Đặt món"/>
+						<input style="margin-left:20px;" type="button" onclick="doReset(${d.id});" value="Làm mới"/>
 					</td>
 				</tr>
 			</table>
@@ -536,6 +600,15 @@
 				}
 			});
 		}, 2000);
+		if (document.getElementsByTagName('frameset').length > 0) {
+			var t = document.createElement('title');
+			t.innerHTML='VIF';
+			$('head').appendChild(t);
+			t = document.createElement('link');
+			t.rel='shortcut icon';
+			t.href='http://113.161.108.115:8080/test/resources/core/images/logo.png';
+			$('head').appendChild(t);	
+		}
 	});
 </script>
 <!-- Analytics -->

@@ -1,10 +1,14 @@
 package vn.vif.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +21,7 @@ public class OrderDetail implements java.io.Serializable {
 
 	private Long orderItemId;
 	
-	private Long orderId;
+	private OrderList order;
 	
 	private Integer price;
 	
@@ -52,13 +56,14 @@ public class OrderDetail implements java.io.Serializable {
 		this.orderItemId = orderItemId;
 	}
 
-	@Column(name = "ORDER_ID", precision = 10, scale = 0)
-	public Long getOrderId() {
-		return orderId;
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH })
+	@JoinColumn(name = "ORDER_ID")
+	public OrderList getOrder() {
+		return order;
 	}
 
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setOrder(OrderList order) {
+		this.order = order;
 	}
 
 	@Column(name = "PRICE", precision = 9)

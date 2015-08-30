@@ -5,7 +5,7 @@
 	<jsp:output omit-xml-declaration="yes" />
 
 	<spring:url var="imageFolder" value="/images" />
-	<spring:url var="home" value="/admin" />
+	<spring:url var="home" value="/admin/" />
 	<spring:url var="userListURL" value="/admin/user/list"  />
 	<spring:url var="addUserURL" value="/admin/user/add"  />
     <spring:url var="changePasswdURL" value="/admin/settings/changepasswd"  />
