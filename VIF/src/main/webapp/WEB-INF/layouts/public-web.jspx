@@ -38,13 +38,90 @@
 <div id="wrap">
 
 <spring:url var="home" value="/" />
-
+<![CDATA[
 <script type="text/javascript">
 	function getAppRootPath() {
 		return '${home}';
 	}
+	function restrictInputDoubleOnly(event, sourceElement) {
+		var value = sourceElement.value;
+		var editedValue = "";
+		for ( var i = 0; i < value.length; i++) {
+			var currentChar = value[i];
+			if (currentChar == '.') {
+				if (editedValue.indexOf('.') < 0) {
+					editedValue = editedValue + currentChar;
+				}
+			} else {
+				if (isNumber(currentChar)) {
+					editedValue = editedValue + currentChar;
+				}
+			}
+		}
+		sourceElement.value = editedValue;
+	}
+	function isNumber(character) {
+		try {
+			var number = Number(character);
+			return number >= 0 && number <= 9;
+		} catch (e) {
+			return false;
+		}
+	}
+	function getPrice(el) {
+		try {
+			el = parseInt($(el).attr('price'));
+			if (isNaN(el)) {
+				return 0;
+			}
+			return el;
+		} catch (ex) {
+			return 0;
+		}
+	}
+	function getInt(el) {
+		try {
+			el = parseInt(el.value);
+			if (isNaN(el)) {
+				return 0;
+			} 
+			return el;
+		} catch (ex) {
+			return 0;
+		}
+	}
+	function formatNumber(txt) {
+		if (txt) {
+			return (txt + '').replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+		} else {
+			return txt;
+		}
+	}
+	function calculate(el) {
+		var day = el.id.split('_')[1];
+		var id = el.id.split('_')[2];
+		var its = $('div[parent="order_' + day + '"]').find('input[id^="o_"]');
+		var count = 0, countMin = 0, total = 0, totalMin = 0;
+		for (var i=0; i < its.length; i+=2) {
+			day = its[i].id.split('_')[1];
+			id = its[i].id.split('_')[2];
+			var c = getInt(its[i]);
+			var cm = getInt(its[i + 1]);
+			var p = getPrice(its[i]);
+			var pm = getPrice(its[i + 1]);
+			count += c;
+			countMin += cm;
+			var to = c*p, tom = cm*pm;
+			total += to;
+			totalMin += tom;
+			$('#o_'+day+'_'+id+'_total').text(formatNumber(to + tom));
+		}
+		$('#o_'+day+'_count').text(formatNumber(count));
+		$('#o_'+day+'_count_min').text(formatNumber(countMin));
+		$('#o_'+day+'_total').text(formatNumber(total + totalMin));
+	}
 </script>
-
+]]>
 <!-- + -->
 
 <header role="banner">
@@ -64,7 +141,7 @@
 			<br/>
 			<c:choose>
 				<c:when test="${login != null}">
-					<a href="#" onclick="openLoginDialog();return false;">
+					<a href="#" onclick="order(${today});return false;">
 						<span id="login-span">
 							${login.name}
 						</span>
@@ -111,7 +188,7 @@
 			</ul>
 		</nav>
 		<nav role="navigation-order">
-			<a href="#"><img alt="Đặt món trực tuyến" src="${core}/images/order-button.png" /></a>
+			<a href="#" onclick="order(${today});return false;"><img alt="Đặt món trực tuyến" src="${core}/images/order-button.png" /></a>
 			<br/>
 			<img id="time" src="${core}/images/order-time.png" />
 			<br/>
@@ -207,14 +284,14 @@
 										<span class="name">${it.orderItem.name}</span><br/>
 										<span class="price" style="float:left">
 											<c:if test="${login != null}">
-												<a href="#"><img src="${core}/images/order.png"/></a>
+												<a href="#" title="Đặt món" onclick="order(${d.id}, ${it.id});return false;"><img src="${core}/images/order.png"/></a>
 											</c:if>
 											<fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ
 										</span>
 										<c:if test="${it.orderItem.miniPrice != null}">
 											<span class="price mini">
 												<c:if test="${login != null}">
-													<a href="#"><img src="${core}/images/order.png"/></a>
+													<a href="#" title="Đặt món" onclick="order(${d.id}, ${it.id}, true);return false;"><img src="${core}/images/order.png"/></a>
 												</c:if>
 												Mini: <fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ</span>
 										</c:if>
@@ -268,7 +345,7 @@
 										<span class="name">${it.orderItem.name}</span><br/>
 										<span class="price spec">
 											<c:if test="${login != null}">
-												<a href="#"><img src="${core}/images/order.png"/></a>
+												<a href="#" title="Đặt món" onclick="order(${d.id}, ${it.id});return false;"><img src="${core}/images/order.png"/></a>
 											</c:if>
 											<fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ</span>
 									</header>
@@ -290,6 +367,85 @@
 	</section><!-- services -->
 
 </div><!-- content -->
+
+<!-- order -->
+<c:forEach items="${dates}" var="d" varStatus="status">
+	<div style="display:none" id="order_${d.id}" align="center">
+		<div parent="order_${d.id}">
+			<table width="100%" cellpadding="0" cellspacing="5" parent="loginDialog">
+				<col/>
+				<col width="20%" />
+				<col width="20%" />
+				<col width="20%" />
+				<tr class="info">
+					<td align="center" colspan="4"><strong>Đặt món ngày ${d.name} (${d.date})</strong></td>
+				</tr>
+				<tr class="info">
+					<td align="center" colspan="4">
+						<span id="o_${d.id}_messageError" style="color:red;"><!--  --></span>
+						<span id="o_${d.id}_messageInfor" style="color:green;"><!--  --></span>
+					</td>
+				</tr>
+				<c:forEach items="${orderItemData[d.id]}" var="it" varStatus="status">
+					<tr class="info">
+						<td>
+							${it.orderItem.name}
+						</td>
+						<td align="center">
+							<input id="o_${d.id}_${it.orderItem.id}_price" onkeyup="restrictInputDoubleOnly(event,this);calculate(this);" price="${it.orderItem.price}" style="width:50px"/> x <br/><fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ
+						</td>
+						<td align="center">
+							<input id="o_${d.id}_${it.orderItem.id}_miniPrice" onkeyup="restrictInputDoubleOnly(event,this);calculate(this);" price="${it.orderItem.miniPrice}" style="width:50px"/> x <br/><fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ
+						</td>
+						<td align="right">
+							<span id="o_${d.id}_${it.orderItem.id}_total">0</span>đ
+						</td>
+					</tr>
+				</c:forEach>
+				<tr>	
+					<td colspan="4" align="center">
+						<strong>Món ngon</strong>
+					</td>
+				</tr>
+				<c:forEach items="${orderItemSpec[d.id]}" var="it" varStatus="status">
+					<tr class="info">
+						<td>
+							${it.orderItem.name}
+						</td>
+						<td align="center">
+							<input id="o_${d.id}_${it.orderItem.id}_price" onkeyup="restrictInputDoubleOnly(event,this);calculate(this);" price="${it.orderItem.price}" style="width:50px"/> x <br/><fmt:formatNumber value="${it.orderItem.price}" pattern="#,###"/>đ
+						</td>
+						<td align="center">
+							<input id="o_${d.id}_${it.orderItem.id}_miniPrice" onkeyup="restrictInputDoubleOnly(event,this);calculate(this);" price="${it.orderItem.miniPrice}" style="width:50px"/> x <br/><fmt:formatNumber value="${it.orderItem.miniPrice}" pattern="#,###"/>đ
+						</td>
+						<td align="right">
+							<span id="o_${d.id}_${it.orderItem.id}_total">0</span>đ
+						</td>
+					</tr>
+				</c:forEach>
+				<tr class="info">
+					<td>
+						<b>Tổng cộng</b>
+					</td>
+					<td align="center">
+						<b><span id="o_${d.id}_count">0</span></b>
+					</td>
+					<td align="center">
+						<b><span id="o_${d.id}_count_min">0</span></b>
+					</td>
+					<td align="right">
+						<b><span id="o_${d.id}_total">0</span>đ</b>
+					</td>
+				</tr>
+				<tr>	
+					<td colspan="4" align="center">
+						<input type="button" onclick="doOrder(${d.id});" value="Đặt món"/>
+					</td>
+				</tr>
+			</table>
+		</div>		
+	</div>
+</c:forEach>
 
 <!-- + -->
 <div class="ftr-bottom">

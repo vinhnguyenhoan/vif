@@ -8,5 +8,6 @@ import vn.vif.models.MenuItem;
 public interface MenuItemService extends GeneralService<MenuItem> {
 
 	public Map<Integer, List<MenuItem>>[] getMenuItemData();
+	public List<MenuItem> getOrderListToday();
 
 }
