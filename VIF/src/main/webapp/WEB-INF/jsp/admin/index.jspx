@@ -7,12 +7,11 @@
 	<jsp:output omit-xml-declaration="yes" />
 
 	<spring:url var="imageFolder" value="/images" />
-	<spring:url var="posURL" value="/pos/list" />
-	<spring:url var="createPlanURL" value="/plan/create" />
-	<spring:url var="ccDiaryURL" value="/pos/diary" />
-	<spring:url var="trackingURL" value="/map" />
-	<spring:url var="planListURL" value="/plan/list" />
-	<spring:url var="performanceURL" value="/performance"  />
+	<spring:url var="menuURL" value="/admin/menu/list" />
+	<spring:url var="addOrderURL" value="/admin/order/add" />
+	<spring:url var="listOrderURL" value="/admin/order/list" />
+	<spring:url var="locURL" value="/admin/addressNote/list" />
+	<spring:url var="listCusURL" value="/admin/customer/list"  />
 	<spring:url var="createTargetURL" value="/planforsales/create"  />
 	<spring:url var="exportURL" value="/planforsales/goodstype/"  />
 	<spring:url var="addUserURL" value="/user/add"  />
@@ -24,6 +23,38 @@
             <h2><span>TRANG CHỦ</span></h2>
         </div>
         <div id="content">
+        	<ul class="lst-home">
+            	<li>
+                	<a href="${menuURL}" title="Quản lý thực đơn">
+                    	<img src="${imageFolder}/upload/img_1.png" width="180" height="100" alt="Quản lý thực đơn" />
+                        <span>Quản lý thực đơn</span>
+                    </a>
+                </li>
+                <li>
+                	<a href="${addOrderURL}" title="Thêm đơn hàng">
+                    	<img src="${imageFolder}/upload/img_5.png" width="180" height="100" alt="Thêm đơn hàng" />
+                        <span>Thêm đơn hàng</span>
+                    </a>
+                </li>
+                <li>
+                	<a href="${listOrderURL}" title="Danh sách đơn hàng">
+                    	<img src="${imageFolder}/upload/img_2.png" width="180" height="100" alt="Danh sách đơn hàng" />
+                        <span>Danh sách đơn hàng</span>
+                    </a>
+                </li>
+                 <li>
+                	<a href="${locURL}" title="Danh sách địa điểm">
+                    	<img src="${imageFolder}/upload/img_7.png" width="180" height="100" alt="Danh sách địa điểm" />
+                        <span>Danh sách địa điểm</span>
+                    </a>
+                </li>
+                <li>
+                	<a href="${listCusURL}" title="Danh sách khách hàng">
+                    	<img src="${imageFolder}/upload/img_3.png" width="180" height="100" alt="Danh sách khách hàng" />
+                        <span>Danh sách khách hàng</span>
+                    </a>
+                </li>
+            </ul>
         </div>	
     </div>
 
