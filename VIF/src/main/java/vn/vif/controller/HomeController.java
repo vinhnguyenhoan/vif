@@ -224,10 +224,14 @@ public class HomeController {
 				}
 				detail.setOrderItemId(orIt.getId());
 				detail.setNumber(order.quantity.get(i));
-				detail.setMiniNumber(order.miniQuantity.get(i));
+				if (order.miniQuantity != null && !order.miniQuantity.isEmpty()) {
+					detail.setMiniNumber(order.miniQuantity.get(i));
+				}
 				detail.setPrice(orIt.getPrice());
 				detail.setMiniNumber(orIt.getMiniPrice());
-				detail.setNote(order.description.get(i));
+				if (order.description != null && !order.description.isEmpty()) {
+					detail.setNote(order.description.get(i));
+				}
 				detail.setOrder(orderList);
 				details.add(detail);
 			}
