@@ -1,5 +1,6 @@
 package vn.vif.controller;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,15 +22,15 @@ import org.springframework.web.servlet.View;
 
 import vn.vif.models.Customer;
 import vn.vif.models.District;
-import vn.vif.models.OrderDetail;
-import vn.vif.models.OrderItem;
 import vn.vif.models.OrderLineDetail;
 import vn.vif.models.OrderList;
 import vn.vif.models.filter.OrderListFilter;
 import vn.vif.services.CustomerService;
+import vn.vif.services.MenuItemService;
 import vn.vif.services.OrderDetailService;
 import vn.vif.services.OrderItemService;
 import vn.vif.services.OrderService;
+import vn.vif.utils.CannotFindByIdException;
 import vn.vif.utils.PaginationInfo;
 import vn.vif.utils.PaginationUtil;
 import vn.vif.utils.VIFUtils;
@@ -50,6 +51,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderItemService orderItemService;
+	
+	@Autowired
+	private MenuItemService menuService;
 	
 	@Autowired
 	private OrderService orderService;
@@ -111,100 +115,73 @@ public class OrderController {
 	
 	private String addUpdateOrder(OrderList order, Model uiModel, BindingResult bindingResult) {
 		validateInputData(order, bindingResult);
-		if (!bindingResult.hasErrors()) {
-			try {
-				if (order.getId() != null) {
-					OrderList aN = orderService.find(order.getId());
-					// TODO handle case update detail ? from now just allow update 
-					//aN.setDetails(order.getDetails());
-					aN.setNote(order.getNote());
-					aN.setActive(order.getActive());
-					orderService.update(order);
-				} else {
-					// TODO create details from 2 list 
-					List<OrderDetail> details = new LinkedList<OrderDetail>();
-					List<Long> orderItemIdToday = order.getListOrderItemId();
-					if (orderItemIdToday != null) {
-						int index = 0;
-						for (Long itemId : orderItemIdToday) {
-							OrderItem item = orderItemService.find(itemId);
-							if (item == null) {
-								uiModel.addAttribute("success", false);
-								// TODO throw error
-								uiModel.addAttribute("orderList", order);
-								return "orderDetail";
-							}
-							OrderDetail detail = new OrderDetail();
-							detail.setOrderItemId(itemId);
-							detail.setMiniNumber(order.getListMiniNumber().get(index));
-							detail.setNumber(order.getListNumber().get(index));
-							detail.setMiniPrice(order.getListMiniPrice().get(index));
-							detail.setPrice(order.getListPrice().get(index));
-							detail.setNote(order.getListNote().get(index));
-							details.add(detail);
-							index++;
-						}
-					}
-					
-					List<Long> orderItemIdAllDay = order.getListAllDaytOrderItemId();
-					if (orderItemIdAllDay != null) {
-						int index = 0;
-						for (Long itemId : orderItemIdAllDay) {
-							OrderItem item = orderItemService.find(itemId);
-							if (item == null) {
-								uiModel.addAttribute("success", false);
-								// TODO throw error
-								uiModel.addAttribute("orderList", order);
-								return "orderDetail";
-							}
-							OrderDetail detail = new OrderDetail();
-							detail.setOrderItemId(itemId);
-							detail.setNumber(order.getListAllDayNumber().get(index));
-							detail.setPrice(order.getListAllDayPrice().get(index));
-							detail.setNote(order.getListAllDayNote().get(index));
-							details.add(detail);
-							index++;
-						}
-					}
-					order.setDetails(details);
-					
-					order.setCustomer(order.getCustomerEditing());
-					if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
-						order.getCustomer().setOverride(order.getOverride());
-						// reuse handle customer with customer controller
-						// TODO bindingResult new path
-						customerController.addUpdateCustomer(order.getCustomer(), uiModel, bindingResult, "customerEditing.");
-						// TODO fix null
-						if (!(Boolean) uiModel.asMap().get("success")) {
-							uiModel.addAttribute("orderList", order);	
-							return "orderDetail";
-						}
-						order.setAddress(order.getCustomer().getAddressFull());
-					}
-					orderService.add(order);
-				}
-				uiModel.addAttribute("success", true);
-//				uiModel.addAttribute("districtList", convertDistricyListToOptionItem());
-				return "redirect:/admin/order/detail/" + order.getId();
-			} catch (Exception e) {
-				e.printStackTrace();
-				uiModel.addAttribute("success", false);
-			}
-		} else {
+		if (bindingResult.hasErrors()) {
 			List<FieldError> errors = bindingResult.getFieldErrors();
 			for (FieldError fieldError : errors) {
 				bindingResult.rejectValue(fieldError.getField(),
 						fieldError.getDefaultMessage());
 			}
+			return handleError(order, uiModel);
 		}
+		try {
+			if (order.getId() != null) {
+				if (!order.getActive()) {
+					// TODO message can not edit active order
+					return handleError(order, uiModel);
+				}
+				OrderList aN = orderService.find(order.getId());
+				// remove old order
+				if (aN != null) {
+					orderService.delete(aN);
+				}
+//				aN.setNote(order.getNote());
+//				aN.setActive(order.getActive());
+//				orderService.update(order);
+			}
+			try {
+				order.updateDetailsFromUIModel(orderItemService);
+			} catch (CannotFindByIdException cE) {
+				uiModel.addAttribute("success", false);
+				// TODO throw error
+				uiModel.addAttribute("orderList", this);
+				return "orderDetail";
+			}
+			
+			order.setCustomer(order.getCustomerEditing());
+			if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
+				order.getCustomer().setOverride(order.getOverride());
+				// reuse handle customer with customer controller
+				// TODO bindingResult new path
+				customerController.addUpdateCustomer(order.getCustomer(), uiModel, bindingResult, "customerEditing.");
+				// TODO fix null
+				if (!(Boolean) uiModel.asMap().get("success")) {
+					uiModel.addAttribute("orderList", order);	
+					return "orderDetail";
+				}
+				order.setAddress(order.getCustomer().getAddressFull());
+			}
+			order.setCreatedDate(new Date());
+			order.setOrderedDate(new Date());
+
+			orderService.add(order);
+			uiModel.addAttribute("success", true);
+			return "redirect:/admin/order/detail/" + order.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return handleError(order, uiModel);
+		}
+	}
+
+	private String handleError(OrderList order, Model uiModel) {
 		// Handle for exception
+		uiModel.addAttribute("success", false);
 		if (order.getId() != null) {
 			order.updateDetailsForView(orderItemService);
 		} else {
 			order.setTodayDetailLinesFromEditing(orderService.getOrderListToday());
 			order.setAllDayDetailLinesFromEditing(orderService.getOrderListAllDay());
 		}
-		uiModel.addAttribute("orderList", order);	
+		uiModel.addAttribute("orderList", order);
 		return "orderDetail";
 	}
 	

@@ -38,6 +38,8 @@ public class CustomerListFilter implements DistinctFilter {
 		if (StringUtils.isNotEmpty(searchText)) {
 			criteria.add(Restrictions.disjunction()
 					.add(Restrictions.ilike("name", "%" + searchText + "%"))
+					.add(Restrictions.ilike("email", "%" + searchText + "%"))
+					.add(Restrictions.ilike("phone", "%" + searchText + "%"))
 					);
 		}
 

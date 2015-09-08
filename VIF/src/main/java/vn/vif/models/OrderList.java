@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import vn.vif.services.OrderItemService;
+import vn.vif.utils.CannotFindByIdException;
 
 @Entity
 @Table(name = "ORDER_LIST")
@@ -372,6 +373,48 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 	@Transient
 	public boolean getOverride() {
 		return this.override;
+	}
+
+	public void updateDetailsFromUIModel(OrderItemService orderItemService) {
+		this.details = new LinkedList<OrderDetail>();
+		
+		List<Long> orderItemIdToday = this.getListOrderItemId();
+		if (orderItemIdToday != null) {
+			int index = 0;
+			for (Long itemId : orderItemIdToday) {
+				OrderItem item = orderItemService.find(itemId);
+				if (item == null) {
+					throw new CannotFindByIdException();
+				}
+				OrderDetail detail = new OrderDetail();
+				detail.setOrderItemId(itemId);
+				detail.setMiniNumber(this.getListMiniNumber().get(index));
+				detail.setNumber(this.getListNumber().get(index));
+				detail.setMiniPrice(this.getListMiniPrice().get(index));
+				detail.setPrice(this.getListPrice().get(index));
+				detail.setNote(this.getListNote().get(index));
+				details.add(detail);
+				index++;
+			}
+		}
+		
+		List<Long> orderItemIdAllDay = this.getListAllDaytOrderItemId();
+		if (orderItemIdAllDay != null) {
+			int index = 0;
+			for (Long itemId : orderItemIdAllDay) {
+				OrderItem item = orderItemService.find(itemId);
+				if (item == null) {
+					throw new CannotFindByIdException();
+				}
+				OrderDetail detail = new OrderDetail();
+				detail.setOrderItemId(itemId);
+				detail.setNumber(this.getListAllDayNumber().get(index));
+				detail.setPrice(this.getListAllDayPrice().get(index));
+				detail.setNote(this.getListAllDayNote().get(index));
+				details.add(detail);
+				index++;
+			}
+		}
 	}
 
 }
