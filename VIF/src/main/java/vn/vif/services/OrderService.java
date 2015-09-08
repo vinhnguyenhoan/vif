@@ -11,4 +11,6 @@ public interface OrderService extends GeneralService<OrderList> {
 
 	List<OrderLineDetail> getOrderListAllDay();
 
+	OrderList findByCode(String code);
+
 }

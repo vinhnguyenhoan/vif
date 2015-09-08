@@ -37,6 +37,7 @@
 			clearForm();
 			tb_show('Đặt món','TB_inline?height=600&amp;width=650&amp;inlineId=order_'+day);
 			$('#TB_closeAjaxWindow')[0].childNodes[1].remove();
+			//$($('#TB_closeAjaxWindow')[0].childNodes[1]).text('abc');
 			if (id != null) {
 				var $it = $('#o_'+day+'_'+id+(mini?'_miniPrice':'_price'));
 				$it.focus();

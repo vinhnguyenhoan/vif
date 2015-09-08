@@ -1,5 +1,6 @@
 package vn.vif.controller;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -181,6 +182,8 @@ public class OrderController {
 						}
 						order.setAddress(order.getCustomer().getAddressFull());
 					}
+					order.setCreatedDate(new Date());
+					order.setOrderedDate(new Date());
 					orderService.add(order);
 				}
 				uiModel.addAttribute("success", true);

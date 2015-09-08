@@ -43,4 +43,13 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 		return result;
 	}
 
+	@Override
+	public OrderList findByCode(String code) {
+		List<OrderList> list = list(new String[] {"code"}, new Object[] {code}, true, null, -1, 1);
+		if (list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		return null;
+	}
+
 }
