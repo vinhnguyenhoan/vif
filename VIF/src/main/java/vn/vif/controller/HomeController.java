@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -212,30 +213,37 @@ public class HomeController {
 		if (error != null) {
 			data.put("error", error);
 		} else {
-			OrderList orderList = new OrderList();
-			orderList.setCustomer(customer);
-			List<OrderDetail> details = new ArrayList<OrderDetail>();
-			orderList.setDetails(details);
-			for (int i = 0; i < order.ids.size(); i++) {
-				OrderDetail detail = new OrderDetail();
-				OrderItem orIt = orderItemService.find(order.ids.get(i));
-				if (orIt == null) {
-					continue;
+			// prevent many submit
+			if (orderService.findByCode(order.code) == null) {
+				OrderList orderList = new OrderList();
+				orderList.setCustomer(customer);
+				List<OrderDetail> details = new ArrayList<OrderDetail>();
+				orderList.setDetails(details);
+				for (int i = 0; i < order.ids.size(); i++) {
+					OrderDetail detail = new OrderDetail();
+					OrderItem orIt = orderItemService.find(order.ids.get(i));
+					if (orIt == null) {
+						continue;
+					}
+					detail.setOrderItemId(orIt.getId());
+					detail.setNumber(order.quantity.get(i));
+					if (order.miniQuantity != null && !order.miniQuantity.isEmpty()) {
+						detail.setMiniNumber(order.miniQuantity.get(i));
+					}
+					detail.setPrice(orIt.getPrice());
+					detail.setMiniNumber(orIt.getMiniPrice());
+					if (order.description != null && !order.description.isEmpty()) {
+						detail.setNote(order.description.get(i));
+					}
+					detail.setOrder(orderList);
+					details.add(detail);
 				}
-				detail.setOrderItemId(orIt.getId());
-				detail.setNumber(order.quantity.get(i));
-				if (order.miniQuantity != null && !order.miniQuantity.isEmpty()) {
-					detail.setMiniNumber(order.miniQuantity.get(i));
+				orderList.setCreatedDate(new Date());
+				if (VIFUtils.isValid(order.getDate())) {
+					orderList.setOrderedDate(VIFUtils.convertStringToDate(order.getDate(), "dd/MM/yyyy"));
 				}
-				detail.setPrice(orIt.getPrice());
-				detail.setMiniNumber(orIt.getMiniPrice());
-				if (order.description != null && !order.description.isEmpty()) {
-					detail.setNote(order.description.get(i));
-				}
-				detail.setOrder(orderList);
-				details.add(detail);
+				orderService.add(orderList);
 			}
-			orderService.add(orderList);
 			data.put("success", "Quý khách đã đặt món thành công. Chúng tôi sẽ liên hệ để xác nhận cho quý khách sớm nhất có thể. Xin cám ơn!");
 		}
 		return data;

@@ -1,6 +1,7 @@
 package vn.vif.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import vn.vif.services.OrderItemService;
@@ -39,6 +42,12 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 	private List<OrderDetail> details;
 	
 	private String address;
+	
+	private Date createdDate;
+
+	private Date orderedDate;
+	
+	private String code;
 	
 	@Transient
 	private List<OrderLineDetail> todayDetailLines;
@@ -100,6 +109,35 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED_DATE")
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "ORDERED_DATE")
+	public Date getOrderedDate() {
+		return orderedDate;
+	}
+
+	public void setOrderedDate(Date orderedDate) {
+		this.orderedDate = orderedDate;
+	}
+
+	@Column(name = "CODE", length = 100, unique = true)
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@OneToMany(fetch= FetchType.EAGER, cascade = { CascadeType.ALL })
