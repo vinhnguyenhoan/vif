@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.vif.models.MenuItem;
 import vn.vif.models.OrderDetail;
-import vn.vif.models.OrderItem;
 import vn.vif.models.OrderLineDetail;
 import vn.vif.models.OrderList;
 
@@ -17,30 +17,29 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 	@Autowired
 	private OrderItemService orderItemService;
 	
+	@Autowired
+	private MenuItemService menuItemService;
+	
 	public Class<OrderList> getEntityClass() {
 		return OrderList.class;
 	}
 
-	public List<OrderLineDetail> getOrderListToday() {
-		List<OrderLineDetail> result = new LinkedList<OrderLineDetail>();
-		List<OrderItem> orderItemToday = orderItemService.getOrderItemToday();
-		int index = 1;
-		for (OrderItem oI : orderItemToday) {
+	@SuppressWarnings("unchecked")
+	public List<OrderLineDetail>[] getOrderListToday() {
+		List<MenuItem> menuToday = menuItemService.getOrderListToday();
+		List<OrderLineDetail> itemNormal = new LinkedList<>();
+		List<OrderLineDetail> itemSpec = new LinkedList<>();
+		int indexNormal = 1;
+		int indexSpec = 1;
+		for (MenuItem mI : menuToday) {
 			OrderDetail detail = new OrderDetail();
-			result.add(new OrderLineDetail(index++, oI, detail));
+			if (Boolean.TRUE.equals(mI.getOrderItem().getSpecItem())) {
+				itemSpec.add(new OrderLineDetail(indexSpec++, mI.getOrderItem(), detail));
+			} else {
+				itemNormal.add(new OrderLineDetail(indexNormal++, mI.getOrderItem(), detail));
+			}
 		}
-		return result;
-	}
-
-	public List<OrderLineDetail> getOrderListAllDay() {
-		List<OrderLineDetail> result = new LinkedList<OrderLineDetail>();
-		List<OrderItem> orderItemAllDay = orderItemService.getOrderItemAllDay();
-		int index = 1;
-		for (OrderItem oI : orderItemAllDay) {
-			OrderDetail detail = new OrderDetail();
-			result.add(new OrderLineDetail(index++, oI, detail));
-		}
-		return result;
+		return (List<OrderLineDetail>[]) new List[]{itemNormal, itemSpec};
 	}
 
 	@Override

@@ -178,8 +178,9 @@ public class OrderController {
 		if (order.getId() != null) {
 			order.updateDetailsForView(orderItemService);
 		} else {
-			order.setTodayDetailLinesFromEditing(orderService.getOrderListToday());
-			order.setAllDayDetailLinesFromEditing(orderService.getOrderListAllDay());
+			List<OrderLineDetail>[] itemsToday = orderService.getOrderListToday();
+			order.setTodayDetailLinesFromEditing(itemsToday[0]);
+			order.setAllDayDetailLinesFromEditing(itemsToday[1]);
 		}
 		uiModel.addAttribute("orderList", order);
 		return "orderDetail";
@@ -216,11 +217,12 @@ public class OrderController {
 		
 		// Order from admin is active as default
 		order.setActive(true);
+		List<OrderLineDetail>[] itemsToday = orderService.getOrderListToday();
 		
-		List<OrderLineDetail> orderListToday = orderService.getOrderListToday();
+		List<OrderLineDetail> orderListToday = itemsToday[0];
 		order.setTodayDetailLines(orderListToday);
 		
-		List<OrderLineDetail> orderListAllday = orderService.getOrderListAllDay();
+		List<OrderLineDetail> orderListAllday = itemsToday[1];
 		order.setAllDayDetailLines(orderListAllday);
 		
 		return order;

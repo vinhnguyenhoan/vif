@@ -7,9 +7,7 @@ import vn.vif.models.OrderList;
 
 public interface OrderService extends GeneralService<OrderList> {
 
-	List<OrderLineDetail> getOrderListToday();
-
-	List<OrderLineDetail> getOrderListAllDay();
+	List<OrderLineDetail>[] getOrderListToday();
 
 	OrderList findByCode(String code);
 
