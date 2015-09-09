@@ -21,6 +21,7 @@ public class Setting implements java.io.Serializable {
 	private String address;
 	private String phoneNumber;
 	private String companyName;
+	private Integer endTime;
 
 	@Id
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
@@ -75,6 +76,18 @@ public class Setting implements java.io.Serializable {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	@Column(name = "END_TIME", length = 10)
+	public Integer getEndTime() {
+		if (endTime == null) {
+			endTime = 1030; // default value 10:30 AM
+		}
+		return endTime;
+	}
+
+	public void setEndTime(Integer endTime) {
+		this.endTime = endTime;
 	}
 
 }

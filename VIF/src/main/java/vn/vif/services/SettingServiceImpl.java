@@ -24,6 +24,7 @@ public class SettingServiceImpl extends GeneralServiceImpl<Setting> implements S
 			st.setCompanyName("Công ty Cổ phần Thực phẩm HƯNG GIA");
 			st.setPhoneNumber("(08) 6262 44846/680 5042 - 6680 5043 ");
 			st.setAddress("B6 Cư xá Thời Báo Kinh Tế Sài Gòn, Lương Định Của Phường Bình Khánh, Quận 2, TP.HCM");
+			st.setEndTime(1030);
 			add(st);
 		}
 		return st;

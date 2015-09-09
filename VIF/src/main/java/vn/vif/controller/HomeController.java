@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,10 +37,12 @@ import vn.vif.models.OrderDetail;
 import vn.vif.models.OrderInfor;
 import vn.vif.models.OrderItem;
 import vn.vif.models.OrderList;
+import vn.vif.models.Setting;
 import vn.vif.services.CustomerService;
 import vn.vif.services.MenuItemService;
 import vn.vif.services.OrderItemService;
 import vn.vif.services.OrderService;
+import vn.vif.services.SettingService;
 import vn.vif.utils.VIFUtils;
 @Controller
 public class HomeController {
@@ -53,6 +56,8 @@ public class HomeController {
 	private CustomerService customerService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private SettingService settingService;
 
 	@RequestMapping(value = "/admin", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -201,9 +206,14 @@ public class HomeController {
 		Map<String, Object> data = new HashMap<String, Object>();
 		Customer customer = customerService.getLogin();
 		String error = null;
+		Setting setting = settingService.getSetting();
+		Calendar ca = Calendar.getInstance();
+		int time = ca.get(Calendar.HOUR_OF_DAY) * 1000 + ca.get(Calendar.MINUTE);
 		if (customer == null) {
 			error = "Vui lòng truy cập vào web và đăng nhập lại";
-		} if (order.ids == null || order.ids.isEmpty()) {
+		} if (time > setting.getEndTime()) {
+			error = "Đã hết thời gian đặt món online. Vui lòng liên hệ theo hotline.";
+		} else if (order.ids == null || order.ids.isEmpty()) {
 			error = "Chưa chọn món ăn";
 		} else if (order.quantity == null || order.miniQuantity == null || (order.quantity.isEmpty() && order.miniQuantity.isEmpty())) {
 			error = "Chưa nhập số số lượng món ăn";

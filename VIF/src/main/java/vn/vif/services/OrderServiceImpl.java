@@ -27,8 +27,8 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 	@SuppressWarnings("unchecked")
 	public List<OrderLineDetail>[] getOrderListToday() {
 		List<MenuItem> menuToday = menuItemService.getOrderListToday();
-		List<OrderLineDetail> itemNormal = new LinkedList<>();
-		List<OrderLineDetail> itemSpec = new LinkedList<>();
+		List<OrderLineDetail> itemNormal = new LinkedList<OrderLineDetail>();
+		List<OrderLineDetail> itemSpec = new LinkedList<OrderLineDetail>();
 		int indexNormal = 1;
 		int indexSpec = 1;
 		for (MenuItem mI : menuToday) {
