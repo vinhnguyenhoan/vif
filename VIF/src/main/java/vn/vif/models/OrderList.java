@@ -150,28 +150,48 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 		this.details = details;
 	}
 
-	public void updateDetailsForView(OrderItemService orderItemService) {
+	public void updateDetailsForView(List<OrderLineDetail>[] itemsToday, OrderItemService orderItemService) {
 		List<OrderLineDetail> orderListToday = new LinkedList<OrderLineDetail>();
 		List<OrderLineDetail> orderListAllday = new LinkedList<OrderLineDetail>();
+		if (!isActive()) {
+			orderListToday = itemsToday[0];
+			orderListAllday = itemsToday[1];
+		}
 		
-		int index = 0;
+		int index = -1;
 		for (OrderDetail detail : details) {
-			OrderItem item = null;
-			if (detail.getOrderItemId() != null) {
-				item = orderItemService.find(detail.getOrderItemId());
-			}
-			OrderLineDetail lineDetail = new OrderLineDetail(index++, item, detail);
-			if (item != null && item.getSpecItem() != null && item.getSpecItem()) {
-				orderListAllday.add(lineDetail);
-			} else {
-				orderListToday.add(lineDetail);
-			}
+			index = updateDetail(orderListToday, false, detail, index, orderItemService);
+			index = updateDetail(orderListAllday, true, detail, index, orderItemService);
 		}
 		this.setTodayDetailLines(orderListToday);
-
 		this.setAllDayDetailLines(orderListAllday);
 	}
 	
+	private int updateDetail(List<OrderLineDetail> orderList, boolean isSpecList, OrderDetail detail, int index, OrderItemService orderItemService) {
+		if (!isActive()) {
+			for (OrderLineDetail line : orderList) {
+				if (line.getOrderItem().getId() == detail.getOrderItemId()) {
+					line.setOrderDetail(detail);
+					return index;
+				}
+			}
+		}
+		OrderItem item = null;
+		if (detail.getOrderItemId() != null) {
+			item  = orderItemService.find(detail.getOrderItemId());
+		}
+		boolean itemIsSpec = item == null || item.getSpecItem() == null || !item.getSpecItem();
+		if (itemIsSpec == isSpecList) {
+			OrderLineDetail lineDetail = new OrderLineDetail(index, item, detail);
+			orderList.add(lineDetail);
+		}
+		return index - 1;
+	}
+
+	private boolean isActive() {
+		return active != null && active;
+	}
+
 	@Transient
 	public Customer getCustomerEditing() {
 		if (customerEditing == null) {

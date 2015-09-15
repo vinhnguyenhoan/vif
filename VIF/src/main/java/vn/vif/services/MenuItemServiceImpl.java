@@ -28,6 +28,10 @@ public class MenuItemServiceImpl extends GeneralServiceImpl<MenuItem> implements
 	}
 
 	public Map<Integer, List<MenuItem>>[] getMenuItemData() {
+		return getMenuItemData(false);
+	}
+	
+	private Map<Integer, List<MenuItem>>[] getMenuItemData(boolean getToday) {
 		Calendar ca = Calendar.getInstance();
 		// get current week
 		int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
@@ -63,7 +67,7 @@ public class MenuItemServiceImpl extends GeneralServiceImpl<MenuItem> implements
 		List<MenuItem> its;
 		for (MenuItem it : list) {
 			Integer date = it.getDay();
-			if (it.getOrderItem().getSpecItem() != null && it.getOrderItem().getSpecItem()) {
+			if (Boolean.TRUE.equals(it.getOrderItem().getSpecItem())) {
 				map = reSpec;
 			} else {
 				map = re;
@@ -78,27 +82,30 @@ public class MenuItemServiceImpl extends GeneralServiceImpl<MenuItem> implements
 		return (Map<Integer, List<MenuItem>>[]) new Map[] {re, reSpec};
 	}
 
-	@Override
-	public List<MenuItem> getOrderListToday() {
-		Calendar ca = Calendar.getInstance();
-		// get current week
-		int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
-		final int currentDay = ca.get(Calendar.DAY_OF_WEEK);
-		// get start week in setting
-		int startWeek = settingService.getSetting().getStartWeek();
-		// calculate the week
-		final int week = (Math.abs(currentWeek - startWeek) % 4) + 1;
-		List<MenuItem> list = list(new Filter() {
-
-			@Override
-			public Criteria getCriteria(Session session) {
-				Criteria cr = session.createCriteria(getEntityClass());
-				cr.add(Restrictions.eq("week", week))
-				.add(Restrictions.ge("day", currentDay));
-				return cr;
-			}
-			
-		});
-		return list;
+	public List<MenuItem>[] getOrderListToday() {
+		Map<Integer, List<MenuItem>>[] allMenuItems = getMenuItemData(true);
+		final int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+		return (List<MenuItem>[]) new List[] {allMenuItems[0].get(currentDay), allMenuItems[1].get(currentDay)};
+		
+//		Calendar ca = Calendar.getInstance();
+//		// get current week
+//		int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
+//		final int currentDay = ca.get(Calendar.DAY_OF_WEEK);
+//		// get start week in setting
+//		int startWeek = settingService.getSetting().getStartWeek();
+//		// calculate the week
+//		final int week = (Math.abs(currentWeek - startWeek) % 4) + 1;
+//		List<MenuItem> list = list(new Filter() {
+//
+//			@Override
+//			public Criteria getCriteria(Session session) {
+//				Criteria cr = session.createCriteria(getEntityClass());
+//				cr.add(Restrictions.eq("week", week))
+//				.add(Restrictions.ge("day", currentDay));
+//				return cr;
+//			}
+//			
+//		});
+//		return list;
 	}
 }

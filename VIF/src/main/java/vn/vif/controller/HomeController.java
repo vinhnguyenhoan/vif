@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +44,7 @@ import vn.vif.services.OrderItemService;
 import vn.vif.services.OrderService;
 import vn.vif.services.SettingService;
 import vn.vif.utils.VIFUtils;
+
 @Controller
 public class HomeController {
 
@@ -216,7 +217,7 @@ public class HomeController {
 		} else if (order.ids == null || order.ids.isEmpty()) {
 			error = "Chưa chọn món ăn";
 		} else if (order.quantity == null || order.miniQuantity == null || (order.quantity.isEmpty() && order.miniQuantity.isEmpty())) {
-			error = "Chưa nhập số số lượng món ăn";
+			error = "Chưa nhập số lượng món ăn";
 		} else if (order.quantity.size() != order.miniQuantity.size()) {
 			error = "Dữ liệu đặt món không đồng bộ";
 		}
@@ -248,7 +249,7 @@ public class HomeController {
 					detail.setOrder(orderList);
 					details.add(detail);
 				}
-				orderList.setCreatedDate(new Date());
+				orderList.setCreatedDate(GregorianCalendar.getInstance().getTime());
 				if (VIFUtils.isValid(order.getDate())) {
 					orderList.setOrderedDate(VIFUtils.convertStringToDate(order.getDate(), "dd/MM/yyyy"));
 				}

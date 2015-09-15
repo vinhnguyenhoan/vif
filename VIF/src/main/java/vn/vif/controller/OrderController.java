@@ -1,6 +1,7 @@
 package vn.vif.controller;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,7 +91,8 @@ public class OrderController {
 				return "notFoundError";
 			}
 			order.setCustomerEditing(order.getCustomer());
-			order.updateDetailsForView(orderItemService);
+			List<OrderLineDetail>[] itemsToday = orderService.getOrderListToday();
+			order.updateDetailsForView(itemsToday, orderItemService);
 			
 			uiModel.addAttribute("districtList", convertDistricyListToOptionItem());
 			uiModel.addAttribute("orderList", order);	
@@ -160,8 +162,9 @@ public class OrderController {
 				}
 				order.setAddress(order.getCustomer().getAddressFull());
 			}
-			order.setCreatedDate(new Date());
-			order.setOrderedDate(new Date());
+			Date currentDate = GregorianCalendar.getInstance().getTime();
+			order.setCreatedDate(currentDate);
+			order.setOrderedDate(currentDate);
 
 			orderService.add(order);
 			uiModel.addAttribute("success", true);
@@ -175,10 +178,10 @@ public class OrderController {
 	private String handleError(OrderList order, Model uiModel) {
 		// Handle for exception
 		uiModel.addAttribute("success", false);
+		List<OrderLineDetail>[] itemsToday = orderService.getOrderListToday();
 		if (order.getId() != null) {
-			order.updateDetailsForView(orderItemService);
+			order.updateDetailsForView(itemsToday, orderItemService);
 		} else {
-			List<OrderLineDetail>[] itemsToday = orderService.getOrderListToday();
 			order.setTodayDetailLinesFromEditing(itemsToday[0]);
 			order.setAllDayDetailLinesFromEditing(itemsToday[1]);
 		}

@@ -26,22 +26,22 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 
 	@SuppressWarnings("unchecked")
 	public List<OrderLineDetail>[] getOrderListToday() {
-		List<MenuItem> menuToday = menuItemService.getOrderListToday();
-		List<OrderLineDetail> itemNormal = new LinkedList<OrderLineDetail>();
-		List<OrderLineDetail> itemSpec = new LinkedList<OrderLineDetail>();
-		int indexNormal = 1;
-		int indexSpec = 1;
-		for (MenuItem mI : menuToday) {
-			OrderDetail detail = new OrderDetail();
-			if (Boolean.TRUE.equals(mI.getOrderItem().getSpecItem())) {
-				itemSpec.add(new OrderLineDetail(indexSpec++, mI.getOrderItem(), detail));
-			} else {
-				itemNormal.add(new OrderLineDetail(indexNormal++, mI.getOrderItem(), detail));
-			}
-		}
+		List<MenuItem>[] menuToday = menuItemService.getOrderListToday();
+		List<OrderLineDetail> itemNormal = convertFormMenuItemList(menuToday[0]);
+		List<OrderLineDetail> itemSpec = convertFormMenuItemList(menuToday[1]);
 		return (List<OrderLineDetail>[]) new List[]{itemNormal, itemSpec};
 	}
 
+	private List<OrderLineDetail> convertFormMenuItemList(List<MenuItem> menuItems) {
+		List<OrderLineDetail> item = new LinkedList<OrderLineDetail>();
+		int indexNormal = 1;
+		for (MenuItem mI : menuItems) {
+			OrderDetail detail = new OrderDetail();
+			item.add(new OrderLineDetail(indexNormal++, mI.getOrderItem(), detail));
+		}
+		return item;
+	}
+	
 	@Override
 	public OrderList findByCode(String code) {
 		List<OrderList> list = list(new String[] {"code"}, new Object[] {code}, true, null, -1, 1);
