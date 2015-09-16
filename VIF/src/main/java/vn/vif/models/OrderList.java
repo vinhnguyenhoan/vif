@@ -175,6 +175,7 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 					return index;
 				}
 			}
+			return index;
 		}
 		OrderItem item = null;
 		if (detail.getOrderItemId() != null) {
