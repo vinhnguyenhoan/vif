@@ -5,7 +5,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
 	class="TableWrapper"
 	xmlns:sec="http://www.springframework.org/security/tags"
-	xmlns:form="http://www.springframework.org/tags/form">
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url var="scriptsFolder" value="/scripts" />
@@ -35,6 +36,10 @@
 				<table width="100%" border="0" cellspacing="3px" cellpadding="0" class="table-1">
 					<tr>
 						<td colspan="4" valign="top">
+							<div style="padding-right:20px; display: inline;">
+								<fmt:formatDate value="${frmOrderList.dateValue}" var="date" pattern="dd/MM/yyyy" />
+								<input type="text" size="14" name="date" value="${date}" class="dateField tcal" />
+							</div>		
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
