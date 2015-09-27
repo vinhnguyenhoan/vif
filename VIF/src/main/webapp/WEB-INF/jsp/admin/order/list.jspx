@@ -37,9 +37,14 @@
 					<tr>
 						<td colspan="4" valign="top">
 							<div style="padding-right:20px; display: inline;">
-								<fmt:formatDate value="${frmOrderList.dateValue}" var="date" pattern="dd/MM/yyyy" />
-								<input type="text" size="14" name="date" value="${date}" class="dateField tcal" />
-							</div>		
+								<fmt:formatDate value="${frmOrderList.fromDateValue}" var="fromOrderDate" pattern="dd/MM/yyyy" />
+								Từ: <input type="text" size="14" name="fromOrderDate" value="${fromOrderDate}" class="dateField tcal" />
+							</div>
+							<div style="padding-right:20px; display: inline;">
+								<fmt:formatDate value="${frmOrderList.toDateValue}" var="toOrderDate" pattern="dd/MM/yyyy" />
+								Đến: <input type="text" size="14" name="toOrderDate" value="${toOrderDate}" class="dateField tcal" />
+							</div>
+									
 							<div style="padding-right:20px; display: inline;">
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
