@@ -20,8 +20,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import vn.vif.services.OrderItemService;
 import vn.vif.utils.CannotFindByIdException;
+import vn.vif.utils.VIFUtils;
 
 @Entity
 @Table(name = "ORDER_LIST")
@@ -121,6 +124,11 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
+	@Transient
+	public String getCreatedDateAsText() {
+		return VIFUtils.formatDateTime(createdDate);
+	}
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "ORDERED_DATE")
 	public Date getOrderedDate() {
@@ -154,6 +162,7 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 		List<OrderLineDetail> orderListToday = new LinkedList<OrderLineDetail>();
 		List<OrderLineDetail> orderListAllday = new LinkedList<OrderLineDetail>();
 		if (!isActive()) {
+			// If not active show another today items 
 			orderListToday = itemsToday[0];
 			orderListAllday = itemsToday[1];
 		}
@@ -167,16 +176,18 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 		this.setAllDayDetailLines(orderListAllday);
 	}
 	
-	private int updateDetail(List<OrderLineDetail> orderList, boolean isSpecList, OrderDetail detail, int index, OrderItemService orderItemService) {
+	private int updateDetail(List<OrderLineDetail> orderListToday, boolean isSpecList, OrderDetail detail, int index, OrderItemService orderItemService) {
 		if (!isActive()) {
-			for (OrderLineDetail line : orderList) {
+			// If not active -> check is today item let update current order detail
+			for (OrderLineDetail line : orderListToday) {
 				if (line.getOrderItem().getId() == detail.getOrderItemId()) {
 					line.setOrderDetail(detail);
 					return index;
 				}
 			}
-			return index;
+			//return index;
 		}
+		// This detail order not exist at today list but it still need to show
 		OrderItem item = null;
 		if (detail.getOrderItemId() != null) {
 			item  = orderItemService.find(detail.getOrderItemId());
@@ -184,7 +195,7 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 		boolean itemIsSpec = item == null || item.getSpecItem() == null || !item.getSpecItem();
 		if (itemIsSpec == isSpecList) {
 			OrderLineDetail lineDetail = new OrderLineDetail(index, item, detail);
-			orderList.add(lineDetail);
+			orderListToday.add(lineDetail);
 		}
 		return index - 1;
 	}
@@ -415,6 +426,14 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+	
+	@Transient
+	public String getStatusText() {
+		if (isActive()) {
+			return "Duyệt";
+		}
+		return "Mới";
+	}
 
 	@Column(name = "ADDRESS")
 	public String getAddress() {
@@ -447,11 +466,11 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 				}
 				OrderDetail detail = new OrderDetail();
 				detail.setOrderItemId(itemId);
-				detail.setMiniNumber(this.getListMiniNumber().get(index));
-				detail.setNumber(this.getListNumber().get(index));
-				detail.setMiniPrice(this.getListMiniPrice().get(index));
-				detail.setPrice(this.getListPrice().get(index));
-				detail.setNote(this.getListNote().get(index));
+				detail.setMiniNumber(this.getListIntAt(this.getListMiniNumber(), index));
+				detail.setNumber(this.getListIntAt(this.getListNumber(), index));
+				detail.setMiniPrice(this.getListIntAt(this.getListMiniPrice(), index));
+				detail.setPrice(this.getListIntAt(this.getListPrice(), index));
+				detail.setNote(this.getListStringAt(this.getListNote(), index));
 				details.add(detail);
 				index++;
 			}
@@ -467,13 +486,27 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 				}
 				OrderDetail detail = new OrderDetail();
 				detail.setOrderItemId(itemId);
-				detail.setNumber(this.getListAllDayNumber().get(index));
-				detail.setPrice(this.getListAllDayPrice().get(index));
-				detail.setNote(this.getListAllDayNote().get(index));
+				detail.setNumber(this.getListIntAt(this.getListAllDayNumber(), index));
+				detail.setPrice(this.getListIntAt(this.getListAllDayPrice(), index));
+				detail.setNote(this.getListStringAt(this.getListAllDayNote(), index));
 				details.add(detail);
 				index++;
 			}
 		}
+	}
+
+	private Integer getListIntAt(List<Integer> listData, int index) {
+		if (listData == null || listData.isEmpty() || index < 0) {
+			return 0;
+		}
+		return listData.get(index);
+	}
+	
+	private String getListStringAt(List<String> listData, int index) {
+		if (listData == null || listData.isEmpty() || index < 0) {
+			return StringUtils.EMPTY;
+		}
+		return listData.get(index);
 	}
 
 }

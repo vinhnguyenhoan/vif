@@ -34,6 +34,9 @@ public class OrderServiceImpl extends GeneralServiceImpl<OrderList> implements O
 
 	private List<OrderLineDetail> convertFormMenuItemList(List<MenuItem> menuItems) {
 		List<OrderLineDetail> item = new LinkedList<OrderLineDetail>();
+		if (menuItems == null) {
+			return item;
+		}
 		int indexNormal = 1;
 		for (MenuItem mI : menuItems) {
 			OrderDetail detail = new OrderDetail();

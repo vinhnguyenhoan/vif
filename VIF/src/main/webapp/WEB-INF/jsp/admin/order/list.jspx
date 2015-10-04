@@ -49,6 +49,10 @@
 								<form:input id="searchText" path="searchText" onkeypress="if(event.keyCode==13) {submitActionForm('orderList', '');}"
 									value="${fn:escapeXml(searchText)}" style="width: 150px;" />
 							</div>
+							
+							Chỉ xem đơn hàng mới<form:checkbox id="searchNotActive" path="searchNotActive" onkeypress="if(event.keyCode==13) {submitActionForm('orderList', '');}"
+									value="${fn:escapeXml(searchNotActive)}" />
+							
 							<a href="javascript:"
 							onclick="submitActionForm('orderList', '')" class="btn-1"
 							title="Danh Sách Đơn Hàng"><span><span style="width:90px">Xem Danh Sách</span></span></a>
@@ -69,7 +73,9 @@
 								<thead>
 									<tr>
 										<td width="5%"></td>
+										<td width="5%">TT</td>
 										<td>Tên khách hàng</td>
+										<td width="12%">Ngày - giờ đặt</td>
 										<td width="10%">Hành động</td>
 									</tr>
 								</thead>
@@ -79,9 +85,17 @@
 											<td align="center">
 												${(page-1)*size+status.count}
 											</td>
+											
+											<td>
+												<a href="${orderDetailURL}/${itemIndex.id}">${itemIndex.statusText}</a>
+											</td>
 											<td>
 												<a href="${orderDetailURL}/${itemIndex.id}">${itemIndex.customer.name}</a>
 											</td>
+											<td>
+												<a href="${orderDetailURL}/${itemIndex.id}">${itemIndex.createdDateAsText}</a>
+											</td>
+											
 											<td>
 												<a href="${orderDetailURL}/${itemIndex.id}"  class="redTxt"
 												title="Cập nhật thông tin">Chỉnh sửa</a>

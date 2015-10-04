@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -115,6 +116,7 @@ public class OrderController {
 		return addUpdateOrder(order, uiModel, bindingResult);
 	}
 	
+	@Transactional
 	private String addUpdateOrder(OrderList order, Model uiModel, BindingResult bindingResult) {
 		validateInputData(order, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -125,8 +127,9 @@ public class OrderController {
 			}
 			return handleError(order, uiModel);
 		}
+		boolean isUpdate = order.getId() != null;
 		try {
-			if (order.getId() != null) {
+			if (isUpdate) {
 				if (!order.getActive()) {
 					// TODO message can not edit active order
 					return handleError(order, uiModel);
@@ -135,6 +138,7 @@ public class OrderController {
 				// remove old order
 				if (aN != null) {
 					orderService.delete(aN);
+					order.setId(null);
 				}
 //				aN.setNote(order.getNote());
 //				aN.setActive(order.getActive());
@@ -150,13 +154,14 @@ public class OrderController {
 			}
 			
 			order.setCustomer(order.getCustomerEditing());
-			if (order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
+			if (!isUpdate && order.getCustomer() != null && !VIFUtils.isValid(order.getCustomer().getId())) {
 				order.getCustomer().setOverride(order.getOverride());
 				// reuse handle customer with customer controller
 				// TODO bindingResult new path
 				customerController.addUpdateCustomer(order.getCustomer(), uiModel, bindingResult, "customerEditing.");
 				// TODO fix null
-				if (!(Boolean) uiModel.asMap().get("success")) {
+				Boolean isSuccess = (Boolean) uiModel.asMap().get("success");
+				if (isSuccess == null || !isSuccess) {
 					uiModel.addAttribute("orderList", order);	
 					return "orderDetail";
 				}

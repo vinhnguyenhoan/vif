@@ -278,11 +278,20 @@ public class VIFUtils {
 	}
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	static SimpleDateFormat dateTimeF = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
 	public static String formatDate(Date date) {
 		if (date == null) {
 			return "";
 		}
 		return sdf.format(date);
+	}
+	
+	public static String formatDateTime(Date date) {
+		if (date == null) {
+			return "";
+		}
+		return dateTimeF.format(date);
 	}
 	
 	public static boolean isValid(Integer num) {

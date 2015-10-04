@@ -166,10 +166,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right">Email:
+					<td align="right">Email(<label class="errorMessage">*</label>):
 					</td>
 					<td>
 						<form:input path="customerEditing.email" class="textInput"/>
+						<form:errors path="customerEditing.email" cssClass="errorMessage" />
 					</td>
 				</tr>
 				

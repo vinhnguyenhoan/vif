@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.DateType;
@@ -15,9 +16,11 @@ import vn.vif.models.OrderList;
 import vn.vif.utils.VIFUtils;
 
 public class OrderListFilter implements DistinctFilter {
+
 	private String searchText;
 	private Date fromOrderDate;
 	private Date toOrderDate;
+	private boolean searchNotActive;
 
 //	private List<Long> searchDistrict;
 	
@@ -83,12 +86,29 @@ public class OrderListFilter implements DistinctFilter {
 			customerCriteria.add(Restrictions.like("name", "%" + searchText + "%"));
 		}
 
+		if (searchNotActive) {
+			Disjunction searchNotActiveDis = Restrictions.disjunction();
+			//searchNotActiveDis.add(Restrictions.eq("active", searchActive));
+			searchNotActiveDis.add(Restrictions.or(
+									Restrictions.eq("active", false),
+									Restrictions.isNull("active")));
+			criteria.add(searchNotActiveDis);
+		}
+		
 		criteria.add(Restrictions.sqlRestriction(" date(ordered_date) >= date(?) and date(ordered_date) <= date(?)", 
 								new Object[]{getFromDateValue(), getToDateValue()}, 
 								new DateType[]{StandardBasicTypes.DATE, StandardBasicTypes.DATE}));
 		
-		criteria.addOrder(Order.desc("id"));
+		criteria.addOrder(Order.desc("createdDate"));
 		return criteria;
+	}
+
+	public boolean getSearchNotActive() {
+		return searchNotActive;
+	}
+
+	public void setSearchNotActive(boolean searchNotActive) {
+		this.searchNotActive = searchNotActive;
 	}
 
 	@Override
