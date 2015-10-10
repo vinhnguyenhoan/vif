@@ -374,9 +374,8 @@ public class VIFUtils {
 		uiModel.addAttribute("minute", minute);
 	}
 
-
+	private static String[] names = new String[]{"THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"};
 	public static void fillDate(Model uiModel) {
-		String[] names = new String[]{"THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"};
 		Calendar ca = Calendar.getInstance();
 		int id = ca.get(Calendar.DAY_OF_WEEK);
 		List<DateItem> list = new LinkedList<DateItem>();
@@ -402,7 +401,6 @@ public class VIFUtils {
 		}
 		uiModel.addAttribute("dates", list);
 	}
-
 
 	public static String formatPhoneNumber(String phone) {
 		if (!isValid(phone)) {

@@ -2,6 +2,7 @@ package vn.vif.services;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,11 +102,36 @@ public class MenuItemServiceImpl extends GeneralServiceImpl<MenuItem> implements
 //			public Criteria getCriteria(Session session) {
 //				Criteria cr = session.createCriteria(getEntityClass());
 //				cr.add(Restrictions.eq("week", week))
-//				.add(Restrictions.ge("day", currentDay));
+//				.add(Restrictions.eq("day", currentDay));
 //				return cr;
 //			}
 //			
 //		});
 //		return list;
+	}
+
+	@Override
+	public List<MenuItem> getOrderList(Date date) {
+		Calendar ca = Calendar.getInstance();
+		ca.setTime(date);
+		// get current week
+		int currentWeek = ca.get(Calendar.WEEK_OF_YEAR);
+		final int currentDay = ca.get(Calendar.DAY_OF_WEEK);
+		// get start week in setting
+		int startWeek = settingService.getSetting().getStartWeek();
+		// calculate the week
+		final int week = (Math.abs(currentWeek - startWeek) % 4) + 1;
+		List<MenuItem> list = list(new Filter() {
+
+			@Override
+			public Criteria getCriteria(Session session) {
+				Criteria cr = session.createCriteria(getEntityClass());
+				cr.add(Restrictions.eq("week", week))
+				.add(Restrictions.eq("day", currentDay));
+				return cr;
+			}
+			
+		});
+		return list;
 	}
 }

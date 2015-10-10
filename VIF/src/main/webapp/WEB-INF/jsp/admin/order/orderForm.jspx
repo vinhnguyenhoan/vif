@@ -15,6 +15,7 @@
 	<spring:url var="jsFolder" value="/resources/js" />
 	<spring:url var="orderListURL" value="/admin/order/list"/>
 	<spring:url var="url" value="/admin/addressNote/getAddressNoteListFromDistinctId" />
+	<spring:url var="exportURL" value="/admin/report/order/${orderList.id}"/>
 	
 	<![CDATA[
 	<link href="${cssFolder}/thickbox.css" rel="stylesheet" type="text/css" />
@@ -63,6 +64,10 @@
 				}
 			}
 		);
+		
+		function exportOrder() {
+			submitExportForm('orderList', '${exportURL}');
+		}
 	</script>
 	
 ]]>
@@ -332,6 +337,9 @@
 						
 						<a href="${orderListURL}" class="btn-1"
 							title="Danh sách đơn hàng"><span><span>Trở về danh sách</span></span></a>
+							
+						<a href="javascript:exportOrder();" class="btn-1"
+							title="In đơn hàng"><span><span>In đơn hàng</span></span></a>
 					</td>
 				</tr>
 				

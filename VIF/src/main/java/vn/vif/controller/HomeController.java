@@ -212,9 +212,9 @@ public class HomeController {
 		int time = ca.get(Calendar.HOUR_OF_DAY) * 1000 + ca.get(Calendar.MINUTE);
 		if (customer == null) {
 			error = "Vui lòng truy cập vào web và đăng nhập lại";
-		} /*if (time > setting.getEndTime()) {
+		} if (time > setting.getEndTime()) {
 			error = "Đã hết thời gian đặt món online. Vui lòng liên hệ theo hotline.";
-		} */else if (order.ids == null || order.ids.isEmpty()) {
+		} else if (order.ids == null || order.ids.isEmpty()) {
 			error = "Chưa chọn món ăn";
 		} else if (order.quantity == null || order.miniQuantity == null || (order.quantity.isEmpty() && order.miniQuantity.isEmpty())) {
 			error = "Chưa nhập số lượng món ăn";
@@ -242,7 +242,7 @@ public class HomeController {
 						detail.setMiniNumber(order.miniQuantity.get(i));
 					}
 					detail.setPrice(orIt.getPrice());
-					detail.setMiniNumber(orIt.getMiniPrice());
+					detail.setMiniPrice(orIt.getMiniPrice());
 					if (order.description != null && !order.description.isEmpty()) {
 						detail.setNote(order.description.get(i));
 					}
