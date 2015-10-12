@@ -192,7 +192,7 @@ public class OrderList implements OverrideableEntity, java.io.Serializable {
 		if (detail.getOrderItemId() != null) {
 			item  = orderItemService.find(detail.getOrderItemId());
 		}
-		boolean itemIsSpec = item == null || item.getSpecItem() == null || !item.getSpecItem();
+		boolean itemIsSpec = item != null && item.getSpecItem() != null && item.getSpecItem();
 		if (itemIsSpec == isSpecList) {
 			OrderLineDetail lineDetail = new OrderLineDetail(index, item, detail);
 			orderListToday.add(lineDetail);
